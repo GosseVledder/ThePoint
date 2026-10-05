@@ -1,0 +1,12 @@
+node_modules/
+.output/
+.wxt/
+web-ext.config.ts
+*.log
+e2e/screenshots/
+.env
+.env.*
+!.env.example
+# Real transcripts and summaries of YouTube videos are third-party content: local only.
+tests/fixtures/*
+!tests/fixtures/json3-*-sample.json

@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YouTube AI-samenvatter – instellingen</title>
+    <meta name="manifest.open_in_tab" content="true" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>YouTube AI-samenvatter</h1>
+        <p class="sub">
+          Instellingen worden direct opgeslagen.
+          <span id="saved" class="saved" aria-live="polite"></span>
+        </p>
+      </header>
+
+      <section>
+        <h2>AI-dienst</h2>
+        <div class="radio-row" role="radiogroup" aria-label="AI-dienst">
+          <label class="choice"
+            ><input type="radio" name="provider" value="claude" />
+            <span><b>Claude</b> (Anthropic)</span></label
+          >
+          <label class="choice"
+            ><input type="radio" name="provider" value="gemini" />
+            <span><b>Gemini</b> (Google)</span></label
+          >
+        </div>
+        <p class="hint">
+          De gekozen dienst vat transcripts samen. Zonder transcript kan Gemini de video zelf
+          bekijken (zie hieronder).
+        </p>
+      </section>
+
+      <section data-provider="claude">
+        <h2>Claude</h2>
+        <label class="field">
+          <span>API-sleutel</span>
+          <span class="key-row">
+            <input
+              id="key-claude"
+              type="password"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="sk-ant-…"
+            />
+            <button type="button" class="ghost" data-toggle="key-claude">Toon</button>
+          </span>
+          <small
+            >Maak een sleutel aan op
+            <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer"
+              >console.anthropic.com</a
+            >. De sleutel blijft alleen in deze browser.</small
+          >
+        </label>
+        <label class="field">
+          <span>Model</span>
+          <input id="model-claude" list="models-claude" spellcheck="false" />
+          <datalist id="models-claude"></datalist>
+        </label>
+        <div class="test-row">
+          <button type="button" data-test="claude">Test verbinding</button>
+          <span class="test-result" id="test-claude" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <section data-provider="gemini">
+        <h2>Gemini</h2>
+        <label class="field">
+          <span>API-sleutel</span>
+          <span class="key-row">
+            <input
+              id="key-gemini"
+              type="password"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="AIza…"
+            />
+            <button type="button" class="ghost" data-toggle="key-gemini">Toon</button>
+          </span>
+          <small
+            >Maak een sleutel aan op
+            <a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer"
+              >aistudio.google.com</a
+            >. De sleutel blijft alleen in deze browser.</small
+          >
+        </label>
+        <label class="field">
+          <span>Model</span>
+          <input id="model-gemini" list="models-gemini" spellcheck="false" />
+          <datalist id="models-gemini"></datalist>
+        </label>
+        <div class="test-row">
+          <button type="button" data-test="gemini">Test verbinding</button>
+          <span class="test-result" id="test-gemini" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Samenvatting</h2>
+        <label class="field inline">
+          <span>Taal van de samenvatting</span>
+          <select id="taal"></select>
+        </label>
+        <label class="check"
+          ><input type="checkbox" id="automatisch" />
+          <span
+            >Automatisch samenvatten bij het openen van een video<small
+              >Uit: klik op "Samenvatten" in het paneel.</small
+            ></span
+          ></label
+        >
+        <label class="check"
+          ><input type="checkbox" id="autoplayPauzeren" />
+          <span
+            >Video pauzeren tot de samenvatting klaar is<small
+              >Met de knop "Toch bekijken" speel je de video meteen af.</small
+            ></span
+          ></label
+        >
+        <label class="check"
+          ><input type="checkbox" id="markeringen" />
+          <span>Takeaways markeren op de tijdbalk van de speler</span></label
+        >
+      </section>
+
+      <section>
+        <h2>Voorlezen</h2>
+        <p>
+          Met <b>Voorlezen</b> in het paneel leest de browser de samenvatting voor, met een gratis
+          stem van je browser of Windows. De laatst gekozen stem wordt per taal onthouden. Edge
+          heeft de meeste natuurlijke stemmen (bijvoorbeeld "Fenna" en "Maarten").
+        </p>
+        <label class="field">
+          <span>Stem</span>
+          <select id="stem"></select>
+          <small id="stem-hint"></small>
+        </label>
+        <label class="field inline">
+          <span>Snelheid</span>
+          <span class="unit">
+            <input id="spreeksnelheid" type="range" min="0.75" max="1.5" step="0.05" />
+            <output id="spreeksnelheid-waarde"></output>
+          </span>
+        </label>
+        <div class="test-row">
+          <button type="button" id="test-stem">Test stem</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Video's zonder transcript</h2>
+        <label class="check"
+          ><input type="checkbox" id="geminiTerugval" />
+          <span
+            >Gemini de video zelf laten bekijken als er geen transcript is<small
+              >Trager en duurder dan via het transcript. Vereist een Gemini-sleutel; werkt alleen
+              voor openbare video's.</small
+            ></span
+          ></label
+        >
+        <label class="field inline">
+          <span>Eerst bevestiging vragen bij video's langer dan</span>
+          <span class="unit"
+            ><input id="bevestigVanafMinuten" type="number" min="1" max="600" step="1" />
+            minuten</span
+          >
+        </label>
+      </section>
+
+      <section>
+        <h2>Cache</h2>
+        <p>
+          Elke video wordt één keer samengevat; daarna komt de samenvatting uit de cache. Met
+          "Opnieuw" in het paneel maak je een nieuwe.
+        </p>
+        <div class="test-row">
+          <span id="cache-count">…</span>
+          <button type="button" id="clear-cache">Cache wissen</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Debuglog</h2>
+        <label class="check"
+          ><input type="checkbox" id="debugLog" />
+          <span>Per aanroep provider, model, invoerlengte, duur en tokens bijhouden</span></label
+        >
+        <div class="test-row">
+          <button type="button" id="show-log">Log tonen</button>
+          <button type="button" id="clear-log" class="ghost">Log wissen</button>
+        </div>
+        <div id="log" class="log" hidden></div>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
