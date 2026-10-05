@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { DEFAULT_MODELS } from '../engine/config';
+import { DEFAULT_MODELS } from '@yt-ai/core/engine/config';
 
 // API keys are not part of the settings: content scripts read these (see secrets.ts).
 const SETTINGS_KEY = 'settings';

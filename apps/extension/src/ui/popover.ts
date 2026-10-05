@@ -1,6 +1,6 @@
-import { watchUrl } from '../youtube/videoId';
+import { watchUrl } from '@yt-ai/core/youtube/videoId';
 import { createShadowUi, isolateEvents, type ShadowUi } from './host';
-import { renderView } from './render';
+import { renderView } from '@yt-ai/core/ui/render';
 import { sendRuntime, SummarySession } from './session';
 import { SpeechControl } from './speech';
 

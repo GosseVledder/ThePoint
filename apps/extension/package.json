@@ -1,0 +1,26 @@
+{
+  "name": "@yt-ai/extension",
+  "description": "Chromium extension: AI summary panel on YouTube",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:edge": "wxt -b edge",
+    "build": "wxt build",
+    "zip": "wxt zip",
+    "typecheck": "wxt prepare && tsc --noEmit",
+    "postinstall": "wxt prepare",
+    "icons": "tsx scripts/make-icons.ts"
+  },
+  "dependencies": {
+    "@yt-ai/core": "0.1.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "fake-indexeddb": "^6.2.5",
+    "wxt": "^0.21.4"
+  }
+}

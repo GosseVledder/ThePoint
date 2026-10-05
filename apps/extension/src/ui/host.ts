@@ -1,5 +1,5 @@
 import { SEL } from '../youtube/selectors';
-import { BASE_CSS } from './styles';
+import { BASE_CSS } from '@yt-ai/core/ui/styles';
 
 export interface ShadowUi {
   host: HTMLElement;

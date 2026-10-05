@@ -4,7 +4,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['.output/', '.wxt/', 'node_modules/', 'e2e/screenshots/'] },
+  { ignores: ['**/.output/', '**/.wxt/', '**/node_modules/', '**/e2e/screenshots/'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -14,11 +14,11 @@ export default tseslint.config(
   },
   {
     // Node-side tooling: scripts, end-to-end tests and unit tests.
-    files: ['scripts/**', 'e2e/**', 'tests/**', '*.config.*'],
+    files: ['**/scripts/**', '**/e2e/**', '**/tests/**', '**/*.config.*'],
     languageOptions: { globals: { ...globals.node } },
   },
   {
-    files: ['tests/**'],
+    files: ['**/tests/**'],
     rules: { '@typescript-eslint/no-explicit-any': 'off' },
   },
   prettier,

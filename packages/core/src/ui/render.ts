@@ -1,5 +1,5 @@
 import type { Summary, Takeaway } from '../engine/types';
-import type { ErrorInfo, SummaryStep } from '../messages';
+import type { ErrorInfo, SummaryStep } from '../job';
 import { languageName } from '../engine/prompt';
 import { groupVoices, voiceLabel, type SpeechId, type VoiceLike } from './speechText';
 import { ICONS } from './styles';

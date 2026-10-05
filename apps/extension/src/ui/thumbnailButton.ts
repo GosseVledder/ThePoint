@@ -1,8 +1,8 @@
 import { SEL } from '../youtube/selectors';
-import { parseVideoId } from '../youtube/videoId';
+import { parseVideoId } from '@yt-ai/core/youtube/videoId';
 import { createShadowUi, type ShadowUi } from './host';
 import { Popover } from './popover';
-import { ICONS } from './styles';
+import { ICONS } from '@yt-ai/core/ui/styles';
 
 const BUTTON_CSS = `
 :host { position: fixed; z-index: 2200; display: block; }

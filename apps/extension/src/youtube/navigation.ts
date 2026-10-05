@@ -1,5 +1,5 @@
 import { EVENTS } from './selectors';
-import { parseVideoId } from './videoId';
+import { parseVideoId } from '@yt-ai/core/youtube/videoId';
 
 export interface PageState {
   url: string;

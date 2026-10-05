@@ -1,13 +1,13 @@
-import type { Summary } from '../engine/types';
+import type { Summary } from '@yt-ai/core/engine/types';
 import { saveSettings, type Settings } from '../storage/settings';
 import { readPageMeta, readTranscriptPanel } from '../youtube/pageTranscript';
 import { holdPlayback, isFullscreen, pause, seekTo } from '../youtube/player';
 import { SEL } from '../youtube/selectors';
 import { createShadowUi, isolateEvents, waitForElement, type ShadowUi } from './host';
-import { renderView, type SpeechView, type ViewHandlers } from './render';
+import { renderView, type SpeechView, type ViewHandlers } from '@yt-ai/core/ui/render';
 import { sendRuntime, SummarySession } from './session';
 import { SpeechControl } from './speech';
-import { ICONS } from './styles';
+import { ICONS } from '@yt-ai/core/ui/styles';
 
 const PANEL_CSS = `
 :host { display: block; }

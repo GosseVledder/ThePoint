@@ -22,17 +22,17 @@ npm install
 npm run build
 ```
 
-De extensie staat dan in `.output/chrome-mv3`.
+De extensie staat dan in `apps/extension/.output/chrome-mv3`.
 
 **Chrome**
 1. Ga naar `chrome://extensions`.
 2. Zet rechtsboven **Ontwikkelaarsmodus** aan.
-3. Klik **Uitgepakte extensie laden** en kies de map `.output/chrome-mv3`.
+3. Klik **Uitgepakte extensie laden** en kies de map `apps/extension/.output/chrome-mv3`.
 
 **Edge**
 1. Ga naar `edge://extensions`.
 2. Zet links **Ontwikkelaarsmodus** aan.
-3. Klik **Uitgepakte extensie laden** en kies de map `.output/chrome-mv3`.
+3. Klik **Uitgepakte extensie laden** en kies de map `apps/extension/.output/chrome-mv3`.
 
 Na een nieuwe build: klik bij de extensie op het herlaadicoon (↻) en vernieuw de YouTube-tab.
 
@@ -57,10 +57,12 @@ Sleutels staan alleen in je browser, in de eigen opslag van de extensie (Indexed
 | Commando | Doel |
 |---|---|
 | `npm run dev` / `npm run dev:edge` | Ontwikkelen met hot reload in Chrome / Edge |
-| `npm run build` | Productiebuild naar `.output/chrome-mv3` |
+| `npm run build` | Productiebuild naar `apps/extension/.output/chrome-mv3` |
 | `npm run typecheck` / `npm run lint` | TypeScript en ESLint |
 | `npm run try -- <videoId of fixture> [--provider gemini] [--video] [--save]` | Echte samenvatting buiten de extensie; sleutels uit `.env.local` (`ANTHROPIC_API_KEY=…`, `GEMINI_API_KEY=…`) |
 | `npm run secrets` | Scant alle git-bestanden op API-sleutels; als pre-commit-hook: `npm run secrets -- --install` |
+
+De repository bestaat uit npm-workspaces: `packages/core` (samenvattingsengine, transcript ophalen en de weergave van een samenvatting, zonder browser-API's) en `apps/extension` (de Chromium-extensie). Alle commando's draai je vanuit de hoofdmap.
 
 Documentatie, tests en de end-to-end-test staan in een aparte, privé ontwikkelrepository.
 

@@ -5,35 +5,32 @@
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
+  "workspaces": [
+    "packages/core",
+    "apps/extension"
+  ],
   "scripts": {
-    "dev": "wxt",
-    "dev:edge": "wxt -b edge",
-    "build": "wxt build",
-    "zip": "wxt zip",
-    "typecheck": "wxt prepare && tsc --noEmit",
+    "dev": "npm run dev -w @yt-ai/extension",
+    "dev:edge": "npm run dev:edge -w @yt-ai/extension",
+    "build": "npm run build -w @yt-ai/extension",
+    "zip": "npm run zip -w @yt-ai/extension",
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "postinstall": "wxt prepare",
-    "try": "tsx scripts/try.ts",
-    "icons": "tsx scripts/make-icons.ts",
+    "try": "npm run try -w @yt-ai/core --",
+    "icons": "npm run icons -w @yt-ai/extension",
     "secrets": "node scripts/check-secrets.mjs"
-  },
-  "dependencies": {
-    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@playwright/test": "^1.63.0",
     "@types/node": "^26.6.4",
     "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",
-    "fake-indexeddb": "^6.2.5",
     "globals": "^17.13.0",
     "prettier": "^3.9.9",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.0",
-    "vitest": "^5.0.3",
-    "wxt": "^0.21.4"
+    "vitest": "^5.0.3"
   }
 }

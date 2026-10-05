@@ -1,12 +1,12 @@
-import { MODEL_SUGGESTIONS } from '../../engine/config';
-import { languageName, LANGUAGES } from '../../engine/prompt';
-import type { ProviderId } from '../../engine/types';
+import { MODEL_SUGGESTIONS } from '@yt-ai/core/engine/config';
+import { languageName, LANGUAGES } from '@yt-ai/core/engine/prompt';
+import type { ProviderId } from '@yt-ai/core/engine/types';
 import type { RuntimeRequest, TestConnectionResult } from '../../messages';
 import type { DebugEntry } from '../../storage/debuglog';
 import { getApiKeys, setApiKey } from '../../storage/secrets';
 import { getSettings, saveSettings, type Settings } from '../../storage/settings';
 import { speaker } from '../../ui/speech';
-import { groupVoices, pickVoice, voiceLabel } from '../../ui/speechText';
+import { groupVoices, pickVoice, voiceLabel } from '@yt-ai/core/ui/speechText';
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 const send = <T>(msg: RuntimeRequest) => browser.runtime.sendMessage(msg) as Promise<T>;

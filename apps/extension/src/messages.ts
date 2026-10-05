@@ -1,49 +1,17 @@
 // Message contracts between the content script, the options page and the background.
-import { isVideoId } from './youtube/videoId';
-import type { EngineErrorCode, ProviderId, Summary, Transcript, VideoMeta } from './engine/types';
+import type { ProviderId } from '@yt-ai/core/engine/types';
+import type { ErrorInfo, JobEvent, JobRequest } from '@yt-ai/core/job';
+import { isVideoId } from '@yt-ai/core/youtube/videoId';
 
 export const SUMMARIZE_PORT = 'yt-ai-summarize';
 
-export type SummaryStep =
-  'cache' | 'transcript' | 'samenvatten' | 'deel' | 'samenvoegen' | 'herstel' | 'video';
-
-export type ErrorCode = EngineErrorCode | 'internal';
-
-export interface ErrorInfo {
-  code: ErrorCode;
-  /** User-facing message in Dutch. */
-  message: string;
-  /** Technical details for the "Details" expander. */
-  details?: string;
-  /** Suggested action for the UI. */
-  action?: 'options' | 'retry';
-  /** On the watch page the content script may try YouTube's transcript panel. */
-  tryPageTranscript?: boolean;
-}
+export type { ErrorCode, ErrorInfo, SummaryStep } from '@yt-ai/core/job';
 
 /** Content -> background, over the long-lived port. */
-export type PortRequest =
-  | {
-      type: 'start';
-      videoId: string;
-      forceRefresh?: boolean;
-      /** User confirmed the slower, more expensive video route for a long video. */
-      confirmLong?: boolean;
-      /** Transcript read from YouTube's own transcript panel (strategy 2). */
-      pageTranscript?: Transcript;
-      /** Title, channel and duration read from the watch page (fallback metadata). */
-      pageMeta?: Partial<VideoMeta>;
-      /** The page transcript was tried already, or is not possible (thumbnails). */
-      paginaGeprobeerd?: boolean;
-    }
-  | { type: 'ping' };
+export type PortRequest = ({ type: 'start' } & JobRequest) | { type: 'ping' };
 
 /** Background -> content, over the port. */
-export type PortEvent =
-  | { type: 'progress'; stap: SummaryStep; provider?: ProviderId; deel?: number; delen?: number }
-  | { type: 'done'; summary: Summary; fromCache: boolean }
-  | { type: 'error'; error: ErrorInfo }
-  | { type: 'confirm'; minuten: number };
+export type PortEvent = JobEvent;
 
 /** One-shot runtime messages. */
 export type RuntimeRequest =

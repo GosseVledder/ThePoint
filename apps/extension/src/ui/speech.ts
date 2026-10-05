@@ -1,5 +1,5 @@
 // Reading summaries aloud with the browser's free Web Speech voices.
-import type { Summary } from '../engine/types';
+import type { Summary } from '@yt-ai/core/engine/types';
 import { getSettings, onSettingsChanged, saveSettings, type Settings } from '../storage/settings';
 import {
   buildSpeechItems,
@@ -7,7 +7,7 @@ import {
   splitForSpeech,
   type SpeechId,
   type SpeechItem,
-} from './speechText';
+} from '@yt-ai/core/ui/speechText';
 
 type Synth = Pick<
   SpeechSynthesis,

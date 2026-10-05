@@ -1,4 +1,4 @@
-import type { CallLog } from '../engine/types';
+import type { CallLog } from '@yt-ai/core/engine/types';
 
 const KEY = 'debuglog';
 const MAX = 100;

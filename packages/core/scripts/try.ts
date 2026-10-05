@@ -11,7 +11,8 @@ import type { ProviderId, Transcript, VideoMeta } from '../src/engine/types';
 import { getTranscriptById } from '../src/youtube/transcript';
 
 const root = join(import.meta.dirname, '..');
-const envFile = join(root, '.env.local');
+// .env.local lives at the repository root.
+const envFile = join(root, '..', '..', '.env.local');
 if (existsSync(envFile)) {
   for (const line of readFileSync(envFile, 'utf8').split(/\r?\n/)) {
     const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
