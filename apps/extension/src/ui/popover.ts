@@ -1,6 +1,6 @@
-import { watchUrl } from '@yt-ai/core/youtube/videoId';
+import { watchUrl } from '@the-point/core/youtube/videoId';
 import { createShadowUi, isolateEvents, type ShadowUi } from './host';
-import { renderView } from '@yt-ai/core/ui/render';
+import { renderView } from '@the-point/core/ui/render';
 import { sendRuntime, SummarySession } from './session';
 import { SpeechControl } from './speech';
 
@@ -33,9 +33,9 @@ export class Popover {
     this.close();
     this.anchor = anchor;
     this.ui = createShadowUi({ css: POPOVER_CSS });
-    this.ui.host.id = 'yt-ai-popover';
+    this.ui.host.id = 'the-point-popover';
     this.ui.host.setAttribute('role', 'dialog');
-    this.ui.host.setAttribute('aria-label', 'AI-samenvatting');
+    this.ui.host.setAttribute('aria-label', 'The Point: samenvatting');
     // Keep YouTube from treating clicks and keys inside the popover as its own.
     isolateEvents(this.ui.host, ['click', 'mousedown', 'keydown', 'wheel']);
     document.body.append(this.ui.host);

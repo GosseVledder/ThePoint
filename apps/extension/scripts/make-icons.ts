@@ -50,43 +50,68 @@ function png(size: number, pixel: (x: number, y: number) => RGBA): Buffer {
   ]);
 }
 
-// Shapes in a 0..1 coordinate space.
+// Shapes in a 0..1 coordinate space. The logo (play triangle followed by a full
+// stop) uses the same 24-unit geometry as ICONS.logo in @the-point/core.
 function inRoundedSquare(x: number, y: number): boolean {
   const r = 0.22;
   const cx = Math.min(Math.max(x, r), 1 - r);
   const cy = Math.min(Math.max(y, r), 1 - r);
   return (x - cx) ** 2 + (y - cy) ** 2 <= r * r;
 }
-function inTriangle(x: number, y: number): boolean {
-  // Play triangle, slightly left of centre.
-  const ax = 0.33,
-    ay = 0.27,
-    bx = 0.33,
-    by = 0.73,
-    cx = 0.72,
-    cy = 0.5;
-  const s = (px: number, py: number, qx: number, qy: number, rx: number, ry: number) =>
-    (px - rx) * (qy - ry) - (qx - rx) * (py - ry);
-  const d1 = s(x, y, ax, ay, bx, by);
-  const d2 = s(x, y, bx, by, cx, cy);
-  const d3 = s(x, y, cx, cy, ax, ay);
-  return !((d1 < 0 || d2 < 0 || d3 < 0) && (d1 > 0 || d2 > 0 || d3 > 0));
+
+type Pt = [number, number];
+const TRIANGLE: Pt[] = [
+  [3, 4],
+  [3, 20],
+  [16.3, 12],
+];
+const CORNER = 1.3; // rounding radius of the triangle corners
+const DOT: Pt = [19.6, 17.6];
+const DOT_R = 2.4;
+
+// Triangle shrunk towards its incentre by the corner radius; a point is inside the
+// rounded triangle when it lies within CORNER of that inner triangle.
+const INNER: Pt[] = (() => {
+  const len = (a: Pt, b: Pt) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+  const [a, b, c] = TRIANGLE as [Pt, Pt, Pt];
+  const la = len(b, c),
+    lb = len(c, a),
+    lc = len(a, b);
+  const p = la + lb + lc;
+  const inc: Pt = [
+    (la * a[0] + lb * b[0] + lc * c[0]) / p,
+    (la * a[1] + lb * b[1] + lc * c[1]) / p,
+  ];
+  const area = Math.abs((b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1])) / 2;
+  const k = (area / (p / 2) - CORNER) / (area / (p / 2));
+  return TRIANGLE.map(([x, y]) => [inc[0] + (x - inc[0]) * k, inc[1] + (y - inc[1]) * k] as Pt);
+})();
+
+function inTriangle(x: number, y: number, t: Pt[]): boolean {
+  const s = (p: Pt, q: Pt) => (x - q[0]) * (p[1] - q[1]) - (p[0] - q[0]) * (y - q[1]);
+  const d = [s(t[0]!, t[1]!), s(t[1]!, t[2]!), s(t[2]!, t[0]!)];
+  return d.every((v) => v <= 0) || d.every((v) => v >= 0);
 }
-function inSparkle(x: number, y: number): boolean {
-  // Four-pointed star at the top right.
-  const cx = 0.76,
-    cy = 0.24,
-    r = 0.17;
-  const dx = Math.abs(x - cx) / r;
-  const dy = Math.abs(y - cy) / r;
-  return Math.sqrt(dx) + Math.sqrt(dy) <= 1;
+function distToSegment(x: number, y: number, a: Pt, b: Pt): number {
+  const dx = b[0] - a[0],
+    dy = b[1] - a[1];
+  const t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(x - (a[0] + t * dx), y - (a[1] + t * dy));
+}
+function inLogoTriangle(x: number, y: number): boolean {
+  if (inTriangle(x, y, INNER)) return true;
+  return INNER.some((a, i) => distToSegment(x, y, a, INNER[(i + 1) % 3]!) <= CORNER);
 }
 
+// Logo box: its centre (12.5, 12) sits in the middle of the tile, 26 units wide.
+const SPAN = 26;
 function sample(x: number, y: number): RGBA {
   if (!inRoundedSquare(x, y)) return [0, 0, 0, 0];
-  if (inSparkle(x, y)) return [255, 204, 0, 255];
-  if (inTriangle(x, y)) return [255, 255, 255, 255];
-  return [33, 33, 33, 255];
+  const lx = 12.5 + (x - 0.5) * SPAN;
+  const ly = 12 + (y - 0.5) * SPAN;
+  if ((lx - DOT[0]) ** 2 + (ly - DOT[1]) ** 2 <= DOT_R ** 2) return [255, 204, 0, 255];
+  if (inLogoTriangle(lx, ly)) return [255, 255, 255, 255];
+  return [26, 86, 219, 255]; // #1A56DB, same as the app icon
 }
 
 function render(size: number): Buffer {

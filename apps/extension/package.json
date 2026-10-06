@@ -1,5 +1,5 @@
 {
-  "name": "@yt-ai/extension",
+  "name": "@the-point/extension",
   "description": "Chromium extension: AI summary panel on YouTube",
   "private": true,
   "version": "0.1.0",
@@ -15,8 +15,7 @@
     "icons": "tsx scripts/make-icons.ts"
   },
   "dependencies": {
-    "@yt-ai/core": "0.1.0",
-    "zod": "^4.6.5"
+    "@the-point/core": "0.1.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",

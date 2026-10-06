@@ -38,6 +38,34 @@ export function buildSpeechItems(
   return items;
 }
 
+const endSentence = (s: string) => {
+  const t = s.trim();
+  return /[.!?…]["')\]”]?$/.test(t) ? t : `${t}.`;
+};
+
+/**
+ * "Lees de onderbouwing voor" for a time stamp: the takeaway with the quote from the
+ * transcript that supports it. The critical point has no quote of its own; it borrows
+ * the quote of a takeaway at the same moment, if there is one.
+ */
+export function buildEvidenceSpeech(
+  summary: Pick<Summary, 'kritiekPunt' | 'takeaways'>,
+  id: SpeechId,
+): SpeechItem | null {
+  if (id === 'kritiek') {
+    const { zin, seconden } = summary.kritiekPunt;
+    const steun = summary.takeaways.find((t) => t.seconden === seconden && t.citaat.trim());
+    const citaat = steun ? ` In de video: ${endSentence(steun.citaat)}` : '';
+    return { id, text: `Onderbouwing van het kernpunt. ${endSentence(zin)}${citaat}` };
+  }
+  const t = summary.takeaways[id];
+  if (!t) return null;
+  const citaat = t.citaat.trim()
+    ? ` In de video: ${endSentence(t.citaat)}`
+    : ' Bij dit punt staat geen citaat uit de video.';
+  return { id, text: `Onderbouwing van punt ${id + 1}. ${endSentence(t.zin)}${citaat}` };
+}
+
 /**
  * Split text into chunks of at most `max` characters, at sentence ends, then at
  * commas/semicolons, then at spaces. Chrome cuts off long utterances with network
@@ -74,6 +102,12 @@ export function splitForSpeech(text: string, max = 180): string[] {
 
 const baseLang = (lang: string) => lang.toLowerCase().replace('_', '-').split('-')[0] ?? '';
 
+/** nl -> nl-NL, de -> de-DE: the "home" variant of a language beats nl-BE or de-AT. */
+const homeRegion = (v: VoiceLike) => {
+  const [base, region] = v.lang.replace('_', '-').split('-');
+  return !!base && !!region && region.toLowerCase() === base.toLowerCase() ? 2 : 0;
+};
+
 /** Higher is better: natural/neural network voices first, then local voices. */
 function quality(v: VoiceLike): number {
   let score = 0;
@@ -83,6 +117,8 @@ function quality(v: VoiceLike): number {
   if (v.default) score += 0.5;
   return score;
 }
+
+const score = (v: VoiceLike) => quality(v) + homeRegion(v);
 
 /**
  * The voice to use: the saved one if it still exists, otherwise the best voice for
@@ -99,7 +135,7 @@ export function pickVoice<V extends VoiceLike>(
   }
   const matching = voices.filter((v) => baseLang(v.lang) === baseLang(taal));
   if (matching.length === 0) return null;
-  return [...matching].sort((a, b) => quality(b) - quality(a))[0] ?? null;
+  return [...matching].sort((a, b) => score(b) - score(a))[0] ?? null;
 }
 
 export interface VoiceGroup<V> {
@@ -115,7 +151,7 @@ export function groupVoices<V extends VoiceLike>(
 ): VoiceGroup<V>[] {
   const mine = voices
     .filter((v) => baseLang(v.lang) === baseLang(taal))
-    .sort((a, b) => quality(b) - quality(a));
+    .sort((a, b) => score(b) - score(a));
   const other = voices
     .filter((v) => baseLang(v.lang) !== baseLang(taal))
     .sort((a, b) => a.lang.localeCompare(b.lang) || a.name.localeCompare(b.name));

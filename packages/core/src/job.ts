@@ -105,7 +105,7 @@ export async function runSummaryJob(
       transcript = res.transcript;
     } catch (e) {
       // YouTube refused or timed out: continue with the page transcript or Gemini.
-      console.warn('[yt-ai] transcript ophalen mislukt', e);
+      console.warn('[the-point] transcript ophalen mislukt', e);
     }
     if (info?.status === 'unavailable') {
       throw new EngineError('video_unavailable', 'Deze video is niet beschikbaar.', {

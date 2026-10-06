@@ -1,11 +1,11 @@
 // Message contracts between the content script, the options page and the background.
-import type { ProviderId } from '@yt-ai/core/engine/types';
-import type { ErrorInfo, JobEvent, JobRequest } from '@yt-ai/core/job';
-import { isVideoId } from '@yt-ai/core/youtube/videoId';
+import type { ProviderId } from '@the-point/core/engine/types';
+import type { ErrorInfo, JobEvent, JobRequest } from '@the-point/core/job';
+import { isVideoId } from '@the-point/core/youtube/videoId';
 
-export const SUMMARIZE_PORT = 'yt-ai-summarize';
+export const SUMMARIZE_PORT = 'the-point-summarize';
 
-export type { ErrorCode, ErrorInfo, SummaryStep } from '@yt-ai/core/job';
+export type { ErrorCode, ErrorInfo, SummaryStep } from '@the-point/core/job';
 
 /** Content -> background, over the long-lived port. */
 export type PortRequest = ({ type: 'start' } & JobRequest) | { type: 'ping' };

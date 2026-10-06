@@ -1,5 +1,5 @@
 {
-  "name": "youtube-ai",
+  "name": "the-point",
   "description": "AI summaries of YouTube videos before you watch them",
   "private": true,
   "version": "0.1.0",
@@ -7,18 +7,19 @@
   "type": "module",
   "workspaces": [
     "packages/core",
-    "apps/extension"
+    "apps/extension",
+    "apps/mobile"
   ],
   "scripts": {
-    "dev": "npm run dev -w @yt-ai/extension",
-    "dev:edge": "npm run dev:edge -w @yt-ai/extension",
-    "build": "npm run build -w @yt-ai/extension",
-    "zip": "npm run zip -w @yt-ai/extension",
+    "dev": "npm run dev -w @the-point/extension",
+    "dev:edge": "npm run dev:edge -w @the-point/extension",
+    "build": "npm run build -w @the-point/extension",
+    "zip": "npm run zip -w @the-point/extension",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "try": "npm run try -w @yt-ai/core --",
-    "icons": "npm run icons -w @yt-ai/extension",
+    "try": "npm run try -w @the-point/core --",
+    "icons": "npm run icons -w @the-point/extension",
     "secrets": "node scripts/check-secrets.mjs"
   },
   "devDependencies": {

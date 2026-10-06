@@ -12,7 +12,8 @@ export type ViewState =
   | { kind: 'confirm'; minuten: number };
 
 export interface ViewHandlers {
-  onSeek: (seconds: number) => void;
+  /** `id` tells which line the time belongs to: the critical point or a takeaway index. */
+  onSeek: (seconds: number, id: SpeechId) => void;
   onStart: () => void;
   onRefresh: () => void;
   onConfirm: () => void;
@@ -115,6 +116,7 @@ function iconButton(icon: string, label: string, onClick: () => void): HTMLButto
 function timeButton(
   tijd: string,
   seconden: number,
+  id: SpeechId,
   handlers: ViewHandlers,
   label: string,
 ): HTMLButtonElement {
@@ -126,7 +128,7 @@ function timeButton(
       'aria-label': `${label} ${tijd}`,
       onClick: (e: Event) => {
         e.stopPropagation();
-        handlers.onSeek(seconden);
+        handlers.onSeek(seconden, id);
       },
     },
     tijd,
@@ -161,7 +163,7 @@ export function renderView(
     h(
       'div',
       { class: 'title', role: 'heading', 'aria-level': '2' },
-      'AI-samenvatting',
+      'The Point',
       badge ? h('span', { class: 'badge' }, badge) : null,
     ),
     ...headerButtons,
@@ -194,7 +196,7 @@ export function renderView(
           { class: 'actions' },
           h(
             'button',
-            { class: 'btn primary', onClick: handlers.onStart, html: ICONS.sparkle },
+            { class: 'btn primary', onClick: handlers.onStart, html: ICONS.logo },
             'Samenvatten',
           ),
         ),
@@ -278,7 +280,13 @@ export function renderView(
                 'span',
                 {},
                 ' ',
-                timeButton(s.kritiekPunt.tijd, s.kritiekPunt.seconden, handlers, seekLabel),
+                timeButton(
+                  s.kritiekPunt.tijd,
+                  s.kritiekPunt.seconden,
+                  'kritiek',
+                  handlers,
+                  seekLabel,
+                ),
               )
             : null,
         ),
@@ -444,7 +452,7 @@ function renderTakeaway(
   return h(
     'li',
     { class: speaking ? 'speaking' : undefined },
-    timeButton(t.tijd, t.seconden, handlers, seekLabel),
+    timeButton(t.tijd, t.seconden, index, handlers, seekLabel),
     zin,
     speak,
   );

@@ -5,3 +5,6 @@ package-lock.json
 *.md
 **/tests/fixtures/
 **/e2e/screenshots/
+apps/mobile/dist/
+apps/mobile/android/
+apps/mobile/ios/

@@ -8,7 +8,7 @@ Je krijgt metadata van de video en het volledige transcript met tijdmarkeringen 
 # Je taak
 
 Destilleer uit het transcript:
-1. Het KRITIEKE PUNT: het ene inzicht dat iemand moet onthouden als hij maar één ding van deze video meeneemt.
+1. Het KRITIEKE PUNT: het ene inzicht dat iemand moet onthouden als hij maar één ding van deze video meeneemt. Stelt de titel een vraag, dan is het kritieke punt het antwoord dat de video op die vraag geeft (zie "Het kritieke punt").
 2. De TAKEAWAYS: de afzonderlijke inhoudelijke inzichten, feiten, conclusies of aanbevelingen die de video bevat. Elk als één korte, zelfstandige zin.
 
 # Wat telt als takeaway
@@ -74,7 +74,18 @@ Kies bij twijfel de minder stellige categorie.
 - Bij een video met één hoofdlijn: de centrale conclusie of het belangrijkste inzicht.
 - Bij een nieuwsoverzicht of video met losse onderwerpen: het item met de grootste gevolgen voor de kijker, of de rode draad die de items verbindt als de spreker die expliciet benoemt.
 - Het kritieke punt mag inhoudelijk overlappen met een takeaway, maar formuleer het als conclusie, niet als kopie.
-- Stelt de titel een vraag of doet die een belofte ("Waarom X faalt", "De beste manier om Y"), dan beantwoordt het kritieke punt die vraag zo direct mogelijk. Geeft de video geen antwoord, zeg dat dan.
+
+## Vraag of belofte in de titel
+
+Deze regel gaat voor de regels hierboven. Kijkers klikken op een video omdat ze het antwoord op de titel willen weten; geef dat antwoord, zodat ze de video niet hoeven te kijken.
+- Stel eerst vast of de titel een vraag stelt of een antwoord belooft. Dat kan expliciet zijn ("Is X nog de moeite waard?", "Waarom faalt Y?", "Hoeveel kost Z?") of verpakt als belofte of clickbait ("Waarom X faalt", "De beste manier om Y", "Dit ene ding dat Z verandert", "Ik heb X 30 dagen getest", "Je doet Y verkeerd").
+- Is dat zo, dan IS het kritieke punt het antwoord dat de video geeft. Begin met het antwoord zelf: ja of nee, de naam, het getal, de oorzaak of de methode. Noem het onthulde ding concreet bij naam.
+- Schrijf niet "De video legt uit waarom X faalt" of "Het ene ding blijkt verrassend"; schrijf wat de reden of het ding is.
+- Geef als "tijd" van het kritieke punt de markering waar de video het antwoord geeft.
+- Geeft de video maar een gedeeltelijk, voorwaardelijk of ontwijkend antwoord ("het hangt ervan af"), geef dan dat antwoord met de voorwaarden die de spreker noemt.
+- Geeft de video geen antwoord op de titel, zeg dat dan expliciet in het kritieke punt ("De video beantwoordt de titelvraag niet; …") en vermeld het in "inhoudsoordeel".
+- Ook hier geldt: alleen het antwoord uit het transcript, nooit je eigen antwoord op de vraag.
+- Bevat de titel geen vraag of belofte, dan volg je de regels hierboven.
 
 # Trouw aan het transcript
 
@@ -90,13 +101,14 @@ Schrijf de zinnen in het {taal}, ongeacht de taal van de video. Citaten blijven 
 # Werkwijze
 
 Werk in deze volgorde, en geef alleen het eindresultaat:
-1. Lees het hele transcript. Bepaal het videotype en de hoofdlijn.
+1. Lees de titel en het hele transcript. Bepaal het videotype, de hoofdlijn en of de titel een vraag stelt of een antwoord belooft.
 2. Markeer de delen die je weglaat (inleiding, sponsor, herhaling, afsluiting).
 3. Verzamel uit de overige delen alle kandidaat-takeaways met hun getallen, citaten en tijdmarkeringen.
 4. Voeg kandidaten samen die hetzelfde punt maken. Schrap kandidaten die de toets "weet de gebruiker nu iets nieuws of kan hij er iets mee?" niet doorstaan.
 5. Formuleer elke takeaway volgens de regels hierboven.
-6. Bepaal het kritieke punt.
+6. Bepaal het kritieke punt; bij een vraag of belofte in de titel is dat het antwoord dat de video geeft.
 7. Controleer voor je antwoordt:
+   - Stelt de titel een vraag of belofte, beantwoordt het kritieke punt die dan concreet, of zegt het dat de video geen antwoord geeft?
    - Staat elk getal in je uitvoer ook in het transcript, of is het als afgeleid gemarkeerd en daaruit te berekenen?
    - Komt elk citaat letterlijk in het transcript voor?
    - Bestaat elke tijdmarkering in het transcript?
@@ -121,7 +133,15 @@ Slecht: "De spreker legt uit dat je beter kunt sparen."
 Goed: "Wie maandelijks € 200 belegt in plaats van spaart, heeft volgens het rekenvoorbeeld na 20 jaar circa € 30.000 meer, uitgaande van 5% rendement per jaar."
 
 Slecht: "Interessant nieuws over chips."
-Goed: "Chipmaker D bouwt een tweede fabriek in Land E voor $ 12 miljard, die vanaf 2028 moet produceren (gerucht volgens de spreker)."`;
+Goed: "Chipmaker D bouwt een tweede fabriek in Land E voor $ 12 miljard, die vanaf 2028 moet produceren (gerucht volgens de spreker)."
+
+Titel: "Waarom stopt iedereen met Tool F?"
+Slecht kritiek punt: "De video legt uit waarom gebruikers overstappen van Tool F."
+Goed kritiek punt: "Gebruikers stoppen met Tool F omdat de prijs per 1 januari verdubbelt naar € 20 per maand, terwijl het gratis alternatief Tool G dezelfde functies biedt."
+
+Titel: "Deze ene instelling maakt je laptop 2x sneller"
+Slecht kritiek punt: "Eén eenvoudige instelling blijkt de laptop flink te versnellen."
+Goed kritiek punt: "Het uitschakelen van opstartprogramma's in Taakbeheer halveert volgens de spreker de opstarttijd van zijn laptop, van 60 naar 30 seconden."`;
 
 /** Output languages offered in the options page, with the Dutch name used in the prompt. */
 export const LANGUAGES: Record<string, string> = {
@@ -229,7 +249,7 @@ export function buildUserMessage(
   if (part) {
     header.push(
       '',
-      `Let op: dit is deel ${part.index} van ${part.total} van het transcript. Geef de takeaways uit dit deel; ze worden later samengevoegd met de andere delen.`,
+      `Let op: dit is deel ${part.index} van ${part.total} van het transcript. Geef de takeaways uit dit deel; ze worden later samengevoegd met de andere delen. Wordt in dit deel het antwoord op de titel gegeven, neem dat antwoord dan op als takeaway.`,
     );
   }
   return `${header.join('\n')}\n\nTranscript:\n${linesText}`;
@@ -247,6 +267,7 @@ export function buildMergeMessage(meta: VideoMeta, partsJson: string[]): string 
     '- Verwijder takeaways die hetzelfde punt maken; houd de beste formulering.',
     '- Neem tijd, citaat, zekerheid en afgeleid ongewijzigd over van de takeaway die je houdt. Verzin geen nieuwe citaten of tijden.',
     '- Bepaal het kritieke punt, het videotype en het inhoudsoordeel opnieuw over de hele video.',
+    '- Stelt de titel een vraag of belooft die een antwoord, dan is het kritieke punt het antwoord dat de video geeft, ook als dat maar in één deel staat.',
     '',
     ...partsJson.map((p, i) => `Deel ${i + 1}:\n${p}`),
   ].join('\n');

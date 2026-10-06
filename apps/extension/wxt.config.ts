@@ -5,11 +5,11 @@ export default defineConfig({
   srcDir: 'src',
   manifestVersion: 3,
   manifest: {
-    name: 'YouTube AI-samenvatter',
+    name: 'The Point',
     description: 'Toont een AI-samenvatting van een YouTube-video voordat je hem bekijkt.',
     permissions: ['storage', 'unlimitedStorage', 'declarativeNetRequestWithHostAccess'],
     // Toolbar button opens the options page (handled in the background).
-    action: { default_title: 'YouTube AI-samenvatter – instellingen' },
+    action: { default_title: 'The Point – instellingen' },
     host_permissions: [
       'https://www.youtube.com/*',
       'https://api.anthropic.com/*',

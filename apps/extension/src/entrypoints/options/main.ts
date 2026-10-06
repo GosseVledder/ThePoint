@@ -1,12 +1,12 @@
-import { MODEL_SUGGESTIONS } from '@yt-ai/core/engine/config';
-import { languageName, LANGUAGES } from '@yt-ai/core/engine/prompt';
-import type { ProviderId } from '@yt-ai/core/engine/types';
+import { MODEL_SUGGESTIONS } from '@the-point/core/engine/config';
+import { languageName, LANGUAGES } from '@the-point/core/engine/prompt';
+import type { ProviderId } from '@the-point/core/engine/types';
 import type { RuntimeRequest, TestConnectionResult } from '../../messages';
 import type { DebugEntry } from '../../storage/debuglog';
 import { getApiKeys, setApiKey } from '../../storage/secrets';
 import { getSettings, saveSettings, type Settings } from '../../storage/settings';
 import { speaker } from '../../ui/speech';
-import { groupVoices, pickVoice, voiceLabel } from '@yt-ai/core/ui/speechText';
+import { groupVoices, pickVoice, voiceLabel } from '@the-point/core/ui/speechText';
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 const send = <T>(msg: RuntimeRequest) => browser.runtime.sendMessage(msg) as Promise<T>;
@@ -42,10 +42,9 @@ async function init(): Promise<void> {
     r.checked = r.value === s.provider;
     r.addEventListener('change', () => {
       void save({ provider: r.value as ProviderId });
-      markActive(r.value as ProviderId);
+      updateProviderSections();
     });
   });
-  markActive(s.provider);
 
   // Keys and models
   for (const p of PROVIDERS) {
@@ -133,6 +132,8 @@ async function init(): Promise<void> {
     box.checked = s[id];
     box.addEventListener('change', () => void save({ [id]: box.checked }));
   }
+  $('#geminiTerugval').addEventListener('change', updateProviderSections);
+  updateProviderSections();
 
   const minutes = $<HTMLInputElement>('#bevestigVanafMinuten');
   minutes.value = String(s.bevestigVanafMinuten);
@@ -306,9 +307,16 @@ async function initSpeech(initial: Settings): Promise<void> {
   });
 }
 
-function markActive(p: ProviderId): void {
+/**
+ * Show only the selected provider's section. Gemini stays visible next to Claude while
+ * the no-transcript fallback is on, because that fallback needs a Gemini key.
+ */
+function updateProviderSections(): void {
+  const p = document.querySelector<HTMLInputElement>('input[name="provider"]:checked')?.value;
+  const fallback = $<HTMLInputElement>('#geminiTerugval').checked;
   document.querySelectorAll<HTMLElement>('section[data-provider]').forEach((sec) => {
-    sec.classList.toggle('inactive', sec.dataset.provider !== p);
+    const own = sec.dataset.provider;
+    sec.hidden = own !== p && !(own === 'gemini' && fallback);
   });
 }
 

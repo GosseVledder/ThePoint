@@ -1,0 +1,16 @@
+{
+  // Source control: keep the view in sync with GitHub. Sync/push goes to origin (the
+  // private dev repo); the public repo is only updated with `npm run publish:public`.
+  "git.autofetch": true,
+  "git.pruneOnFetch": true,
+  "git.confirmSync": true,
+  "git.enableSmartCommit": false,
+  "git.showPushSuccessNotification": true,
+  "prettier.ignorePath": ".prettierignore",
+  "search.exclude": {
+    "**/.output": true,
+    "**/.wxt": true,
+    "apps/mobile/android/app/build": true,
+    "apps/mobile/dist": true
+  }
+}

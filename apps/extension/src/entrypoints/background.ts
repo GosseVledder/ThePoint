@@ -1,8 +1,8 @@
-import { PROVIDERS } from '@yt-ai/core/engine/summarize';
-import type { CallLog, ProviderId } from '@yt-ai/core/engine/types';
-import { runSummaryJob, toErrorInfo, type JobDeps } from '@yt-ai/core/job';
-import { getTranscriptById } from '@yt-ai/core/youtube/transcript';
-import { isVideoId } from '@yt-ai/core/youtube/videoId';
+import { PROVIDERS } from '@the-point/core/engine/summarize';
+import type { CallLog, ProviderId } from '@the-point/core/engine/types';
+import { runSummaryJob, toErrorInfo, type JobDeps } from '@the-point/core/job';
+import { getTranscriptById } from '@the-point/core/youtube/transcript';
+import { isVideoId } from '@the-point/core/youtube/videoId';
 import {
   isAllowedRequest,
   SUMMARIZE_PORT,
@@ -38,10 +38,10 @@ let rulesReadyPromise: Promise<unknown> = Promise.resolve();
 export default defineBackground(() => {
   // Must be in place before the first transcript request (see requestRules.ts).
   const rulesReady = installYoutubeRequestRules().catch((e) =>
-    console.warn('[yt-ai] request rules', e),
+    console.warn('[the-point] request rules', e),
   );
   rulesReadyPromise = rulesReady;
-  void migrateLegacyKeys().catch((e) => console.warn('[yt-ai] sleutels migreren', e));
+  void migrateLegacyKeys().catch((e) => console.warn('[the-point] sleutels migreren', e));
 
   browser.runtime.onConnect.addListener((port) => {
     if (port.name !== SUMMARIZE_PORT || port.sender?.id !== browser.runtime.id) return;
@@ -177,7 +177,7 @@ function debugLogger(settings: Settings, videoId: string) {
   return (entry: CallLog) => {
     const line = { ...entry, videoId, tijd: new Date().toISOString() };
     if (settings.debugLog) {
-      console.info('[yt-ai]', line);
+      console.info('[the-point]', line);
       void appendDebugLog(line);
     }
   };

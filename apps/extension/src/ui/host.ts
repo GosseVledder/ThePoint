@@ -1,5 +1,5 @@
 import { SEL } from '../youtube/selectors';
-import { BASE_CSS } from '@yt-ai/core/ui/styles';
+import { BASE_CSS } from '@the-point/core/ui/styles';
 
 export interface ShadowUi {
   host: HTMLElement;
@@ -19,7 +19,7 @@ export function currentTheme(): 'dark' | 'light' {
 export function createShadowUi(
   opts: { css?: string; hostStyle?: string; forceTheme?: 'dark' | 'light' } = {},
 ): ShadowUi {
-  const host = document.createElement('yt-ai-root');
+  const host = document.createElement('the-point-root');
   if (opts.hostStyle) host.setAttribute('style', opts.hostStyle);
   host.dataset.theme = opts.forceTheme ?? currentTheme();
   if (opts.forceTheme) host.dataset.forceTheme = opts.forceTheme;

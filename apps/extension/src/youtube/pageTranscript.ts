@@ -1,5 +1,5 @@
-import type { Transcript, TranscriptSegment, VideoMeta } from '@yt-ai/core/engine/types';
-import { parseTime } from '@yt-ai/core/engine/prompt';
+import type { Transcript, TranscriptSegment, VideoMeta } from '@the-point/core/engine/types';
+import { parseTime } from '@the-point/core/engine/prompt';
 import { SEL } from './selectors';
 
 /**

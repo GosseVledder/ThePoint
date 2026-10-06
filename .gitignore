@@ -10,3 +10,4 @@ apps/extension/e2e/screenshots/
 # Real transcripts and summaries of YouTube videos are third-party content: local only.
 packages/core/tests/fixtures/*
 !packages/core/tests/fixtures/json3-*-sample.json
+apps/mobile/dist/

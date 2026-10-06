@@ -1,5 +1,5 @@
-import { summarySchema } from '@yt-ai/core/engine/schema';
-import type { Summary } from '@yt-ai/core/engine/types';
+import { summarySchema } from '@the-point/core/engine/schema';
+import type { Summary } from '@the-point/core/engine/types';
 
 const PREFIX = 'summary:';
 

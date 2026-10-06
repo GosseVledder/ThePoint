@@ -9,7 +9,7 @@ export default defineContentScript({
   matches: ['https://www.youtube.com/*'],
   runAt: 'document_idle',
   async main(ctx) {
-    console.log('[yt-ai] geladen');
+    console.log('[the-point] geladen');
     let settings: Settings = await getSettings();
     let panel: WatchPanel | null = null;
     const thumbs = new ThumbnailButtons();

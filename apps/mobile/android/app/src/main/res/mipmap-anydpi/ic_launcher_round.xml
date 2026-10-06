@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 7 (API 24-25) has no adaptive icons: background plus the same foreground. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path android:fillColor="#1A56DB" android:pathData="M24,0 A24,24 0 1 1 24,48 A24,24 0 1 1 24,0 Z" />
+    <group android:scaleX="0.6" android:scaleY="0.6" android:translateX="-8.4" android:translateY="-8.4">
+        <group android:scaleX="2.4" android:scaleY="2.4" android:translateX="24" android:translateY="25.2">
+            <path android:fillColor="#FFFFFF" android:pathData="M3,5.3 V18.7 A1.3,1.3 0 0 0 5,19.8 L15.4,13.1 A1.3,1.3 0 0 0 15.4,10.9 L5,4.2 A1.3,1.3 0 0 0 3,5.3 Z" />
+            <path android:fillColor="#FFCC00" android:pathData="M17.2,17.6 A2.4,2.4 0 1 0 22,17.6 A2.4,2.4 0 1 0 17.2,17.6 Z" />
+        </group>
+    </group>
+</vector>

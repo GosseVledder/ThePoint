@@ -1,8 +1,8 @@
 import { SEL } from '../youtube/selectors';
-import { parseVideoId } from '@yt-ai/core/youtube/videoId';
+import { parseVideoId } from '@the-point/core/youtube/videoId';
 import { createShadowUi, type ShadowUi } from './host';
 import { Popover } from './popover';
-import { ICONS } from '@yt-ai/core/ui/styles';
+import { ICONS } from '@the-point/core/ui/styles';
 
 const BUTTON_CSS = `
 :host { position: fixed; z-index: 2200; display: block; }
@@ -19,7 +19,7 @@ span { display: inline-flex; width: 22px; height: 22px; align-items: center; jus
 svg { width: 14px; height: 14px; fill: #ffcc00; }
 `;
 
-const BADGE_ATTR = 'data-yt-ai-badge';
+const BADGE_ATTR = 'data-the-point-badge';
 
 function videoIdOf(anchor: HTMLAnchorElement): string | null {
   const href = anchor.getAttribute('href');
@@ -41,7 +41,7 @@ export class ThumbnailButtons {
 
   constructor() {
     this.button = createShadowUi({ css: BUTTON_CSS, forceTheme: 'dark' });
-    this.button.host.id = 'yt-ai-thumb-button';
+    this.button.host.id = 'the-point-thumb-button';
     this.button.host.style.display = 'none';
     const btn = document.createElement('button');
     btn.addEventListener('click', (e) => {
@@ -102,7 +102,7 @@ export class ThumbnailButtons {
     const btn = this.button.root.querySelector('button')!;
     const isCached = this.cached.has(this.current.videoId);
     btn.className = isCached ? 'cached' : '';
-    btn.innerHTML = ICONS.sparkle;
+    btn.innerHTML = ICONS.logo;
     btn.append(isCached ? 'Samenvatting' : 'Samenvat');
     btn.title = isCached ? 'Bekijk de AI-samenvatting' : 'Maak een AI-samenvatting van deze video';
     Object.assign(this.button.host.style, {
@@ -140,13 +140,13 @@ export class ThumbnailButtons {
     anchors.forEach((anchor) => {
       const id = videoIdOf(anchor);
       const want = !!id && this.cached.has(id);
-      const existing = anchor.querySelector<HTMLElement>(`:scope > yt-ai-root[${BADGE_ATTR}]`);
+      const existing = anchor.querySelector<HTMLElement>(`:scope > the-point-root[${BADGE_ATTR}]`);
       if (want && !existing) {
         const ui = createShadowUi({ css: BADGE_CSS, forceTheme: 'dark' });
         ui.host.setAttribute(BADGE_ATTR, '');
         ui.host.title = 'Samenvatting beschikbaar';
         const span = document.createElement('span');
-        span.innerHTML = ICONS.sparkle;
+        span.innerHTML = ICONS.logo;
         ui.root.append(span);
         if (getComputedStyle(anchor).position === 'static') anchor.style.position = 'relative';
         anchor.append(ui.host);
@@ -167,6 +167,6 @@ export class ThumbnailButtons {
     window.clearTimeout(this.scanTimer);
     this.popover.close();
     this.button.remove();
-    document.querySelectorAll(`yt-ai-root[${BADGE_ATTR}]`).forEach((b) => b.remove());
+    document.querySelectorAll(`the-point-root[${BADGE_ATTR}]`).forEach((b) => b.remove());
   }
 }

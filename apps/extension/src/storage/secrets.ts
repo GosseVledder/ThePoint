@@ -2,10 +2,11 @@
 // chrome.storage.local is readable by content scripts, which run inside youtube.com
 // pages; the extension origin's IndexedDB is only reachable from the background
 // and the options page. Never import this module from a content script.
-import type { ProviderId } from '@yt-ai/core/engine/types';
+import type { ProviderId } from '@the-point/core/engine/types';
 
 export type ApiKeys = Record<ProviderId, string>;
 
+// Name from before the rename to The Point; kept so stored keys stay readable.
 const DB_NAME = 'yt-ai-secrets';
 const STORE = 'keys';
 const RECORD = 'apiKeys';

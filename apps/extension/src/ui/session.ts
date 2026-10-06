@@ -1,6 +1,6 @@
-import type { Transcript, VideoMeta } from '@yt-ai/core/engine/types';
+import type { Transcript, VideoMeta } from '@the-point/core/engine/types';
 import { SUMMARIZE_PORT, type PortEvent, type PortRequest } from '../messages';
-import type { ViewState } from '@yt-ai/core/ui/render';
+import type { ViewState } from '@the-point/core/ui/render';
 
 export interface SessionOptions {
   videoId: string;

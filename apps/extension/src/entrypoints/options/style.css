@@ -69,8 +69,8 @@ section {
   padding: 16px 20px;
   margin-bottom: 16px;
 }
-section[data-provider].inactive {
-  opacity: 0.75;
+section[hidden] {
+  display: none;
 }
 section p {
   margin: 0 0 12px;

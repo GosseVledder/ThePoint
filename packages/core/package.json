@@ -1,5 +1,5 @@
 {
-  "name": "@yt-ai/core",
+  "name": "@the-point/core",
   "description": "Platform-neutral summary engine, transcript fetching and summary view",
   "private": true,
   "version": "0.1.0",

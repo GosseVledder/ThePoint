@@ -1,13 +1,13 @@
-import type { Summary } from '@yt-ai/core/engine/types';
+import type { Summary } from '@the-point/core/engine/types';
 import { saveSettings, type Settings } from '../storage/settings';
 import { readPageMeta, readTranscriptPanel } from '../youtube/pageTranscript';
 import { holdPlayback, isFullscreen, pause, seekTo } from '../youtube/player';
 import { SEL } from '../youtube/selectors';
 import { createShadowUi, isolateEvents, waitForElement, type ShadowUi } from './host';
-import { renderView, type SpeechView, type ViewHandlers } from '@yt-ai/core/ui/render';
+import { renderView, type SpeechView, type ViewHandlers } from '@the-point/core/ui/render';
 import { sendRuntime, SummarySession } from './session';
 import { SpeechControl } from './speech';
-import { ICONS } from '@yt-ai/core/ui/styles';
+import { ICONS } from '@the-point/core/ui/styles';
 
 const PANEL_CSS = `
 :host { display: block; }
@@ -80,7 +80,7 @@ export class WatchPanel {
     const anchor = await waitForElement(`${SEL.secondaryInner}, ${SEL.below}`);
     if (this.destroyed || !anchor) return;
     this.ui = createShadowUi({ css: PANEL_CSS });
-    this.ui.host.id = 'yt-ai-panel';
+    this.ui.host.id = 'the-point-panel';
     // Keys typed in our panel (space on a button, arrows in the voice menu) must not
     // trigger YouTube's player shortcuts.
     isolateEvents(this.ui.host, ['keydown', 'keyup', 'keypress']);
@@ -234,7 +234,7 @@ export class WatchPanel {
     ) {
       this.markers?.remove();
       this.markers = createShadowUi({ css: MARKERS_CSS });
-      this.markers.host.id = 'yt-ai-markers';
+      this.markers.host.id = 'the-point-markers';
       bar.append(this.markers.host);
       const update = () => this.renderMarkers();
       video.addEventListener('durationchange', update);
@@ -266,11 +266,11 @@ export class WatchPanel {
     const controls = await waitForElement(SEL.rightControls, 10_000);
     if (!controls || this.destroyed) return;
     this.playerButton = createShadowUi({ css: BUTTON_CSS, forceTheme: 'dark' });
-    this.playerButton.host.id = 'yt-ai-player-button';
+    this.playerButton.host.id = 'the-point-player-button';
     const button = document.createElement('button');
-    button.setAttribute('aria-label', 'AI-samenvatting');
-    button.title = 'AI-samenvatting';
-    button.innerHTML = ICONS.sparkle;
+    button.setAttribute('aria-label', 'The Point: samenvatting');
+    button.title = 'The Point: samenvatting';
+    button.innerHTML = ICONS.logo;
     button.addEventListener('click', (e) => {
       e.stopPropagation();
       this.onPlayerButton();
@@ -308,7 +308,7 @@ export class WatchPanel {
     const player = document.querySelector<HTMLElement>(SEL.playerOverlayParent);
     if (!player) return;
     this.overlay = createShadowUi({ css: OVERLAY_CSS, forceTheme: 'dark' });
-    this.overlay.host.id = 'yt-ai-overlay';
+    this.overlay.host.id = 'the-point-overlay';
     isolateEvents(this.overlay.host, [
       'click',
       'dblclick',

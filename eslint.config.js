@@ -4,7 +4,17 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['**/.output/', '**/.wxt/', '**/node_modules/', '**/e2e/screenshots/'] },
+  {
+    ignores: [
+      '**/.output/',
+      '**/.wxt/',
+      '**/node_modules/',
+      '**/e2e/screenshots/',
+      'apps/mobile/dist/',
+      'apps/mobile/android/',
+      'apps/mobile/ios/',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
