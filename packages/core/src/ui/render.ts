@@ -27,6 +27,8 @@ export interface ViewHandlers {
   onSpeak?: (from?: SpeechId) => void;
   onStopSpeak?: () => void;
   onVoiceChange?: (voiceUri: string) => void;
+  /** On/off switch in the header; omitted handler hides the switch. */
+  onToggleEnabled?: (on: boolean) => void;
 }
 
 export interface ViewOptions {
@@ -35,6 +37,8 @@ export interface ViewOptions {
   /** Label next to the time buttons ("Spring naar" vs "Open op"). */
   seekLabel?: string;
   speech?: SpeechView;
+  /** False: The Point is switched off; only the header with the switch is shown. */
+  enabled?: boolean;
 }
 
 export interface SpeechView {
@@ -142,8 +146,27 @@ export function renderView(
   opts: ViewOptions = {},
 ): void {
   const seekLabel = opts.seekLabel ?? 'Spring naar';
+  const enabled = opts.enabled !== false;
   const headerButtons: Node[] = [];
-  if (state.kind === 'done')
+  if (handlers.onToggleEnabled) {
+    const toggle = handlers.onToggleEnabled;
+    const label = enabled ? 'The Point uitzetten' : 'The Point aanzetten';
+    headerButtons.push(
+      h(
+        'button',
+        {
+          class: 'switch',
+          role: 'switch',
+          'aria-checked': String(enabled),
+          'aria-label': 'The Point aan of uit',
+          title: label,
+          onClick: () => toggle(!enabled),
+        },
+        h('span', { class: 'knob' }),
+      ),
+    );
+  }
+  if (enabled && state.kind === 'done')
     headerButtons.push(iconButton(ICONS.refresh, 'Opnieuw samenvatten', handlers.onRefresh));
   if (handlers.onToggleCollapse) {
     headerButtons.push(
@@ -156,7 +179,7 @@ export function renderView(
   }
   if (handlers.onClose) headerButtons.push(iconButton(ICONS.close, 'Sluiten', handlers.onClose));
 
-  const badge = state.kind === 'done' ? VIDEOTYPE_TEXT[state.summary.videoType] : null;
+  const badge = enabled && state.kind === 'done' ? VIDEOTYPE_TEXT[state.summary.videoType] : null;
   const header = h(
     'div',
     { class: 'head' },
@@ -174,6 +197,14 @@ export function renderView(
     { class: `card${opts.collapsed ? ' collapsed' : ''}`, 'aria-live': 'polite' },
     header,
   );
+
+  if (!enabled) {
+    card.append(
+      h('p', { class: 'off' }, 'The Point staat uit: er worden geen samenvattingen gemaakt.'),
+    );
+    root.replaceChildren(card);
+    return;
+  }
 
   if (opts.gateActive && state.kind !== 'done') {
     card.append(

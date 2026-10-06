@@ -136,6 +136,12 @@ export class SummarySession {
     }
   }
 
+  /** Stop waiting for a running request and go back to idle. */
+  stop(): void {
+    this.closePort();
+    this.setState({ kind: 'idle' });
+  }
+
   dispose(): void {
     this.disposed = true;
     this.closePort();

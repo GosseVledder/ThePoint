@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { DEFAULT_MODELS } from './engine/config';
 
 export const settingsSchema = z.object({
+  /** Extension: the on/off switch in the panel header. Off = no summaries are made. */
+  actief: z.boolean().catch(true),
   provider: z.enum(['claude', 'gemini']).catch('claude'),
   models: z
     .object({

@@ -35,6 +35,8 @@ export class ThumbnailButtons {
   private popover = new Popover();
   private current: { anchor: HTMLAnchorElement; videoId: string } | null = null;
   private cached = new Set<string>();
+  /** The Point switched off: no buttons, no badges. */
+  private enabled = true;
   private observer: MutationObserver;
   private scanTimer: number | undefined;
   private cleanups: (() => void)[] = [];
@@ -71,6 +73,13 @@ export class ThumbnailButtons {
     this.observer.observe(document.body, { childList: true, subtree: true });
   }
 
+  setEnabled(on: boolean): void {
+    if (on === this.enabled) return;
+    this.enabled = on;
+    if (!on) this.closePopover();
+    this.scheduleScan(0);
+  }
+
   setCached(ids: Iterable<string>): void {
     this.cached = new Set(ids);
     this.scheduleScan(0);
@@ -78,7 +87,7 @@ export class ThumbnailButtons {
 
   private onOver(e: MouseEvent): void {
     const target = e.target as Element | null;
-    if (!target || target === this.button.host) return;
+    if (!this.enabled || !target || target === this.button.host) return;
     const anchor = target.closest<HTMLAnchorElement>(SEL.thumbnailAnchor);
     if (!anchor) return;
     const videoId = videoIdOf(anchor);
@@ -139,7 +148,7 @@ export class ThumbnailButtons {
     const anchors = document.querySelectorAll<HTMLAnchorElement>(SEL.thumbnailAnchor);
     anchors.forEach((anchor) => {
       const id = videoIdOf(anchor);
-      const want = !!id && this.cached.has(id);
+      const want = this.enabled && !!id && this.cached.has(id);
       const existing = anchor.querySelector<HTMLElement>(`:scope > the-point-root[${BADGE_ATTR}]`);
       if (want && !existing) {
         const ui = createShadowUi({ css: BADGE_CSS, forceTheme: 'dark' });

@@ -48,6 +48,12 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px soli
 .icon-btn { background: transparent; border: 0; border-radius: 50%; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; color: var(--yt-text); flex: none; }
 .icon-btn:hover { background: var(--yt-card-hover); }
 .icon-btn svg { width: 20px; height: 20px; fill: currentColor; }
+.switch { position: relative; flex: none; width: 36px; height: 20px; padding: 0; border: 0; border-radius: 10px; background: #909090; cursor: pointer; transition: background .15s; }
+.switch .knob { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.4); transition: left .15s; }
+.switch[aria-checked="true"] { background: var(--yt-accent); }
+.switch[aria-checked="true"] .knob { left: 18px; }
+.off { margin: 8px 0 0; color: var(--yt-text-2); font-size: 13px; }
+.collapsed .off { display: none; }
 .btn { background: var(--yt-chip); border: 0; border-radius: 18px; padding: 0 14px; height: 32px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
 .btn:hover { background: var(--yt-card-hover); }
 .btn.primary { background: var(--yt-text); color: var(--yt-bg); }

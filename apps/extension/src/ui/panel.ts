@@ -89,7 +89,7 @@ export class WatchPanel {
     this.watchLayout();
     this.render();
 
-    if (this.settings.autoplayPauzeren) {
+    if (this.settings.actief && this.settings.autoplayPauzeren) {
       const cached = await sendRuntime<Summary | null>({
         type: 'getCached',
         videoId: this.videoId,
@@ -97,15 +97,30 @@ export class WatchPanel {
       if (!cached && !this.destroyed) this.gate = holdPlayback();
     }
     if (this.destroyed) return;
-    if (this.settings.automatisch) this.session.start();
+    if (this.settings.actief && this.settings.automatisch) this.session.start();
     else this.render();
     void this.mountPlayerButton();
   }
 
   updateSettings(settings: Settings): void {
     const markersChanged = settings.markeringen !== this.settings.markeringen;
+    const enabledChanged = settings.actief !== this.settings.actief;
     this.settings = settings;
-    if (markersChanged) this.renderMarkers();
+    if (enabledChanged) this.applyEnabled();
+    else if (markersChanged) this.renderMarkers();
+  }
+
+  /** Switched off: stop everything. Switched on: summarize this video. */
+  private applyEnabled(): void {
+    if (this.settings.actief) {
+      this.session.start();
+    } else {
+      this.speech.stop();
+      this.releaseGate();
+      this.hideOverlay();
+      this.session.stop();
+    }
+    this.render();
   }
 
   /** Two columns: top of the right column. One column: right under the player. */
@@ -175,6 +190,12 @@ export class WatchPanel {
         this.releaseGate();
         this.render();
       },
+      onToggleEnabled: (on) => {
+        // Applied through onSettingsChanged, so every open YouTube tab follows.
+        this.settings = { ...this.settings, actief: on };
+        this.applyEnabled();
+        void saveSettings({ actief: on });
+      },
     };
   }
 
@@ -188,6 +209,7 @@ export class WatchPanel {
         collapsed: this.collapsed,
         gateActive: !!this.gate,
         speech: this.speechView(),
+        enabled: this.settings.actief,
       });
     }
     if (this.overlay) this.renderOverlay();
@@ -281,9 +303,11 @@ export class WatchPanel {
   }
 
   private updatePlayerButton(): void {
+    const host = this.playerButton?.host;
     const button = this.playerButton?.root.querySelector('button');
-    if (!button) return;
+    if (!host || !button) return;
     button.setAttribute('aria-pressed', String(!!this.overlay));
+    host.style.display = this.settings.actief ? '' : 'none';
     if (this.playerButton && !this.playerButton.host.isConnected) {
       document.querySelector(SEL.rightControls)?.prepend(this.playerButton.host);
     }

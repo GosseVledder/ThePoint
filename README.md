@@ -15,6 +15,7 @@ Alleen voor eigen gebruik; je gebruikt je eigen API-sleutel van Anthropic (Claud
 
 ### Wat je krijgt
 
+- **Aan/uit-schakelaar** in de kop van het paneel (standaard aan). Uit: er worden geen samenvattingen gemaakt, ook niet via thumbnails; aan: de video wordt direct samengevat.
 - **Paneel op de kijkpagina**, boven de aanbevelingen (bij een smal venster onder de speler). Klik op een tijdstempel en de speler springt naar dat moment.
 - **Markeringen op de tijdbalk** van de speler voor elke takeaway (wit = kritiek punt).
 - **Knop in de spelerbalk** (het logo ▶.): in volledig scherm toont die de samenvatting als overlay in de video.
@@ -64,6 +65,8 @@ Sleutels staan alleen in je browser, in de eigen opslag van de extensie (Indexed
 
 ## Android-app
 
+**Download:** [`apk/ThePoint-0.1.0.apk`](apk/ThePoint-0.1.0.apk) (ondertekende release-build, Android 7 of nieuwer). Open de link op je telefoon, kies *Download* (*View raw*) en installeer; sta daarbij *installeren uit onbekende bronnen* toe voor je browser of bestandsbeheerder. Open de app, tik op het tandwiel en vul je API-sleutel in.
+
 ### Wat je krijgt
 
 - **Delen → The Point** vanuit de YouTube-app of Chrome, of plak een link in de app. Een tijd in de link (`?t=`) wordt meegenomen.
@@ -74,7 +77,7 @@ Sleutels staan alleen in je browser, in de eigen opslag van de extensie (Indexed
 
 Sleutels staan in de beveiligde opslag van Android (Keystore), instellingen en cache in de opslag van de app; back-ups van de app staan uit.
 
-### Bouwen en installeren
+### Zelf bouwen
 
 Vereist: Node.js 20 of nieuwer, JDK 21 en de Android SDK (via Android Studio). Zet `JAVA_HOME` op de JDK 21 en `ANDROID_HOME` op de SDK.
 
