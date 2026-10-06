@@ -8,6 +8,7 @@ import { renderView, type SpeechView, type ViewHandlers } from '@the-point/core/
 import { sendRuntime, SummarySession } from './session';
 import { SpeechControl } from './speech';
 import { ICONS } from '@the-point/core/ui/styles';
+import { messages, type Messages } from '@the-point/core/i18n/messages';
 
 const PANEL_CSS = `
 :host { display: block; }
@@ -105,8 +106,10 @@ export class WatchPanel {
   updateSettings(settings: Settings): void {
     const markersChanged = settings.markeringen !== this.settings.markeringen;
     const enabledChanged = settings.actief !== this.settings.actief;
+    const languageChanged = settings.interfaceTaal !== this.settings.interfaceTaal;
     this.settings = settings;
     if (enabledChanged) this.applyEnabled();
+    else if (languageChanged) this.render();
     else if (markersChanged) this.renderMarkers();
   }
 
@@ -199,6 +202,10 @@ export class WatchPanel {
     };
   }
 
+  private get t(): Messages {
+    return messages(this.settings.interfaceTaal);
+  }
+
   private render(): void {
     if (this.destroyed) return;
     const state = this.session.state;
@@ -210,6 +217,7 @@ export class WatchPanel {
         gateActive: !!this.gate,
         speech: this.speechView(),
         enabled: this.settings.actief,
+        t: this.t,
       });
     }
     if (this.overlay) this.renderOverlay();
@@ -290,8 +298,6 @@ export class WatchPanel {
     this.playerButton = createShadowUi({ css: BUTTON_CSS, forceTheme: 'dark' });
     this.playerButton.host.id = 'the-point-player-button';
     const button = document.createElement('button');
-    button.setAttribute('aria-label', 'The Point: samenvatting');
-    button.title = 'The Point: samenvatting';
     button.innerHTML = ICONS.logo;
     button.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -307,6 +313,8 @@ export class WatchPanel {
     const button = this.playerButton?.root.querySelector('button');
     if (!host || !button) return;
     button.setAttribute('aria-pressed', String(!!this.overlay));
+    button.setAttribute('aria-label', this.t.extension.playerButton);
+    button.title = this.t.extension.playerButton;
     host.style.display = this.settings.actief ? '' : 'none';
     if (this.playerButton && !this.playerButton.host.isConnected) {
       document.querySelector(SEL.rightControls)?.prepend(this.playerButton.host);
@@ -358,7 +366,7 @@ export class WatchPanel {
         onToggleCollapse: undefined,
         onClose: () => this.hideOverlay(),
       },
-      { speech: this.speechView() },
+      { speech: this.speechView(), t: this.t },
     );
   }
 

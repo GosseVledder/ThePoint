@@ -1,6 +1,7 @@
 // App shell: hash routing between home, summary and settings, plus incoming shares.
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import { App as CapApp } from '@capacitor/app';
+import { messages } from '@the-point/core/i18n/messages';
 import { ICONS } from '@the-point/core/ui/styles';
 import { NavStack, parseRoute, summaryHash, type App, type Screen } from './app';
 import './app.css';
@@ -45,6 +46,12 @@ const app: App = {
     updatePlayerButton();
     current?.setPlayer?.(on);
   },
+  t: messages('nl'),
+  setLanguage(lang) {
+    app.t = messages(lang);
+    applyChrome();
+    show();
+  },
   toast(message) {
     toastEl.textContent = message;
     toastEl.hidden = false;
@@ -77,10 +84,18 @@ backBtn.innerHTML =
   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.8l5.6-5.6L12 4l-8 8 8 8 1.4-1.4L7.8 13H20z"/></svg>';
 settingsBtn.innerHTML = ICONS.settings;
 function updatePlayerButton() {
-  const label = app.playerOn ? 'YouTube-player verbergen' : 'YouTube-player tonen';
+  const label = app.playerOn ? app.t.app.hidePlayer : app.t.app.showPlayer;
   playerBtn.setAttribute('aria-pressed', String(app.playerOn));
   playerBtn.setAttribute('aria-label', label);
   playerBtn.title = label;
+}
+
+/** Title-bar labels and the page language. */
+function applyChrome() {
+  document.documentElement.lang = app.t.locale.split('-')[0]!;
+  backBtn.setAttribute('aria-label', app.t.app.back);
+  settingsBtn.setAttribute('aria-label', app.t.app.settings);
+  updatePlayerButton();
 }
 
 // "Smart display": a play triangle in a screen.
@@ -97,8 +112,15 @@ onShare((e) => {
   if (v) {
     nav.reset(summaryHash(v.videoId, v.start));
     show();
-  } else app.toast('Geen YouTube-video gevonden in wat je deelde.');
+  } else app.toast(app.t.app.shareNoVideo);
 });
 void app.speaker.loadVoices().then(() => current?.refresh?.());
-nav.reset(location.hash || '#/');
-show();
+void app.settings
+  .get()
+  .then((s) => (app.t = messages(s.interfaceTaal)))
+  .catch(() => undefined)
+  .finally(() => {
+    applyChrome();
+    nav.reset(location.hash || '#/');
+    show();
+  });

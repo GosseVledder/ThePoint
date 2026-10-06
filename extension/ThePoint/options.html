@@ -1,11 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="nl">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Point – instellingen</title>
-    <meta name="manifest.open_in_tab" content="true" />
-    <link rel="stylesheet" href="./style.css" />
+    <meta name="manifest.open_in_tab" content="true">
+    <script type="module" crossorigin src="/chunks/options-6jEvcIwL.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/options-DZn_6Xi_.css">
   </head>
   <body>
     <!-- Texts come from @the-point/core/i18n: data-i18n="<key in settings>" sets the text. -->
@@ -33,14 +34,10 @@
       <section>
         <h2 data-i18n="aiService"></h2>
         <div class="radio-row" role="radiogroup" data-i18n-aria="aiService">
-          <label class="choice"
-            ><input type="radio" name="provider" value="claude" />
-            <span><b>Claude</b> (Anthropic)</span></label
-          >
-          <label class="choice"
-            ><input type="radio" name="provider" value="gemini" />
-            <span><b>Gemini</b> (Google)</span></label
-          >
+          <label class="choice"><input type="radio" name="provider" value="claude">
+            <span><b>Claude</b> (Anthropic)</span></label>
+          <label class="choice"><input type="radio" name="provider" value="gemini">
+            <span><b>Gemini</b> (Google)</span></label>
         </div>
         <p class="hint" data-i18n="providerHint"></p>
       </section>
@@ -50,25 +47,14 @@
         <label class="field">
           <span data-i18n="apiKey"></span>
           <span class="key-row">
-            <input
-              id="key-claude"
-              type="password"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="sk-ant-…"
-            />
+            <input id="key-claude" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
             <button type="button" class="ghost" data-toggle="key-claude" data-i18n="show"></button>
           </span>
-          <small
-            ><span data-i18n="keyHintBrowser.0"></span
-            ><a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer"
-              >console.anthropic.com</a
-            ><span data-i18n="keyHintBrowser.1"></span
-          ></small>
+          <small><span data-i18n="keyHintBrowser.0"></span><a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer">console.anthropic.com</a><span data-i18n="keyHintBrowser.1"></span></small>
         </label>
         <label class="field">
           <span data-i18n="model"></span>
-          <input id="model-claude" list="models-claude" spellcheck="false" />
+          <input id="model-claude" list="models-claude" spellcheck="false">
           <datalist id="models-claude"></datalist>
         </label>
         <div class="test-row">
@@ -82,25 +68,14 @@
         <label class="field">
           <span data-i18n="apiKey"></span>
           <span class="key-row">
-            <input
-              id="key-gemini"
-              type="password"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="AIza…"
-            />
+            <input id="key-gemini" type="password" autocomplete="off" spellcheck="false" placeholder="AIza…">
             <button type="button" class="ghost" data-toggle="key-gemini" data-i18n="show"></button>
           </span>
-          <small
-            ><span data-i18n="keyHintBrowser.0"></span
-            ><a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer"
-              >aistudio.google.com</a
-            ><span data-i18n="keyHintBrowser.1"></span
-          ></small>
+          <small><span data-i18n="keyHintBrowser.0"></span><a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer">aistudio.google.com</a><span data-i18n="keyHintBrowser.1"></span></small>
         </label>
         <label class="field">
           <span data-i18n="model"></span>
-          <input id="model-gemini" list="models-gemini" spellcheck="false" />
+          <input id="model-gemini" list="models-gemini" spellcheck="false">
           <datalist id="models-gemini"></datalist>
         </label>
         <div class="test-row">
@@ -111,18 +86,12 @@
 
       <section>
         <h2 data-i18n="summaryHeading"></h2>
-        <label class="check"
-          ><input type="checkbox" id="automatisch" />
-          <span><span data-i18n="auto"></span><small data-i18n="autoHint"></small></span
-        ></label>
-        <label class="check"
-          ><input type="checkbox" id="autoplayPauzeren" />
-          <span><span data-i18n="pause"></span><small data-i18n="pauseHint"></small></span
-        ></label>
-        <label class="check"
-          ><input type="checkbox" id="markeringen" />
-          <span data-i18n="markers"></span
-        ></label>
+        <label class="check"><input type="checkbox" id="automatisch">
+          <span><span data-i18n="auto"></span><small data-i18n="autoHint"></small></span></label>
+        <label class="check"><input type="checkbox" id="autoplayPauzeren">
+          <span><span data-i18n="pause"></span><small data-i18n="pauseHint"></small></span></label>
+        <label class="check"><input type="checkbox" id="markeringen">
+          <span data-i18n="markers"></span></label>
       </section>
 
       <section>
@@ -136,7 +105,7 @@
         <label class="field inline">
           <span data-i18n="speed"></span>
           <span class="unit">
-            <input id="spreeksnelheid" type="range" min="0.75" max="1.5" step="0.05" />
+            <input id="spreeksnelheid" type="range" min="0.75" max="1.5" step="0.05">
             <output id="spreeksnelheid-waarde"></output>
           </span>
         </label>
@@ -147,16 +116,12 @@
 
       <section>
         <h2 data-i18n="noTranscriptHeading"></h2>
-        <label class="check"
-          ><input type="checkbox" id="geminiTerugval" />
-          <span><span data-i18n="fallback"></span><small data-i18n="fallbackHint"></small></span
-        ></label>
+        <label class="check"><input type="checkbox" id="geminiTerugval">
+          <span><span data-i18n="fallback"></span><small data-i18n="fallbackHint"></small></span></label>
         <label class="field inline">
           <span data-i18n="confirmLonger"></span>
-          <span class="unit"
-            ><input id="bevestigVanafMinuten" type="number" min="1" max="600" step="1" />
-            <span data-i18n="minutes"></span
-          ></span>
+          <span class="unit"><input id="bevestigVanafMinuten" type="number" min="1" max="600" step="1">
+            <span data-i18n="minutes"></span></span>
         </label>
       </section>
 
@@ -171,10 +136,8 @@
 
       <section>
         <h2 data-i18n="debugHeading"></h2>
-        <label class="check"
-          ><input type="checkbox" id="debugLog" />
-          <span data-i18n="debugCheck"></span
-        ></label>
+        <label class="check"><input type="checkbox" id="debugLog">
+          <span data-i18n="debugCheck"></span></label>
         <div class="test-row">
           <button type="button" id="show-log" data-i18n="showLog"></button>
           <button type="button" id="clear-log" class="ghost" data-i18n="clearLog"></button>
@@ -182,6 +145,5 @@
         <div id="log" class="log" hidden></div>
       </section>
     </main>
-    <script type="module" src="./main.ts"></script>
   </body>
 </html>

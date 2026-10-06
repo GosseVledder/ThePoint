@@ -2,6 +2,7 @@
 // platform stores them its own way; API keys are never part of the settings.
 import { z } from 'zod';
 import { DEFAULT_MODELS } from './engine/config';
+import { UI_LANGUAGES } from './i18n/messages';
 
 export const settingsSchema = z.object({
   /** Extension: the on/off switch in the panel header. Off = no summaries are made. */
@@ -13,6 +14,8 @@ export const settingsSchema = z.object({
       gemini: z.string().min(1).catch(DEFAULT_MODELS.gemini),
     })
     .catch({ ...DEFAULT_MODELS }),
+  /** Language of buttons, labels and messages (not of the summary). */
+  interfaceTaal: z.enum(UI_LANGUAGES).catch('nl'),
   /** Language of the summary. */
   taal: z.string().min(2).catch('nl'),
   /** Start summarizing automatically when a watch page opens. */

@@ -16,6 +16,7 @@ const VIEW_CSS = `
 `;
 
 export function summaryScreen(app: App, videoId: string, start: number | null): Screen {
+  const t = app.t;
   const playerBox = h('div', { class: 'player', hidden: true });
   const host = h('div', { class: 'summary-host' });
   // The summary lives in a shadow root, so it follows the system theme itself.
@@ -54,8 +55,8 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
           h(
             'div',
             { class: 'player-fallback' },
-            h('p', {}, `De video kan hier niet worden afgespeeld (fout ${code}).`),
-            h('button', { onClick: () => openInYouTube(at ?? 0) }, 'Open in YouTube'),
+            h('p', {}, t.app.cannotPlay(code)),
+            h('button', { onClick: () => openInYouTube(at ?? 0) }, t.app.openInYouTube),
           ),
         );
         render();
@@ -116,8 +117,8 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
       h(
         'div',
         { class: 'dialog', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'seek-title' },
-        h('h2', { id: 'seek-title' }, tijd ? `Naar ${tijd} in de video` : 'Naar de video'),
-        h('p', {}, 'De YouTube-player staat uit.'),
+        h('h2', { id: 'seek-title' }, t.app.seekTitle(tijd)),
+        h('p', {}, t.app.playerOff),
         h(
           'button',
           {
@@ -127,7 +128,7 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
               playAt(sec);
             },
           },
-          tijd ? `Toon player en spring naar ${tijd}` : 'Toon player',
+          t.app.showPlayerAndSeek(tijd),
         ),
         evidence
           ? h(
@@ -138,10 +139,10 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
                   if (summary) speakItem(summary.taal, evidence);
                 },
               },
-              'Lees de onderbouwing voor',
+              t.app.readEvidence,
             )
           : null,
-        h('button', { onClick: closeDialog }, 'Annuleren'),
+        h('button', { onClick: closeDialog }, t.app.cancel),
       ),
     );
     dialog = backdrop;
@@ -190,7 +191,8 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
         },
       },
       {
-        seekLabel: playerFailed ? 'Open op' : 'Spring naar',
+        seekLabel: playerFailed ? t.view.openAt : t.view.seekTo,
+        t,
         speech: {
           available: true,
           speakingId: app.speaker.speakingId,
@@ -245,7 +247,7 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
   void summarize(false);
 
   return {
-    title: 'Samenvatting',
+    title: t.app.summaryTitle,
     el,
     refresh: render,
     setPlayer(on) {

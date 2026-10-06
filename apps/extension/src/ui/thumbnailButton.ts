@@ -3,6 +3,7 @@ import { parseVideoId } from '@the-point/core/youtube/videoId';
 import { createShadowUi, type ShadowUi } from './host';
 import { Popover } from './popover';
 import { ICONS } from '@the-point/core/ui/styles';
+import { messages, type Messages } from '@the-point/core/i18n/messages';
 
 const BUTTON_CSS = `
 :host { position: fixed; z-index: 2200; display: block; }
@@ -37,6 +38,7 @@ export class ThumbnailButtons {
   private cached = new Set<string>();
   /** The Point switched off: no buttons, no badges. */
   private enabled = true;
+  private t: Messages = messages('nl');
   private observer: MutationObserver;
   private scanTimer: number | undefined;
   private cleanups: (() => void)[] = [];
@@ -80,6 +82,13 @@ export class ThumbnailButtons {
     this.scheduleScan(0);
   }
 
+  setLanguage(lang: string): void {
+    this.t = messages(lang);
+    document
+      .querySelectorAll<HTMLElement>(`the-point-root[${BADGE_ATTR}]`)
+      .forEach((b) => (b.title = this.t.extension.badge));
+  }
+
   setCached(ids: Iterable<string>): void {
     this.cached = new Set(ids);
     this.scheduleScan(0);
@@ -112,8 +121,9 @@ export class ThumbnailButtons {
     const isCached = this.cached.has(this.current.videoId);
     btn.className = isCached ? 'cached' : '';
     btn.innerHTML = ICONS.logo;
-    btn.append(isCached ? 'Samenvatting' : 'Samenvat');
-    btn.title = isCached ? 'Bekijk de AI-samenvatting' : 'Maak een AI-samenvatting van deze video';
+    const x = this.t.extension;
+    btn.append(isCached ? x.thumbSummary : x.thumbSummarize);
+    btn.title = isCached ? x.thumbTitleCached : x.thumbTitleNew;
     Object.assign(this.button.host.style, {
       display: 'block',
       left: `${Math.round(r.left + 8)}px`,
@@ -153,7 +163,7 @@ export class ThumbnailButtons {
       if (want && !existing) {
         const ui = createShadowUi({ css: BADGE_CSS, forceTheme: 'dark' });
         ui.host.setAttribute(BADGE_ATTR, '');
-        ui.host.title = 'Samenvatting beschikbaar';
+        ui.host.title = this.t.extension.badge;
         const span = document.createElement('span');
         span.innerHTML = ICONS.logo;
         ui.root.append(span);

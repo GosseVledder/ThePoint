@@ -1,5 +1,6 @@
 // Pure helpers for reading a summary aloud. No DOM access, so they are unit-testable.
-import type { Summary, Takeaway } from '../engine/types';
+import type { Summary } from '../engine/types';
+import { messages } from '../i18n/messages';
 
 /** 'kritiek' for the critical point, otherwise the takeaway index. */
 export type SpeechId = 'kritiek' | number;
@@ -18,22 +19,19 @@ export interface VoiceLike {
   default?: boolean;
 }
 
-const ZEKERHEID_SPOKEN: Record<Takeaway['zekerheid'], string | null> = {
-  feit: null,
-  bewering: 'bewering',
-  mening: 'mening',
-  gerucht: 'gerucht',
-};
+/** Summary fields read aloud; the connecting words follow the summary language. */
+type Spoken = Pick<Summary, 'kritiekPunt' | 'takeaways'> & { taal?: string };
 
 /** Critical point first, then every takeaway; time stamps are not read. */
-export function buildSpeechItems(
-  summary: Pick<Summary, 'kritiekPunt' | 'takeaways'>,
-): SpeechItem[] {
-  const items: SpeechItem[] = [{ id: 'kritiek', text: `Kernpunt. ${summary.kritiekPunt.zin}` }];
+export function buildSpeechItems(summary: Spoken): SpeechItem[] {
+  const sp = messages(summary.taal).speech;
+  const items: SpeechItem[] = [
+    { id: 'kritiek', text: `${sp.kernpunt} ${summary.kritiekPunt.zin}` },
+  ];
   summary.takeaways.forEach((t, i) => {
-    const label = ZEKERHEID_SPOKEN[t.zekerheid];
+    const label = t.zekerheid === 'feit' ? null : sp.zekerheid[t.zekerheid];
     const zin = t.zin.trim().replace(/[.!?…]*$/, '');
-    items.push({ id: i, text: `Punt ${i + 1}. ${zin}${label ? `. Dit is een ${label}` : ''}.` });
+    items.push({ id: i, text: `${sp.punt(i + 1)} ${zin}${label ? `. ${label}` : ''}.` });
   });
   return items;
 }
@@ -48,22 +46,18 @@ const endSentence = (s: string) => {
  * transcript that supports it. The critical point has no quote of its own; it borrows
  * the quote of a takeaway at the same moment, if there is one.
  */
-export function buildEvidenceSpeech(
-  summary: Pick<Summary, 'kritiekPunt' | 'takeaways'>,
-  id: SpeechId,
-): SpeechItem | null {
+export function buildEvidenceSpeech(summary: Spoken, id: SpeechId): SpeechItem | null {
+  const sp = messages(summary.taal).speech;
   if (id === 'kritiek') {
     const { zin, seconden } = summary.kritiekPunt;
     const steun = summary.takeaways.find((t) => t.seconden === seconden && t.citaat.trim());
-    const citaat = steun ? ` In de video: ${endSentence(steun.citaat)}` : '';
-    return { id, text: `Onderbouwing van het kernpunt. ${endSentence(zin)}${citaat}` };
+    const citaat = steun ? ` ${sp.inDeVideo} ${endSentence(steun.citaat)}` : '';
+    return { id, text: `${sp.evidenceKernpunt} ${endSentence(zin)}${citaat}` };
   }
   const t = summary.takeaways[id];
   if (!t) return null;
-  const citaat = t.citaat.trim()
-    ? ` In de video: ${endSentence(t.citaat)}`
-    : ' Bij dit punt staat geen citaat uit de video.';
-  return { id, text: `Onderbouwing van punt ${id + 1}. ${endSentence(t.zin)}${citaat}` };
+  const citaat = t.citaat.trim() ? ` ${sp.inDeVideo} ${endSentence(t.citaat)}` : ` ${sp.noQuote}`;
+  return { id, text: `${sp.evidencePunt(id + 1)} ${endSentence(t.zin)}${citaat}` };
 }
 
 /**
@@ -148,6 +142,7 @@ export function groupVoices<V extends VoiceLike>(
   voices: V[],
   taal: string,
   taalNaam: string,
+  otherLabel = 'Andere talen',
 ): VoiceGroup<V>[] {
   const mine = voices
     .filter((v) => baseLang(v.lang) === baseLang(taal))
@@ -157,7 +152,7 @@ export function groupVoices<V extends VoiceLike>(
     .sort((a, b) => a.lang.localeCompare(b.lang) || a.name.localeCompare(b.name));
   const groups: VoiceGroup<V>[] = [];
   if (mine.length) groups.push({ label: taalNaam, voices: mine });
-  if (other.length) groups.push({ label: 'Andere talen', voices: other });
+  if (other.length) groups.push({ label: otherLabel, voices: other });
   return groups;
 }
 

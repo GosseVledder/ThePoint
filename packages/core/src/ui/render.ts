@@ -1,6 +1,6 @@
 import type { Summary, Takeaway } from '../engine/types';
 import type { ErrorInfo, SummaryStep } from '../job';
-import { languageName } from '../engine/prompt';
+import { errorMessage, messages, type Messages } from '../i18n/messages';
 import { groupVoices, voiceLabel, type SpeechId, type VoiceLike } from './speechText';
 import { ICONS } from './styles';
 
@@ -36,6 +36,8 @@ export interface ViewOptions {
   gateActive?: boolean;
   /** Label next to the time buttons ("Spring naar" vs "Open op"). */
   seekLabel?: string;
+  /** Interface texts; Dutch when omitted. */
+  t?: Messages;
   speech?: SpeechView;
   /** False: The Point is switched off; only the header with the switch is shown. */
   enabled?: boolean;
@@ -76,39 +78,6 @@ export function h<K extends keyof HTMLElementTagNameMap>(
   return el;
 }
 
-const STEP_TEXT: Record<SummaryStep, string> = {
-  cache: 'Bezig…',
-  transcript: 'Transcript ophalen…',
-  samenvatten: 'Samenvatten',
-  deel: 'Lange video: delen samenvatten',
-  samenvoegen: 'Delen samenvoegen…',
-  herstel: 'Antwoord herstellen…',
-  video: 'Gemini bekijkt de video (dit duurt langer)…',
-};
-
-const ZEKERHEID_TEXT: Record<Takeaway['zekerheid'], string> = {
-  feit: 'feit',
-  bewering: 'bewering',
-  mening: 'mening',
-  gerucht: 'gerucht',
-};
-
-const VIDEOTYPE_TEXT: Record<Summary['videoType'], string> = {
-  nieuwsoverzicht: 'Nieuwsoverzicht',
-  uitleg: 'Uitleg',
-  tutorial: 'Tutorial',
-  interview: 'Interview',
-  opinie: 'Opinie',
-  review: 'Review',
-  overig: 'Video',
-};
-
-const DICHTHEID_TEXT = {
-  hoog: 'Veel inhoud',
-  gemiddeld: 'Gemiddeld veel inhoud',
-  laag: 'Weinig inhoud',
-};
-
 function providerName(p: string | undefined): string {
   return p === 'gemini' ? 'Gemini' : p === 'claude' ? 'Claude' : 'AI';
 }
@@ -145,12 +114,14 @@ export function renderView(
   handlers: ViewHandlers,
   opts: ViewOptions = {},
 ): void {
-  const seekLabel = opts.seekLabel ?? 'Spring naar';
+  const t = opts.t ?? messages('nl');
+  const v = t.view;
+  const seekLabel = opts.seekLabel ?? v.seekTo;
   const enabled = opts.enabled !== false;
   const headerButtons: Node[] = [];
   if (handlers.onToggleEnabled) {
     const toggle = handlers.onToggleEnabled;
-    const label = enabled ? 'The Point uitzetten' : 'The Point aanzetten';
+    const label = enabled ? v.turnOff : v.turnOn;
     headerButtons.push(
       h(
         'button',
@@ -158,7 +129,7 @@ export function renderView(
           class: 'switch',
           role: 'switch',
           'aria-checked': String(enabled),
-          'aria-label': 'The Point aan of uit',
+          'aria-label': v.switchAria,
           title: label,
           onClick: () => toggle(!enabled),
         },
@@ -167,19 +138,19 @@ export function renderView(
     );
   }
   if (enabled && state.kind === 'done')
-    headerButtons.push(iconButton(ICONS.refresh, 'Opnieuw samenvatten', handlers.onRefresh));
+    headerButtons.push(iconButton(ICONS.refresh, v.refresh, handlers.onRefresh));
   if (handlers.onToggleCollapse) {
     headerButtons.push(
       iconButton(
         opts.collapsed ? ICONS.chevronDown : ICONS.chevronUp,
-        opts.collapsed ? 'Uitklappen' : 'Inklappen',
+        opts.collapsed ? v.expand : v.collapse,
         handlers.onToggleCollapse,
       ),
     );
   }
-  if (handlers.onClose) headerButtons.push(iconButton(ICONS.close, 'Sluiten', handlers.onClose));
+  if (handlers.onClose) headerButtons.push(iconButton(ICONS.close, v.close, handlers.onClose));
 
-  const badge = enabled && state.kind === 'done' ? VIDEOTYPE_TEXT[state.summary.videoType] : null;
+  const badge = enabled && state.kind === 'done' ? v.videoType[state.summary.videoType] : null;
   const header = h(
     'div',
     { class: 'head' },
@@ -199,9 +170,7 @@ export function renderView(
   );
 
   if (!enabled) {
-    card.append(
-      h('p', { class: 'off' }, 'The Point staat uit: er worden geen samenvattingen gemaakt.'),
-    );
+    card.append(h('p', { class: 'off' }, v.off));
     root.replaceChildren(card);
     return;
   }
@@ -211,9 +180,9 @@ export function renderView(
       h(
         'div',
         { class: 'gate' },
-        h('span', {}, 'Video gepauzeerd tot de samenvatting klaar is.'),
+        h('span', {}, v.gatePaused),
         handlers.onWatchAnyway
-          ? h('button', { class: 'btn', onClick: handlers.onWatchAnyway }, 'Toch bekijken')
+          ? h('button', { class: 'btn', onClick: handlers.onWatchAnyway }, v.watchAnyway)
           : null,
       ),
     );
@@ -228,17 +197,17 @@ export function renderView(
           h(
             'button',
             { class: 'btn primary', onClick: handlers.onStart, html: ICONS.logo },
-            'Samenvatten',
+            v.summarize,
           ),
         ),
       );
       break;
 
     case 'loading': {
-      let text = STEP_TEXT[state.stap];
-      if (state.stap === 'samenvatten') text = `Samenvatten met ${providerName(state.provider)}…`;
+      let text = v.steps[state.stap];
+      if (state.stap === 'samenvatten') text = v.summarizingWith(providerName(state.provider));
       if (state.stap === 'deel' && state.delen)
-        text = `${STEP_TEXT.deel} (${state.deel ?? 0}/${state.delen})…`;
+        text = `${v.steps.deel} (${state.deel ?? 0}/${state.delen})…`;
       card.append(
         h(
           'div',
@@ -255,19 +224,11 @@ export function renderView(
 
     case 'confirm':
       card.append(
-        h(
-          'div',
-          { class: 'notice' },
-          `Deze video heeft geen transcript. Gemini kan de video zelf bekijken, maar dat is trager en duurder (${state.minuten} minuten video). Doorgaan?`,
-        ),
+        h('div', { class: 'notice' }, v.confirmNoTranscript(state.minuten)),
         h(
           'div',
           { class: 'actions' },
-          h(
-            'button',
-            { class: 'btn primary', onClick: handlers.onConfirm },
-            'Ja, analyseer de video',
-          ),
+          h('button', { class: 'btn primary', onClick: handlers.onConfirm }, v.confirmYes),
         ),
       );
       break;
@@ -277,22 +238,17 @@ export function renderView(
       const actions = h('div', { class: 'actions' });
       if (e.action === 'options')
         actions.append(
-          h(
-            'button',
-            { class: 'btn primary', onClick: handlers.onOpenOptions },
-            'Instellingen openen',
-          ),
+          h('button', { class: 'btn primary', onClick: handlers.onOpenOptions }, v.openSettings),
         );
       if (e.action === 'retry' || !e.action)
-        actions.append(
-          h('button', { class: 'btn', onClick: handlers.onRefresh }, 'Opnieuw proberen'),
-        );
-      card.append(h('div', { class: 'error-msg', role: 'alert' }, e.message), actions);
+        actions.append(h('button', { class: 'btn', onClick: handlers.onRefresh }, v.retry));
+      const message = errorMessage(e, t);
+      card.append(h('div', { class: 'error-msg', role: 'alert' }, message), actions);
       if (e.details)
         card.append(
-          h('details', {}, h('summary', {}, 'Details'), h('pre', {}, `${e.code}: ${e.details}`)),
+          h('details', {}, h('summary', {}, v.details), h('pre', {}, `${e.code}: ${e.details}`)),
         );
-      card.append(h('div', { class: 'peek' }, e.message));
+      card.append(h('div', { class: 'peek' }, message));
       break;
     }
 
@@ -300,7 +256,7 @@ export function renderView(
       const s = state.summary;
       const body = h('div', { class: 'body' });
       const speech = handlers.onSpeak ? opts.speech : undefined;
-      if (speech) body.append(renderSpeechBar(speech, handlers));
+      if (speech) body.append(renderSpeechBar(speech, handlers, t));
       body.append(
         h(
           'p',
@@ -323,54 +279,40 @@ export function renderView(
         ),
       );
       if (s.takeaways.length > 0) {
-        body.append(h('div', { class: 'section-label' }, `Takeaways (${s.takeaways.length})`));
+        body.append(h('div', { class: 'section-label' }, v.takeaways(s.takeaways.length)));
         const list = h('ul', { class: 'takeaways' });
-        s.takeaways.forEach((t, i) =>
-          list.append(renderTakeaway(t, i, handlers, seekLabel, speech)),
+        s.takeaways.forEach((item, i) =>
+          list.append(renderTakeaway(item, i, handlers, seekLabel, v, speech)),
         );
         body.append(list);
       } else {
-        body.append(h('p', { class: 'empty' }, 'Geen inhoudelijke takeaways gevonden.'));
+        body.append(h('p', { class: 'empty' }, v.noTakeaways));
       }
       body.append(
         h(
           'div',
           { class: 'oordeel' },
-          h('b', {}, DICHTHEID_TEXT[s.inhoudsoordeel.dichtheid]),
+          h('b', {}, v.density[s.inhoudsoordeel.dichtheid]),
           ` · ${s.inhoudsoordeel.toelichting}`,
         ),
       );
-      if (s.isInterview) body.append(h('div', { class: 'meta' }, 'Dit is een interview.'));
+      if (s.isInterview) body.append(h('div', { class: 'meta' }, v.interview));
       if (s.bron === 'gemini_video') {
-        body.append(
-          h(
-            'div',
-            { class: 'notice' },
-            'Gemaakt zonder transcript: Gemini heeft de video zelf bekeken. Citaten zijn niet te controleren.',
-          ),
-        );
+        body.append(h('div', { class: 'notice' }, v.madeWithoutTranscript));
       } else if (s.transcriptKwaliteit === 'slecht') {
-        body.append(
-          h(
-            'div',
-            { class: 'notice' },
-            'Het transcript is van slechte kwaliteit; controleer belangrijke punten in de video.',
-          ),
-        );
+        body.append(h('div', { class: 'notice' }, v.poorTranscript));
       }
       const datum = new Date(s.aangemaaktOp);
       body.append(
         h(
           'div',
           { class: 'meta' },
-          h('span', {}, s.bron === 'transcript' ? 'Bron: transcript' : 'Bron: video (Gemini)'),
+          h('span', {}, s.bron === 'transcript' ? v.sourceTranscript : v.sourceVideo),
           h('span', {}, `${providerName(s.provider)} · ${s.model}`),
           h(
             'span',
-            { title: datum.toLocaleString('nl-NL') },
-            state.fromCache
-              ? `Uit cache · ${datum.toLocaleDateString('nl-NL')}`
-              : 'Zojuist gemaakt',
+            { title: datum.toLocaleString(t.locale) },
+            state.fromCache ? v.fromCache(datum.toLocaleDateString(t.locale)) : v.justNow,
           ),
         ),
       );
@@ -382,13 +324,12 @@ export function renderView(
   root.replaceChildren(card);
 }
 
-function renderSpeechBar(speech: SpeechView, handlers: ViewHandlers): HTMLElement {
+function renderSpeechBar(speech: SpeechView, handlers: ViewHandlers, t: Messages): HTMLElement {
+  const v = t.view;
   const reading = speech.speakingId !== null;
   const bar = h('div', { class: 'tts' });
   if (!speech.available) {
-    bar.append(
-      h('span', { class: 'tts-note' }, 'Voorlezen wordt niet ondersteund in deze browser.'),
-    );
+    bar.append(h('span', { class: 'tts-note' }, v.ttsUnsupported));
     return bar;
   }
   bar.append(
@@ -400,26 +341,21 @@ function renderSpeechBar(speech: SpeechView, handlers: ViewHandlers): HTMLElemen
         html: reading ? ICONS.stop : ICONS.speaker,
         onClick: () => (reading ? handlers.onStopSpeak?.() : handlers.onSpeak?.()),
       },
-      reading ? 'Stoppen' : 'Voorlezen',
+      reading ? v.stop : v.readAloud,
     ),
   );
   if (speech.voices.length === 0) {
-    bar.append(
-      h(
-        'span',
-        { class: 'tts-note' },
-        'Geen stemmen beschikbaar; de standaardstem wordt gebruikt.',
-      ),
-    );
+    bar.append(h('span', { class: 'tts-note' }, v.noVoices));
     return bar;
   }
   const select = h('select', {
     class: 'tts-voice',
-    'aria-label': 'Stem',
-    title: 'Stem voor het voorlezen (wordt onthouden)',
+    'aria-label': v.voice,
+    title: v.voiceTitle,
     onChange: (e: Event) => handlers.onVoiceChange?.((e.target as HTMLSelectElement).value),
   });
-  for (const group of groupVoices(speech.voices, speech.taal, languageName(speech.taal))) {
+  const taalNaam = t.languageNames[speech.taal] ?? speech.taal;
+  for (const group of groupVoices(speech.voices, speech.taal, taalNaam, v.otherLanguages)) {
     const og = h('optgroup', { label: group.label });
     for (const v of group.voices) {
       og.append(
@@ -437,30 +373,19 @@ function renderTakeaway(
   index: number,
   handlers: ViewHandlers,
   seekLabel: string,
+  v: Messages['view'],
   speech?: SpeechView,
 ): HTMLLIElement {
-  const zin = h(
-    'div',
-    { class: 'zin', title: t.citaat ? `Citaat: “${t.citaat}”` : undefined },
-    t.zin,
-  );
-  if (t.zekerheid !== 'feit')
-    zin.append(h('span', { class: 'label' }, ZEKERHEID_TEXT[t.zekerheid]));
-  if (t.afgeleid)
-    zin.append(
-      h(
-        'span',
-        { class: 'label', title: 'Verhouding berekend uit twee getallen in de video' },
-        'berekend',
-      ),
-    );
+  const zin = h('div', { class: 'zin', title: t.citaat ? v.quote(t.citaat) : undefined }, t.zin);
+  if (t.zekerheid !== 'feit') zin.append(h('span', { class: 'label' }, v.zekerheid[t.zekerheid]));
+  if (t.afgeleid) zin.append(h('span', { class: 'label', title: v.derivedTitle }, v.derived));
   if (t.onbevestigd) {
     zin.append(
       h('span', {
         class: 'warn',
         role: 'img',
-        'aria-label': 'Niet bevestigd in het transcript',
-        title: 'Niet bevestigd: het citaat of een getal staat niet letterlijk in het transcript.',
+        'aria-label': v.unconfirmedAria,
+        title: v.unconfirmedTitle,
         html: ICONS.warn,
       }),
     );
@@ -470,8 +395,8 @@ function renderTakeaway(
     speech?.available && handlers.onSpeak
       ? h('button', {
           class: speaking ? 'speak-btn active' : 'speak-btn',
-          title: speaking ? 'Stoppen' : 'Vanaf hier voorlezen',
-          'aria-label': speaking ? 'Stoppen' : `Voorlezen vanaf punt ${index + 1}`,
+          title: speaking ? v.stop : v.readFromHere,
+          'aria-label': speaking ? v.stop : v.readFromPoint(index + 1),
           html: speaking ? ICONS.stop : ICONS.speaker,
           onClick: (e: Event) => {
             e.stopPropagation();

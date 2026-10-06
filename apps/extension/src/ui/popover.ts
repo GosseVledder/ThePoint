@@ -3,6 +3,7 @@ import { createShadowUi, isolateEvents, type ShadowUi } from './host';
 import { renderView } from '@the-point/core/ui/render';
 import { sendRuntime, SummarySession } from './session';
 import { SpeechControl } from './speech';
+import { messages } from '@the-point/core/i18n/messages';
 
 const POPOVER_CSS = `
 :host { position: fixed; z-index: 2300; width: 400px; display: block; }
@@ -35,7 +36,6 @@ export class Popover {
     this.ui = createShadowUi({ css: POPOVER_CSS });
     this.ui.host.id = 'the-point-popover';
     this.ui.host.setAttribute('role', 'dialog');
-    this.ui.host.setAttribute('aria-label', 'The Point: samenvatting');
     // Keep YouTube from treating clicks and keys inside the popover as its own.
     isolateEvents(this.ui.host, ['click', 'mousedown', 'keydown', 'wheel']);
     document.body.append(this.ui.host);
@@ -74,6 +74,8 @@ export class Popover {
     if (!this.ui || !this.session) return;
     const videoId = this.session.videoId;
     const session = this.session;
+    const t = messages(this.speech?.settings?.interfaceTaal);
+    this.ui.host.setAttribute('aria-label', t.extension.playerButton);
     renderView(
       this.ui.root,
       session.state,
@@ -97,7 +99,8 @@ export class Popover {
         onVoiceChange: (uri) => void this.speech?.setVoice(uri),
       },
       {
-        seekLabel: 'Open de video op',
+        seekLabel: t.extension.openVideoAt,
+        t,
         speech: this.speech
           ? {
               available: this.speech.available,

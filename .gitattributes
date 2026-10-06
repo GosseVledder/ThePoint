@@ -3,3 +3,5 @@
 *.bat text eol=crlf
 *.cmd text eol=crlf
 *.jar binary
+*.apk binary
+*.zip binary

@@ -14,6 +14,7 @@ export default defineContentScript({
     let panel: WatchPanel | null = null;
     const thumbs = new ThumbnailButtons();
     thumbs.setEnabled(settings.actief);
+    thumbs.setLanguage(settings.interfaceTaal);
     const stopTheme = watchTheme();
 
     const refreshCached = async () => thumbs.setCached(await cachedVideoIds(settings.taal));
@@ -35,6 +36,7 @@ export default defineContentScript({
       settings = s;
       panel?.updateSettings(s);
       thumbs.setEnabled(s.actief);
+      thumbs.setLanguage(s.interfaceTaal);
       if (languageChanged) void refreshCached();
     });
 

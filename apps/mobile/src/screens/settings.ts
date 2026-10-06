@@ -1,7 +1,14 @@
 // Settings: AI service, keys and models (with "Test verbinding"), language, the
 // video fallback, read aloud and the cache. Every change is saved directly.
 import { MODEL_SUGGESTIONS } from '@the-point/core/engine/config';
-import { languageName, LANGUAGES } from '@the-point/core/engine/prompt';
+import { LANGUAGES } from '@the-point/core/engine/prompt';
+import {
+  errorMessage,
+  messages,
+  UI_LANGUAGE_NAMES,
+  UI_LANGUAGES,
+  type UiLang,
+} from '@the-point/core/i18n/messages';
 import { PROVIDERS } from '@the-point/core/engine/summarize';
 import type { ProviderId } from '@the-point/core/engine/types';
 import { toErrorInfo } from '@the-point/core/job';
@@ -30,13 +37,19 @@ function debounce<A extends unknown[]>(fn: (...a: A) => void, ms: number): (...a
 }
 
 export function settingsScreen(app: App): Screen {
-  const el = h('div', { class: 'screen settings' }, h('p', { class: 'hint' }, 'Laden…'));
+  const el = h(
+    'div',
+    { class: 'screen settings' },
+    h('p', { class: 'hint' }, app.t.settings.loading),
+  );
   let refreshVoices = () => {};
   void build(app, el).then((r) => (refreshVoices = r));
-  return { title: 'Instellingen', el, refresh: () => refreshVoices() };
+  return { title: app.t.settings.title, el, refresh: () => refreshVoices() };
 }
 
 async function build(app: App, el: HTMLElement): Promise<() => void> {
+  const t = app.t;
+  const T = t.settings;
   let s: Settings = await app.settings.get();
   const keys = await app.keys.get();
   const save = async (patch: Partial<Settings>) => {
@@ -71,6 +84,21 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
 
   for (const p of PROVIDER_IDS) sections[p] = providerSection(app, p, keys[p], () => s, save);
 
+  // Interface language (each in its own name); changing it rebuilds the screen.
+  const interfaceTaal = h(
+    'select',
+    {
+      onChange: async (e: Event) => {
+        const lang = (e.target as HTMLSelectElement).value as UiLang;
+        await save({ interfaceTaal: lang });
+        app.setLanguage(lang);
+      },
+    },
+    ...UI_LANGUAGES.map((code) =>
+      h('option', { value: code, selected: code === s.interfaceTaal }, UI_LANGUAGE_NAMES[code]),
+    ),
+  );
+
   // Summary language
   const taal = h(
     'select',
@@ -81,7 +109,7 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
       },
     },
     ...Object.keys(LANGUAGES).map((code) =>
-      h('option', { value: code, selected: code === s.taal }, languageName(code)),
+      h('option', { value: code, selected: code === s.taal }, t.languageNames[code] ?? code),
     ),
   );
 
@@ -116,7 +144,8 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
   });
   const fillVoices = () => {
     const chosen = app.speaker.voiceFor(s.taal, s.stemmen[s.taal]);
-    const groups = groupVoices(app.speaker.voices, s.taal, languageName(s.taal));
+    const naam = t.languageNames[s.taal] ?? s.taal;
+    const groups = groupVoices(app.speaker.voices, s.taal, naam, t.view.otherLanguages);
     voiceSelect.replaceChildren(
       ...(groups.length
         ? groups.map((g) =>
@@ -128,10 +157,11 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
               ),
             ),
           )
-        : [h('option', { value: '' }, 'Geen stemmen gevonden')]),
+        : [h('option', { value: '' }, T.noVoicesFound)]),
     );
   };
-  const rateOut = h('output', {}, `${s.spreeksnelheid.toFixed(2)}×`);
+  const speed = (v: number) => `${v.toLocaleString(t.locale, { minimumFractionDigits: 2 })}×`;
+  const rateOut = h('output', {}, speed(s.spreeksnelheid));
   const rate = h('input', {
     type: 'range',
     min: '0.75',
@@ -139,27 +169,27 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
     step: '0.05',
     value: String(s.spreeksnelheid),
     onInput: (e: Event) =>
-      (rateOut.textContent = `${Number((e.target as HTMLInputElement).value).toFixed(2)}×`),
+      (rateOut.textContent = speed(Number((e.target as HTMLInputElement).value))),
     onChange: (e: Event) =>
       void save({ spreeksnelheid: Number((e.target as HTMLInputElement).value) }),
   });
   const testVoice = () =>
     void app.speaker
-      .speakText(s.taal === 'nl' ? 'Dit is een test van het voorlezen.' : 'This is a test.', {
+      .speakText(messages(s.taal).speech.sample, {
         taal: s.taal,
         rate: s.spreeksnelheid,
         voiceUri: s.stemmen[s.taal],
       })
-      .catch((e) => app.toast(`Voorlezen mislukt: ${String(e)}`));
+      .catch((e) => app.toast(T.speechFailed(String(e))));
 
   // Cache
   const count = h('span', {}, '…');
   const updateCount = async () => {
     const n = (await app.cache.recent()).length;
-    count.textContent = n === 1 ? '1 samenvatting' : `${n} samenvattingen`;
+    count.textContent = T.summaryCount(n);
   };
   const clear = async () => {
-    if (!window.confirm('Alle opgeslagen samenvattingen wissen?')) return;
+    if (!window.confirm(T.confirmClear)) return;
     await app.cache.clear();
     await updateCount();
   };
@@ -168,51 +198,42 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
     h(
       'section',
       {},
-      h('h2', {}, 'AI-dienst'),
-      h('div', { class: 'radio-row', role: 'radiogroup', 'aria-label': 'AI-dienst' }, ...radios),
+      h('h2', {}, T.languageHeading),
+      h('label', { class: 'field' }, h('span', {}, T.interfaceLanguage), interfaceTaal),
+      h('label', { class: 'field' }, h('span', {}, T.summaryLanguage), taal),
+    ),
+    h(
+      'section',
+      {},
+      h('h2', {}, T.aiService),
+      h('div', { class: 'radio-row', role: 'radiogroup', 'aria-label': T.aiService }, ...radios),
     ),
     ...PROVIDER_IDS.map((p) => sections[p]!),
     h(
       'section',
       {},
-      h('h2', {}, 'Samenvatting'),
-      h('label', { class: 'field' }, h('span', {}, 'Taal van de samenvatting'), taal),
-    ),
-    h(
-      'section',
-      {},
-      h('h2', {}, "Video's zonder transcript"),
+      h('h2', {}, T.noTranscriptHeading),
       h(
         'label',
         { class: 'check' },
         fallback,
-        h(
-          'span',
-          {},
-          'Gemini de video zelf laten bekijken',
-          h('small', {}, "Trager en duurder. Vereist een Gemini-sleutel; alleen openbare video's."),
-        ),
+        h('span', {}, T.fallbackShort, h('small', {}, T.fallbackHintShort)),
       ),
-      h(
-        'label',
-        { class: 'field' },
-        h('span', {}, 'Eerst bevestiging vragen vanaf (minuten)'),
-        minutes,
-      ),
+      h('label', { class: 'field' }, h('span', {}, T.confirmFromMinutes), minutes),
     ),
     h(
       'section',
       {},
-      h('h2', {}, 'Voorlezen'),
-      h('label', { class: 'field' }, h('span', {}, 'Stem'), voiceSelect),
-      h('label', { class: 'field' }, h('span', {}, 'Snelheid ', rateOut), rate),
-      h('div', { class: 'row' }, h('button', { onClick: testVoice }, 'Test stem')),
+      h('h2', {}, T.readAloudHeading),
+      h('label', { class: 'field' }, h('span', {}, T.voice), voiceSelect),
+      h('label', { class: 'field' }, h('span', {}, `${T.speed} `, rateOut), rate),
+      h('div', { class: 'row' }, h('button', { onClick: testVoice }, T.testVoice)),
     ),
     h(
       'section',
       {},
-      h('h2', {}, 'Opgeslagen samenvattingen'),
-      h('div', { class: 'row' }, count, h('button', { onClick: () => void clear() }, 'Wissen')),
+      h('h2', {}, T.savedSummaries),
+      h('div', { class: 'row' }, count, h('button', { onClick: () => void clear() }, T.clear)),
     ),
   );
   updateSections();
@@ -229,13 +250,14 @@ function providerSection(
   save: (patch: Partial<Settings>) => Promise<void>,
 ): HTMLElement {
   const info = PROVIDER_INFO[p];
+  const T = app.t.settings;
   const keyInput = h('input', {
     type: 'password',
     autocomplete: 'off',
     spellcheck: 'false',
     placeholder: info.placeholder,
     value: key,
-    'aria-label': `API-sleutel ${info.name}`,
+    'aria-label': T.apiKeyOf(info.name),
   });
   keyInput.addEventListener(
     'input',
@@ -248,10 +270,10 @@ function providerSection(
       onClick: () => {
         const show = keyInput.type === 'password';
         keyInput.type = show ? 'text' : 'password';
-        toggle.textContent = show ? 'Verberg' : 'Toon';
+        toggle.textContent = show ? T.hide : T.show;
       },
     },
-    'Toon',
+    T.show,
   );
 
   const listId = `models-${p}`;
@@ -259,7 +281,7 @@ function providerSection(
     list: listId,
     spellcheck: 'false',
     value: current().models[p],
-    'aria-label': `Model ${info.name}`,
+    'aria-label': T.modelOf(info.name),
   });
   model.addEventListener(
     'input',
@@ -277,11 +299,11 @@ function providerSection(
     const apiKey = keyInput.value.trim();
     if (!apiKey) {
       result.className = 'test-result bad';
-      result.textContent = 'Vul eerst een API-sleutel in.';
+      result.textContent = T.fillKeyFirst;
       return;
     }
     result.className = 'test-result';
-    result.textContent = 'Bezig…';
+    result.textContent = T.busy;
     try {
       await app.keys.set(p, apiKey);
       await PROVIDERS[p].testConnection({
@@ -291,10 +313,10 @@ function providerSection(
         fetch: nativeFetch,
       });
       result.className = 'test-result ok';
-      result.textContent = 'Verbinding werkt';
+      result.textContent = T.testOkShort;
     } catch (e) {
       result.className = 'test-result bad';
-      result.textContent = toErrorInfo(e).message;
+      result.textContent = errorMessage(toErrorInfo(e), app.t);
     }
   };
 
@@ -305,27 +327,27 @@ function providerSection(
     h(
       'label',
       { class: 'field' },
-      h('span', {}, 'API-sleutel'),
+      h('span', {}, T.apiKey),
       h('span', { class: 'key-row' }, keyInput, toggle),
       h(
         'small',
         {},
-        'Maak een sleutel aan op ',
+        T.keyHintDevice[0],
         h('a', { href: info.url }, new URL(info.url).hostname),
-        '. De sleutel staat versleuteld op dit toestel.',
+        T.keyHintDevice[1],
       ),
     ),
     h(
       'label',
       { class: 'field' },
-      h('span', {}, 'Model'),
+      h('span', {}, T.model),
       model,
       h('datalist', { id: listId }, ...MODEL_SUGGESTIONS[p].map((m) => h('option', { value: m }))),
     ),
     h(
       'div',
       { class: 'row' },
-      h('button', { onClick: () => void test() }, 'Test verbinding'),
+      h('button', { onClick: () => void test() }, T.testConnection),
       result,
     ),
   );

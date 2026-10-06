@@ -15,6 +15,7 @@
     "dev:edge": "npm run dev:edge -w @the-point/extension",
     "build": "npm run build -w @the-point/extension",
     "zip": "npm run zip -w @the-point/extension",
+    "package:extension": "node scripts/package-extension.mjs",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
     "format": "prettier --write .",

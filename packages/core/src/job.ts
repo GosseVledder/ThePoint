@@ -15,7 +15,7 @@ import type { TranscriptResult, VideoInfo } from './youtube/transcript';
 export type SummaryStep =
   'cache' | 'transcript' | 'samenvatten' | 'deel' | 'samenvoegen' | 'herstel' | 'video';
 
-export type ErrorCode = EngineErrorCode | 'internal';
+export type ErrorCode = EngineErrorCode | 'internal' | 'extension_reloaded';
 
 export interface ErrorInfo {
   code: ErrorCode;

@@ -116,7 +116,8 @@ export const speaker = new Speaker();
 export class SpeechControl {
   speakingId: SpeechId | null = null;
   voices: SpeechSynthesisVoice[] = [];
-  private settings: Settings | null = null;
+  /** Current settings (also the interface language of the popover). */
+  settings: Settings | null = null;
   private unsubscribe: (() => void) | null = null;
   private lastSummary: Summary | null = null;
   private disposed = false;

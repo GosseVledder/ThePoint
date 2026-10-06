@@ -150,7 +150,7 @@ export class SummarySession {
 
 function extensionReloaded(e: unknown) {
   return {
-    code: 'internal' as const,
+    code: 'extension_reloaded' as const,
     message: 'De extensie is bijgewerkt of opnieuw geladen. Vernieuw de pagina.',
     details: String(e),
   };

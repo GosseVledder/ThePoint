@@ -20,7 +20,8 @@ import {
 } from '../storage/cache';
 import { appendDebugLog, clearDebugLog, getDebugLog } from '../storage/debuglog';
 import { getApiKeys, migrateLegacyKeys } from '../storage/secrets';
-import { getSettings, type Settings } from '../storage/settings';
+import { getSettings, onSettingsChanged, type Settings } from '../storage/settings';
+import { messages } from '@the-point/core/i18n/messages';
 import { installYoutubeRequestRules } from '../youtube/requestRules';
 
 type Listener = (event: PortEvent) => void;
@@ -74,6 +75,12 @@ export default defineBackground(() => {
   browser.action.onClicked.addListener(() => {
     void browser.runtime.openOptionsPage();
   });
+
+  // Toolbar tooltip in the interface language.
+  const setTitle = (s: Settings) =>
+    void browser.action.setTitle({ title: messages(s.interfaceTaal).extension.actionTitle });
+  void getSettings().then(setTitle);
+  onSettingsChanged(setTitle);
 });
 
 async function handleRuntime(msg: RuntimeRequest): Promise<unknown> {

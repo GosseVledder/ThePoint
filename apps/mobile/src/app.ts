@@ -1,4 +1,5 @@
 // What every screen gets: the stores, the speaker and navigation.
+import type { Messages } from '@the-point/core/i18n/messages';
 import type { Speaker } from './speech';
 import type { KeyStore, SettingsStore, SummaryCache } from './storage/stores';
 
@@ -12,6 +13,10 @@ export interface App {
   /** One screen back (header arrow and Android back); leaves the app on home. */
   back(): void;
   toast(message: string): void;
+  /** Interface texts in the chosen interface language. */
+  t: Messages;
+  /** Switch the interface language and rebuild the current screen. */
+  setLanguage(lang: string): void;
   /** Title-bar toggle: show the YouTube player above a summary. Off at app start. */
   playerOn: boolean;
   setPlayerOn(on: boolean): void;

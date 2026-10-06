@@ -1,6 +1,14 @@
 import { MODEL_SUGGESTIONS } from '@the-point/core/engine/config';
-import { languageName, LANGUAGES } from '@the-point/core/engine/prompt';
+import { LANGUAGES } from '@the-point/core/engine/prompt';
 import type { ProviderId } from '@the-point/core/engine/types';
+import {
+  errorMessage,
+  messages,
+  UI_LANGUAGE_NAMES,
+  UI_LANGUAGES,
+  type Messages,
+  type UiLang,
+} from '@the-point/core/i18n/messages';
 import type { RuntimeRequest, TestConnectionResult } from '../../messages';
 import type { DebugEntry } from '../../storage/debuglog';
 import { getApiKeys, setApiKey } from '../../storage/secrets';
@@ -12,10 +20,33 @@ const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySe
 const send = <T>(msg: RuntimeRequest) => browser.runtime.sendMessage(msg) as Promise<T>;
 const PROVIDERS: ProviderId[] = ['claude', 'gemini'];
 
+/** Interface texts; replaced when the interface language changes. */
+let t: Messages = messages('nl');
+/** Parts of the page that show computed texts and must follow a language change. */
+const onLanguage: (() => void)[] = [];
+
+/** Fill every [data-i18n] element; "keyHintBrowser.0" picks an element of an array. */
+function applyTexts(): void {
+  const lookup = (key: string): string => {
+    const [name, index] = key.split('.');
+    const value = (t.settings as unknown as Record<string, unknown>)[name!];
+    return String(Array.isArray(value) ? value[Number(index)] : (value ?? key));
+  };
+  document.documentElement.lang = t.locale.split('-')[0]!;
+  document.title = t.extension.actionTitle;
+  document.querySelectorAll<HTMLElement>('[data-i18n]').forEach((el) => {
+    el.textContent = lookup(el.dataset.i18n!);
+  });
+  document.querySelectorAll<HTMLElement>('[data-i18n-aria]').forEach((el) => {
+    el.setAttribute('aria-label', lookup(el.dataset.i18nAria!));
+  });
+  onLanguage.forEach((fn) => fn());
+}
+
 let savedTimer: number | undefined;
 function flashSaved(): void {
   const el = $('#saved');
-  el.textContent = 'Opgeslagen';
+  el.textContent = t.settings.saved;
   el.style.opacity = '1';
   window.clearTimeout(savedTimer);
   savedTimer = window.setTimeout(() => (el.style.opacity = '0'), 1500);
@@ -27,15 +58,40 @@ async function save(patch: Partial<Settings>): Promise<void> {
 }
 
 function debounce<A extends unknown[]>(fn: (...a: A) => void, ms: number): (...a: A) => void {
-  let t: number | undefined;
+  let timer: number | undefined;
   return (...a) => {
-    window.clearTimeout(t);
-    t = window.setTimeout(() => fn(...a), ms);
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => fn(...a), ms);
   };
 }
 
+const option = (value: string, text: string) =>
+  Object.assign(document.createElement('option'), { value, textContent: text });
+
 async function init(): Promise<void> {
   const [s, keys] = await Promise.all([getSettings(), getApiKeys()]);
+  t = messages(s.interfaceTaal);
+
+  // Languages: the interface language in its own name, summary languages in the
+  // interface language.
+  const ui = $<HTMLSelectElement>('#interfaceTaal');
+  ui.replaceChildren(...UI_LANGUAGES.map((code) => option(code, UI_LANGUAGE_NAMES[code])));
+  ui.value = s.interfaceTaal;
+  ui.addEventListener('change', async () => {
+    t = messages(ui.value);
+    applyTexts();
+    await save({ interfaceTaal: ui.value as UiLang });
+  });
+  const taal = $<HTMLSelectElement>('#taal');
+  const fillLanguages = () => {
+    const current = taal.value || s.taal;
+    taal.replaceChildren(
+      ...Object.keys(LANGUAGES).map((code) => option(code, t.languageNames[code] ?? code)),
+    );
+    taal.value = current;
+  };
+  onLanguage.push(fillLanguages);
+  taal.addEventListener('change', () => void save({ taal: taal.value }));
 
   // Provider
   document.querySelectorAll<HTMLInputElement>('input[name="provider"]').forEach((r) => {
@@ -75,11 +131,12 @@ async function init(): Promise<void> {
   }
 
   document.querySelectorAll<HTMLButtonElement>('[data-toggle]').forEach((b) => {
+    const input = $<HTMLInputElement>(`#${b.dataset.toggle}`);
+    const label = () => (b.textContent = input.type === 'password' ? t.settings.show : t.settings.hide);
+    onLanguage.push(label);
     b.addEventListener('click', () => {
-      const input = $<HTMLInputElement>(`#${b.dataset.toggle}`);
-      const show = input.type === 'password';
-      input.type = show ? 'text' : 'password';
-      b.textContent = show ? 'Verberg' : 'Toon';
+      input.type = input.type === 'password' ? 'text' : 'password';
+      label();
     });
   });
 
@@ -89,7 +146,7 @@ async function init(): Promise<void> {
       const out = $(`#test-${p}`);
       b.disabled = true;
       out.className = 'test-result';
-      out.textContent = 'Bezig…';
+      out.textContent = t.settings.busy;
       const res = await send<TestConnectionResult>({
         type: 'testConnection',
         provider: p,
@@ -102,25 +159,16 @@ async function init(): Promise<void> {
       b.disabled = false;
       if (res.ok) {
         out.className = 'test-result ok';
-        out.textContent = '✓ Verbinding werkt en het model bestaat.';
+        out.textContent = t.settings.testOk;
       } else {
         out.className = 'test-result error';
-        out.textContent = `✗ ${res.error.message}`;
+        out.textContent = `✗ ${errorMessage(res.error, t)}`;
         out.title = ('details' in res.error ? res.error.details : '') ?? '';
       }
     });
   });
 
   // Summary options
-  const taal = $<HTMLSelectElement>('#taal');
-  taal.replaceChildren(
-    ...Object.entries(LANGUAGES).map(([code, name]) =>
-      Object.assign(document.createElement('option'), { value: code, textContent: name }),
-    ),
-  );
-  taal.value = s.taal;
-  taal.addEventListener('change', () => void save({ taal: taal.value }));
-
   for (const id of [
     'automatisch',
     'autoplayPauzeren',
@@ -145,58 +193,54 @@ async function init(): Promise<void> {
     }, 400),
   );
 
-  // Read aloud
-  await initSpeech(s);
-
   // Cache
-  const refreshCount = async () => {
-    const { aantal } = await send<{ aantal: number }>({ type: 'cacheStats' });
-    $('#cache-count').textContent =
-      aantal === 1 ? '1 samenvatting opgeslagen' : `${aantal} samenvattingen opgeslagen`;
+  let aantal: number | null = null;
+  const showCount = () => {
+    if (aantal !== null) $('#cache-count').textContent = t.settings.cacheCount(aantal);
   };
+  const refreshCount = async () => {
+    aantal = (await send<{ aantal: number }>({ type: 'cacheStats' })).aantal;
+    showCount();
+  };
+  onLanguage.push(showCount);
   void refreshCount();
   $('#clear-cache').addEventListener('click', async () => {
-    if (!confirm('Alle opgeslagen samenvattingen wissen?')) return;
+    if (!confirm(t.settings.confirmClear)) return;
     await send({ type: 'clearCache' });
     await refreshCount();
   });
 
   // Debug log
-  $('#show-log').addEventListener('click', async () => {
+  let logShown = false;
+  const showLog = async () => {
     const log = $('#log');
     const entries = await send<DebugEntry[]>({ type: 'getDebugLog' });
     log.hidden = false;
+    logShown = true;
     if (entries.length === 0) {
-      log.textContent = 'Nog geen aanroepen gelogd.';
+      log.textContent = t.settings.logEmpty;
       return;
     }
     const table = document.createElement('table');
-    const head = [
-      'Tijd',
-      'Video',
-      'Stap',
-      'Provider',
-      'Model',
-      'Invoer (tekens)',
-      'Duur',
-      'Tokens in/uit',
-      'Fout',
-    ];
     table
       .createTHead()
       .insertRow()
-      .append(...head.map((t) => Object.assign(document.createElement('th'), { textContent: t })));
+      .append(
+        ...t.settings.logHead.map((h) =>
+          Object.assign(document.createElement('th'), { textContent: h }),
+        ),
+      );
     const body = table.createTBody();
     for (const e of entries.slice().reverse()) {
       const row = body.insertRow();
       const cells = [
-        new Date(e.tijd).toLocaleString('nl-NL'),
+        new Date(e.tijd).toLocaleString(t.locale),
         e.videoId,
         e.stap,
         e.provider,
         e.model,
-        e.invoerTekens.toLocaleString('nl-NL'),
-        `${(e.duurMs / 1000).toFixed(1)} s`,
+        e.invoerTekens.toLocaleString(t.locale),
+        `${(e.duurMs / 1000).toLocaleString(t.locale, { maximumFractionDigits: 1 })} s`,
         e.usage ? `${e.usage.inputTokens ?? '–'} / ${e.usage.outputTokens ?? '–'}` : '–',
         e.fout ?? '',
       ];
@@ -207,22 +251,19 @@ async function init(): Promise<void> {
       });
     }
     log.replaceChildren(table);
-  });
+  };
+  onLanguage.push(() => logShown && void showLog());
+  $('#show-log').addEventListener('click', () => void showLog());
   $('#clear-log').addEventListener('click', async () => {
     await send({ type: 'clearDebugLog' });
     $('#log').hidden = true;
+    logShown = false;
   });
-}
 
-const SAMPLE: Record<string, string> = {
-  nl: 'Dit is een voorbeeld van hoe de samenvatting klinkt.',
-  en: 'This is an example of how the summary sounds.',
-  de: 'Dies ist ein Beispiel dafür, wie die Zusammenfassung klingt.',
-  fr: 'Voici un exemple de la façon dont le résumé sonne.',
-  es: 'Este es un ejemplo de cómo suena el resumen.',
-  it: 'Questo è un esempio di come suona il riassunto.',
-  pt: 'Este é um exemplo de como o resumo soa.',
-};
+  // Read aloud
+  await initSpeech(s);
+  applyTexts();
+}
 
 async function initSpeech(initial: Settings): Promise<void> {
   const select = $<HTMLSelectElement>('#stem');
@@ -230,21 +271,25 @@ async function initSpeech(initial: Settings): Promise<void> {
   const rate = $<HTMLInputElement>('#spreeksnelheid');
   const rateOut = $<HTMLOutputElement>('#spreeksnelheid-waarde');
   const test = $<HTMLButtonElement>('#test-stem');
-  const showRate = (v: number) => (rateOut.textContent = `${v.toFixed(2).replace('.', ',')}×`);
+  const showRate = () =>
+    (rateOut.textContent = `${Number(rate.value).toLocaleString(t.locale, { minimumFractionDigits: 2 })}×`);
   rate.value = String(initial.spreeksnelheid);
-  showRate(initial.spreeksnelheid);
+  onLanguage.push(showRate);
 
   if (!speaker.available) {
     select.disabled = true;
     test.disabled = true;
-    hint.textContent = 'Voorlezen wordt niet ondersteund in deze browser.';
+    onLanguage.push(() => (hint.textContent = t.view.ttsUnsupported));
     return;
   }
   const voices = await speaker.voices();
 
-  const fill = (s: Settings) => {
+  let current = initial;
+  const fill = () => {
+    const s = current;
     const chosen = pickVoice(voices, s.stemmen[s.taal], s.taal);
-    const groups = groupVoices(voices, s.taal, languageName(s.taal));
+    const naam = t.languageNames[s.taal] ?? s.taal;
+    const groups = groupVoices(voices, s.taal, naam, t.view.otherLanguages);
     select.replaceChildren(
       ...groups.map((g) => {
         const og = document.createElement('optgroup');
@@ -261,23 +306,27 @@ async function initSpeech(initial: Settings): Promise<void> {
         return og;
       }),
     );
-    const mine = groups.find((g) => g.label === languageName(s.taal))?.voices.length ?? 0;
+    const mine = groups.find((g) => g.label === naam)?.voices.length ?? 0;
     hint.textContent =
       voices.length === 0
-        ? 'Geen stemmen gevonden; de standaardstem van de browser wordt gebruikt.'
+        ? t.settings.noVoicesBrowser
         : mine === 0
-          ? `Geen stem voor het ${languageName(s.taal)} gevonden in deze browser. Installeer in Windows het taalpakket (Instellingen › Tijd en taal › Spraak) of gebruik Edge.`
-          : `${mine} ${mine === 1 ? 'stem' : 'stemmen'} in het ${languageName(s.taal)}; stemmen verschillen per browser.`;
+          ? t.settings.noVoiceFor(naam)
+          : t.settings.voicesFor(mine, naam);
   };
-  fill(initial);
+  onLanguage.push(fill);
   // The summary language decides which voice is shown as chosen.
-  $<HTMLSelectElement>('#taal').addEventListener('change', async () => fill(await getSettings()));
+  $<HTMLSelectElement>('#taal').addEventListener('change', async () => {
+    current = await getSettings();
+    fill();
+  });
 
   select.addEventListener('change', async () => {
     const cur = await getSettings();
     await save({ stemmen: { ...cur.stemmen, [cur.taal]: select.value } });
+    current = await getSettings();
   });
-  rate.addEventListener('input', () => showRate(Number(rate.value)));
+  rate.addEventListener('input', showRate);
   rate.addEventListener(
     'change',
     () => void save({ spreeksnelheid: Math.round(Number(rate.value) * 100) / 100 }),
@@ -293,15 +342,15 @@ async function initSpeech(initial: Settings): Promise<void> {
     const voice = voices.find((v) => v.voiceURI === select.value) ?? null;
     const lang = voice?.lang.split('-')[0] ?? cur.taal;
     testing = true;
-    test.textContent = 'Stoppen';
-    speaker.play([{ id: 'kritiek', text: SAMPLE[lang] ?? SAMPLE.nl! }], {
+    test.textContent = t.settings.stop;
+    speaker.play([{ id: 'kritiek', text: messages(lang).speech.sample }], {
       voice,
       lang: cur.taal,
       rate: Number(rate.value),
       onItem: () => undefined,
       onEnd: () => {
         testing = false;
-        test.textContent = 'Test stem';
+        test.textContent = t.settings.testVoice;
       },
     });
   });
