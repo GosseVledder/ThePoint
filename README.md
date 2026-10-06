@@ -11,6 +11,10 @@ The Point bestaat uit twee delen met dezelfde samenvattingsengine:
 
 Alleen voor eigen gebruik; je gebruikt je eigen API-sleutel van Anthropic (Claude) of Google (Gemini).
 
+> **📱 Android-app downloaden:** [**ThePoint-0.1.0.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.1.0.apk) (3 MB, Android 7 of nieuwer) — zie [Downloaden en installeren](#downloaden-en-installeren).
+>
+> **🧩 Browserextensie:** zelf bouwen en laden in Chrome of Edge — zie [Installeren](#installeren-uitgepakte-extensie).
+
 ## Browserextensie
 
 ### Wat je krijgt
@@ -65,7 +69,28 @@ Sleutels staan alleen in je browser, in de eigen opslag van de extensie (Indexed
 
 ## Android-app
 
-**Download:** [`apk/ThePoint-0.1.0.apk`](apk/ThePoint-0.1.0.apk) (ondertekende release-build, Android 7 of nieuwer). Open de link op je telefoon, kies *Download* (*View raw*) en installeer; sta daarbij *installeren uit onbekende bronnen* toe voor je browser of bestandsbeheerder. Open de app, tik op het tandwiel en vul je API-sleutel in.
+### Downloaden en installeren
+
+| | |
+|---|---|
+| **Bestand** | [`ThePoint-0.1.0.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.1.0.apk) (ook in de map [`apk/`](apk/)) |
+| **Versie** | 0.1.0 (versionCode 1) |
+| **Vereist** | Android 7.0 of nieuwer |
+| **Grootte** | 3 MB |
+| **SHA-256** | `7428954f6a2e79d4d798d4a273ef537e6c47572ae06458bf90ce9ac517e4d746` |
+
+De APK is een ondertekende release-build; hij staat niet in de Play Store.
+
+1. **Download** de APK op je telefoon: open de link hierboven in Chrome (of download hem op je pc en zet hem via USB of Google Drive op je telefoon).
+2. **Open** het gedownloade bestand (melding of *Bestanden › Downloads*).
+3. Android vraagt toestemming om apps uit deze bron te installeren: kies **Instellingen › Toestaan van deze bron** en ga terug.
+4. Tik op **Installeren**. Play Protect kan waarschuwen voor een onbekende ontwikkelaar; kies *Toch installeren*.
+5. Open **The Point**, tik op het **tandwiel** en vul je API-sleutel van Gemini of Claude in; met *Test verbinding* controleer je hem.
+6. Klaar: in de YouTube-app tik je bij een video op **Delen › The Point**.
+
+**Bijwerken:** installeer een nieuwe APK gewoon over de oude heen; je sleutel, instellingen en samenvattingen blijven bewaard.
+
+Controleren of het bestand ongewijzigd is (optioneel), op Windows: `certutil -hashfile ThePoint-0.1.0.apk SHA256`; op macOS/Linux: `sha256sum ThePoint-0.1.0.apk`. De uitkomst moet gelijk zijn aan de SHA-256 hierboven.
 
 ### Wat je krijgt
 
