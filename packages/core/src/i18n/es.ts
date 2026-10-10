@@ -222,7 +222,7 @@ export const es: Messages = {
     downloading: 'Descargando…',
     opening: 'Abriendo el instalador…',
     installHint:
-      'La primera vez, Android te pide que permitas instalar desde The Point; después la app se reinicia y vuelves a tocar este botón. Tu clave, tus ajustes y tus resúmenes se conservan.',
+      'La primera vez, Android te pide que permitas instalar desde The Point; después, vuelve a tocar este botón si hace falta. Tu clave, tus ajustes y tus resúmenes se conservan.',
     checksumFailed: 'El archivo descargado no coincide (SHA-256). Inténtalo de nuevo.',
     downloadFailed: (e) => `No se pudo descargar: ${e}`,
   },

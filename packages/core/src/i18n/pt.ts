@@ -220,7 +220,7 @@ export const pt: Messages = {
     downloading: 'A transferir…',
     opening: 'A abrir a instalação…',
     installHint:
-      'Na primeira vez, o Android pede-lhe que permita instalações a partir do The Point; depois a app reinicia e toca novamente neste botão. A sua chave, definições e resumos são mantidos.',
+      'Na primeira vez, o Android pede-lhe que permita instalações a partir do The Point; depois, se necessário, toque novamente neste botão. A sua chave, definições e resumos são mantidos.',
     checksumFailed: 'O ficheiro transferido não corresponde (SHA-256). Tente novamente.',
     downloadFailed: (e) => `A transferência falhou: ${e}`,
   },

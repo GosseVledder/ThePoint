@@ -126,7 +126,7 @@ Gebruik bij voorkeur een aparte sleutel met een bestedingslimiet (Anthropic Cons
 
 De app (vanaf 0.5.0) en de extensie (vanaf 0.4.0) zoeken zelf de nieuwste versie op: **Instellingen › Updates › Controleren op updates**. Elke versie staat ook bij de [Releases](https://github.com/GosseVledder/ThePoint/releases).
 
-- **App**: is er een nieuwe versie, tik dan op **Downloaden en installeren**. De app downloadt de APK, controleert de SHA-256 en opent de installatie van Android; bevestig met *Bijwerken*. De eerste keer vraagt Android om installeren via The Point toe te staan; de app start daarna opnieuw en je tikt nog een keer op de knop.
+- **App**: is er een nieuwe versie, tik dan op **Downloaden en installeren**. De app downloadt de APK, controleert de SHA-256 en opent de installatie van Android; bevestig met *Bijwerken*. De eerste keer vraagt Android om installeren via The Point toe te staan; tik daarna zo nodig nog een keer op de knop. Google Play Protect kan voorstellen de app eerst te laten scannen; dat mag, of kies *installeren zonder scannen*.
 - **Extensie**: een uitgepakte extensie kan zichzelf niet vervangen, dus het zijn drie stappen op de instellingenpagina: de zip **downloaden**, hem **uitpakken over de map** van The Point heen (bestanden vervangen) en op **Herladen** klikken. De instellingenpagina opent daarna opnieuw met de nieuwe versie; vernieuw open YouTube-tabs.
 
 Oudere versies werk je met de hand bij: installeer de nieuwe APK over de oude heen, of pak de nieuwe zip uit over de oude map en klik in `chrome://extensions` of `edge://extensions` bij The Point op het herlaadicoon (↻).

@@ -218,7 +218,7 @@ export const en: Messages = {
     downloading: 'Downloading…',
     opening: 'Opening the installer…',
     installHint:
-      'The first time, Android asks you to allow installs from The Point; the app then restarts and you tap this button once more. Your key, settings and summaries are kept.',
+      'The first time, Android asks you to allow installs from The Point; then tap this button again if needed. Your key, settings and summaries are kept.',
     checksumFailed: "The downloaded file doesn't match (SHA-256). Please try again.",
     downloadFailed: (e) => `Download failed: ${e}`,
   },

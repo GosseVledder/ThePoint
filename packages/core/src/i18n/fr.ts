@@ -222,7 +222,7 @@ export const fr: Messages = {
     downloading: 'Téléchargement…',
     opening: "Ouverture de l'installation…",
     installHint:
-      "La première fois, Android vous demande d'autoriser les installations depuis The Point ; l'app redémarre ensuite et vous touchez à nouveau ce bouton. Votre clé, vos paramètres et vos résumés sont conservés.",
+      "La première fois, Android vous demande d'autoriser les installations depuis The Point ; touchez ensuite à nouveau ce bouton si nécessaire. Votre clé, vos paramètres et vos résumés sont conservés.",
     checksumFailed: 'Le fichier téléchargé ne correspond pas (SHA-256). Réessayez.',
     downloadFailed: (e) => `Échec du téléchargement : ${e}`,
   },

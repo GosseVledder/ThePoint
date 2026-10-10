@@ -228,7 +228,7 @@ export const de: Messages = {
     downloading: 'Wird heruntergeladen…',
     opening: 'Installation wird geöffnet…',
     installHint:
-      'Beim ersten Mal bittet Android dich, Installationen über The Point zu erlauben; danach startet die App neu und du tippst noch einmal auf diese Schaltfläche. Schlüssel, Einstellungen und Zusammenfassungen bleiben erhalten.',
+      'Beim ersten Mal bittet Android dich, Installationen über The Point zu erlauben; tippe danach bei Bedarf noch einmal auf diese Schaltfläche. Schlüssel, Einstellungen und Zusammenfassungen bleiben erhalten.',
     checksumFailed: 'Die heruntergeladene Datei stimmt nicht (SHA-256). Bitte versuche es erneut.',
     downloadFailed: (e) => `Herunterladen fehlgeschlagen: ${e}`,
   },

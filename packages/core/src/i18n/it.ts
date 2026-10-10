@@ -220,7 +220,7 @@ export const it: Messages = {
     downloading: 'Download in corso…',
     opening: "Apertura dell'installazione…",
     installHint:
-      "La prima volta Android ti chiede di consentire le installazioni da The Point; poi l'app si riavvia e tocchi di nuovo questo pulsante. Chiave, impostazioni e riassunti vengono mantenuti.",
+      'La prima volta Android ti chiede di consentire le installazioni da The Point; poi, se serve, tocca di nuovo questo pulsante. Chiave, impostazioni e riassunti vengono mantenuti.',
     checksumFailed: 'Il file scaricato non corrisponde (SHA-256). Riprova.',
     downloadFailed: (e) => `Download non riuscito: ${e}`,
   },

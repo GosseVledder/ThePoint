@@ -221,7 +221,7 @@ export const nl: Messages = {
     downloading: 'Downloaden…',
     opening: 'Installatie wordt geopend…',
     installHint:
-      'De eerste keer vraagt Android om installeren via The Point toe te staan; daarna start de app opnieuw en tik je nog een keer op deze knop. Je sleutel, instellingen en samenvattingen blijven bewaard.',
+      'De eerste keer vraagt Android om installeren via The Point toe te staan; tik daarna zo nodig nog een keer op deze knop. Je sleutel, instellingen en samenvattingen blijven bewaard.',
     checksumFailed: 'Het gedownloade bestand klopt niet (SHA-256). Probeer het opnieuw.',
     downloadFailed: (e) => `Downloaden mislukt: ${e}`,
   },
