@@ -81,6 +81,8 @@ export interface Messages {
     readFromHere: string;
     readFromPoint: (n: number) => string;
     seekTo: string;
+    /** Added to the time button's tooltip: how much earlier the jump starts. */
+    leadIn: (seconds: number) => string;
     openAt: string;
   };
 
@@ -128,6 +130,13 @@ export interface Messages {
     pause: string;
     pauseHint: string;
     markers: string;
+    seekMargin: string;
+    seekMarginHint: string;
+    seekSmart: string;
+    seekSeconds: (n: number) => string;
+    seekNone: string;
+    /** Accessible name of the ⓘ buttons. */
+    tipLabel: string;
     readAloudHeading: string;
     readAloudIntro: string;
     voice: string;
@@ -166,6 +175,25 @@ export interface Messages {
     logHead: [string, string, string, string, string, string, string, string, string];
   };
 
+  /** Explanations behind the ⓘ next to each setting (options page and app). */
+  tips: {
+    provider: string;
+    apiKey: string;
+    model: string;
+    auto: string;
+    pause: string;
+    markers: string;
+    seekMargin: string;
+    interfaceLanguage: string;
+    summaryLanguage: string;
+    voice: string;
+    speed: string;
+    fallback: string;
+    confirm: string;
+    updates: string;
+    cache: string;
+    debug: string;
+  };
   /** Update check on the options page and in the app's settings. */
   update: {
     heading: string;

@@ -1,5 +1,6 @@
-// Settings: AI service, keys and models (with "Test verbinding"), language, read aloud,
-// the video fallback and the cache. Every change is saved directly. Same design as the
+// Settings: AI service, keys and models (with "Test verbinding"), jump margin, language,
+// read aloud, the video fallback, the cache and updates; an ⓘ explains each setting.
+// Every change is saved directly. Same design as the
 // extension's options page: grouped cards with switches and stacked fields.
 import { MODEL_SUGGESTIONS } from '@the-point/core/engine/config';
 import { LANGUAGES } from '@the-point/core/engine/prompt';
@@ -8,6 +9,7 @@ import {
   messages,
   UI_LANGUAGE_NAMES,
   UI_LANGUAGES,
+  type Messages,
   type UiLang,
 } from '@the-point/core/i18n/messages';
 import { PROVIDERS } from '@the-point/core/engine/summarize';
@@ -17,6 +19,9 @@ import { h } from '@the-point/core/ui/render';
 import { groupVoices, voiceLabel } from '@the-point/core/ui/speechText';
 import type { Settings } from '@the-point/core/settings';
 import type { ReleaseAsset } from '@the-point/core/update';
+import { FIXED_MARGINS } from '@the-point/core/seek';
+import { ICONS } from '@the-point/core/ui/styles';
+import { tooltips } from '@the-point/core/ui/tooltip';
 import type { App, Screen } from '../app';
 import { checkAppUpdate, downloadAndInstall, installedVersion, UpdateError } from '../appUpdate';
 import { nativeFetch } from '../nativeFetch';
@@ -48,31 +53,58 @@ function debounce<A extends unknown[]>(fn: (...a: A) => void, ms: number): (...a
   };
 }
 
+/** ⓘ that shows the explanation `key` from the tips (tap to open, tap elsewhere to close). */
+function tipButton(t: Messages, key: keyof Messages['tips'], topic: string): HTMLButtonElement {
+  const button = h('button', {
+    class: 'tip',
+    html: ICONS.info,
+    'aria-label': `${t.settings.tipLabel}: ${topic}`,
+  });
+  tooltips().bind(button, () => t.tips[key]);
+  return button;
+}
+
+/** A title, with its ⓘ next to it when given. */
+const titleLine = (title: Node | string, tip?: HTMLButtonElement | null) =>
+  tip
+    ? h('span', { class: 'title-line' }, h('span', { class: 'row-title' }, title), tip)
+    : h('span', { class: 'row-title' }, title);
+
 /** A titled group with one card. */
-const group = (title: string, ...children: (Node | null)[]) =>
-  h('section', { class: 'group' }, h('h2', {}, title), h('div', { class: 'card' }, ...children));
+const group = (title: string, tip: HTMLButtonElement | null, ...children: (Node | null)[]) =>
+  h(
+    'section',
+    { class: 'group' },
+    h('div', { class: 'group-head' }, h('h2', {}, title), tip),
+    h('div', { class: 'card' }, ...children),
+  );
 
 /** Label above a full-width control, optional hint below. */
-const field = (title: Node | string, control: Node, hint?: Node | string | null) =>
+const field = (
+  title: Node | string,
+  control: Node,
+  hint?: Node | string | null,
+  tip?: HTMLButtonElement | null,
+) =>
   h(
     'label',
     { class: 'field' },
-    h('span', { class: 'row-title' }, title),
+    titleLine(title, tip),
     control,
     hint ? h('span', { class: 'row-hint' }, hint) : null,
   );
 
 /** A whole-row switch: text on the left, the switch on the right. */
-const switchRow = (title: string, hint: string, input: HTMLInputElement) =>
+const switchRow = (
+  title: string,
+  hint: string,
+  input: HTMLInputElement,
+  tip?: HTMLButtonElement | null,
+) =>
   h(
     'label',
     { class: 'row' },
-    h(
-      'span',
-      { class: 'row-text' },
-      h('span', { class: 'row-title' }, title),
-      h('span', { class: 'row-hint' }, hint),
-    ),
+    h('span', { class: 'row-text' }, titleLine(title, tip), h('span', { class: 'row-hint' }, hint)),
     input,
   );
 
@@ -84,7 +116,13 @@ export function settingsScreen(app: App): Screen {
   );
   let refreshVoices = () => {};
   void build(app, el).then((r) => (refreshVoices = r));
-  return { title: app.t.settings.title, el, refresh: () => refreshVoices() };
+  return {
+    title: app.t.settings.title,
+    el,
+    refresh: () => refreshVoices(),
+    // The bubble lives on <body>; close it when leaving the screen.
+    dispose: () => tooltips().hide(),
+  };
 }
 
 async function build(app: App, el: HTMLElement): Promise<() => void> {
@@ -178,6 +216,27 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
   const minutesField = field(
     T.confirmLonger,
     h('span', { class: 'unit-row' }, minutes, h('span', { class: 'unit' }, T.minutes)),
+    null,
+    tipButton(t, 'confirm', T.confirmLonger),
+  );
+
+  // How much earlier a jump to a takeaway starts.
+  const marge = h(
+    'select',
+    {
+      onChange: (e: Event) => {
+        const value = (e.target as HTMLSelectElement).value;
+        void save({ springMarge: value === 'slim' ? 'slim' : Number(value) });
+      },
+    },
+    h('option', { value: 'slim', selected: s.springMarge === 'slim' }, T.seekSmart),
+    ...FIXED_MARGINS.map((n) =>
+      h(
+        'option',
+        { value: String(n), selected: s.springMarge === n },
+        n ? T.seekSeconds(n) : T.seekNone,
+      ),
+    ),
   );
   const updateMinutes = () => {
     minutes.disabled = !s.geminiTerugval;
@@ -256,16 +315,46 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
   const version = installedVersion();
   const versionText = h('span', {});
   el.replaceChildren(
-    h('section', { class: 'group' }, h('h2', {}, T.aiService), aiCard),
+    h(
+      'section',
+      { class: 'group' },
+      h(
+        'div',
+        { class: 'group-head' },
+        h('h2', {}, T.aiService),
+        tipButton(t, 'provider', T.aiService),
+      ),
+      aiCard,
+    ),
+    group(
+      T.summaryHeading,
+      null,
+      field(T.seekMargin, marge, T.seekMarginHint, tipButton(t, 'seekMargin', T.seekMargin)),
+    ),
     group(
       T.languageHeading,
-      field(T.interfaceLanguage, interfaceTaal),
-      field(T.summaryLanguage, taal),
+      null,
+      field(
+        T.interfaceLanguage,
+        interfaceTaal,
+        null,
+        tipButton(t, 'interfaceLanguage', T.interfaceLanguage),
+      ),
+      field(T.summaryLanguage, taal, null, tipButton(t, 'summaryLanguage', T.summaryLanguage)),
     ),
     group(
       T.readAloudHeading,
-      field(T.voice, voiceSelect),
-      field(h('span', { class: 'title-value' }, h('span', {}, T.speed), rateOut), rate),
+      null,
+      field(T.voice, voiceSelect, null, tipButton(t, 'voice', T.voice)),
+      field(
+        h(
+          'span',
+          { class: 'title-value' },
+          h('span', { class: 'title-line' }, T.speed, tipButton(t, 'speed', T.speed)),
+          rateOut,
+        ),
+        rate,
+      ),
       h(
         'div',
         { class: 'actions' },
@@ -274,15 +363,27 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
     ),
     group(
       T.noTranscriptHeading,
-      switchRow(T.fallbackShort, T.fallbackHintShort, fallback),
+      null,
+      switchRow(
+        T.fallbackShort,
+        T.fallbackHintShort,
+        fallback,
+        tipButton(t, 'fallback', T.fallbackShort),
+      ),
       minutesField,
     ),
     group(
       T.savedSummaries,
+      null,
       h(
         'div',
         { class: 'row' },
-        h('span', { class: 'row-text' }, h('span', { class: 'row-title' }, T.cacheHeading), count),
+        h(
+          'span',
+          { class: 'row-text' },
+          titleLine(T.cacheHeading, tipButton(t, 'cache', T.cacheHeading)),
+          count,
+        ),
         h('button', { class: 'btn danger', onClick: () => void clear() }, T.clear),
       ),
     ),
@@ -386,6 +487,7 @@ function updateGroup(app: App, version: Promise<string | null>): HTMLElement {
 
   return group(
     U.heading,
+    tipButton(app.t, 'updates', U.heading),
     h('div', { class: 'field' }, title, status),
     h('div', { class: 'actions' }, check),
     panel,
@@ -489,8 +591,9 @@ function providerBlock(
         h('a', { href: info.url }, new URL(info.url).hostname),
         T.keyHintDevice[1],
       ),
+      tipButton(app.t, 'apiKey', T.apiKeyOf(info.name)),
     ),
-    field(T.model, model),
+    field(T.model, model, null, tipButton(app.t, 'model', T.modelOf(info.name))),
     h('datalist', { id: listId }, ...MODEL_SUGGESTIONS[p].map((m) => h('option', { value: m }))),
     h(
       'div',

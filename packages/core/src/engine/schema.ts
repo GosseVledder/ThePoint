@@ -10,6 +10,7 @@ const videoType = z.enum([
   'overig',
 ]);
 const zekerheid = z.enum(['feit', 'bewering', 'mening', 'gerucht']);
+const moment = z.enum(['gebeurtenis', 'uitspraak', 'onderwerp']);
 const dichtheid = z.enum(['hoog', 'gemiddeld', 'laag']);
 const kwaliteit = z.enum(['goed', 'matig', 'slecht']);
 
@@ -22,6 +23,7 @@ export const modelOutputSchema = z.object({
       .string()
       .nullable()
       .describe('mm:ss of u:mm:ss, of null als het punt niet aan één moment gebonden is.'),
+    moment: moment.optional(),
   }),
   takeaways: z.array(
     z.object({
@@ -30,6 +32,7 @@ export const modelOutputSchema = z.object({
       zekerheid: zekerheid,
       afgeleid: z.boolean(),
       citaat: z.string().describe('Letterlijk fragment uit het transcript, max. 20 woorden.'),
+      moment: moment.optional(),
     }),
   ),
   inhoudsoordeel: z.object({
@@ -56,6 +59,7 @@ export const summarySchema = z.object({
     zin: z.string(),
     tijd: z.string().nullable(),
     seconden: z.number().nullable(),
+    moment: moment.optional(),
   }),
   takeaways: z.array(
     z.object({
@@ -66,6 +70,7 @@ export const summarySchema = z.object({
       afgeleid: z.boolean(),
       citaat: z.string(),
       onbevestigd: z.boolean(),
+      moment: moment.optional(),
     }),
   ),
   inhoudsoordeel: z.object({ dichtheid: dichtheid, toelichting: z.string() }),

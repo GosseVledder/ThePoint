@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <!-- Texts come from @the-point/core/i18n: data-i18n="<key in settings>" sets the text. -->
+    <!-- Texts come from @the-point/core/i18n: data-i18n="<key in settings>" sets the text;
+         data-tip="<key in tips>" adds an ⓘ with that explanation next to the element. -->
     <header class="topbar">
       <div class="topbar-inner">
         <img class="brand" src="/icon/128.png" alt="" width="36" height="36" />
@@ -24,7 +25,7 @@
 
     <main>
       <section class="group" aria-labelledby="h-ai">
-        <h2 id="h-ai" data-i18n="aiService"></h2>
+        <h2 id="h-ai" data-i18n="aiService" data-tip="provider"></h2>
         <div class="card" id="ai-card">
           <div class="segmented" role="radiogroup" data-i18n-aria="aiService">
             <label class="segment">
@@ -42,7 +43,7 @@
             <div class="provider-head"><h3>Claude</h3></div>
             <div class="row">
               <div class="row-text">
-                <label class="row-title" for="key-claude" data-i18n="apiKey"></label>
+                <label class="row-title" for="key-claude" data-i18n="apiKey" data-tip="apiKey"></label>
                 <p class="row-hint">
                   <span data-i18n="keyHintBrowser.0"></span
                   ><a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer"
@@ -65,7 +66,7 @@
             </div>
             <div class="row">
               <div class="row-text">
-                <label class="row-title" for="model-claude" data-i18n="model"></label>
+                <label class="row-title" for="model-claude" data-i18n="model" data-tip="model"></label>
               </div>
               <div class="row-control wide">
                 <input id="model-claude" list="models-claude" spellcheck="false" />
@@ -89,7 +90,7 @@
             </div>
             <div class="row">
               <div class="row-text">
-                <label class="row-title" for="key-gemini" data-i18n="apiKey"></label>
+                <label class="row-title" for="key-gemini" data-i18n="apiKey" data-tip="apiKey"></label>
                 <p class="row-hint">
                   <span data-i18n="keyHintBrowser.0"></span
                   ><a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer"
@@ -112,7 +113,7 @@
             </div>
             <div class="row">
               <div class="row-text">
-                <label class="row-title" for="model-gemini" data-i18n="model"></label>
+                <label class="row-title" for="model-gemini" data-i18n="model" data-tip="model"></label>
               </div>
               <div class="row-control wide">
                 <input id="model-gemini" list="models-gemini" spellcheck="false" />
@@ -136,24 +137,36 @@
         <div class="card">
           <label class="row">
             <span class="row-text">
-              <span class="row-title" data-i18n="auto"></span>
+              <span class="row-title" data-i18n="auto" data-tip="auto"></span>
               <span class="row-hint" data-i18n="autoHint"></span>
             </span>
             <input type="checkbox" class="switch" role="switch" id="automatisch" />
           </label>
           <label class="row">
             <span class="row-text">
-              <span class="row-title" data-i18n="pause"></span>
+              <span class="row-title" data-i18n="pause" data-tip="pause"></span>
               <span class="row-hint" data-i18n="pauseHint"></span>
             </span>
             <input type="checkbox" class="switch" role="switch" id="autoplayPauzeren" />
           </label>
           <label class="row">
             <span class="row-text">
-              <span class="row-title" data-i18n="markers"></span>
+              <span class="row-title" data-i18n="markers" data-tip="markers"></span>
             </span>
             <input type="checkbox" class="switch" role="switch" id="markeringen" />
           </label>
+          <div class="row">
+            <div class="row-text">
+              <label
+                class="row-title"
+                for="springMarge"
+                data-i18n="seekMargin"
+                data-tip="seekMargin"
+              ></label>
+              <span class="row-hint" data-i18n="seekMarginHint"></span>
+            </div>
+            <div class="row-control"><select id="springMarge"></select></div>
+          </div>
         </div>
       </section>
 
@@ -162,13 +175,23 @@
         <div class="card">
           <div class="row">
             <div class="row-text">
-              <label class="row-title" for="interfaceTaal" data-i18n="interfaceLanguage"></label>
+              <label
+                class="row-title"
+                for="interfaceTaal"
+                data-i18n="interfaceLanguage"
+                data-tip="interfaceLanguage"
+              ></label>
             </div>
             <div class="row-control"><select id="interfaceTaal"></select></div>
           </div>
           <div class="row">
             <div class="row-text">
-              <label class="row-title" for="taal" data-i18n="summaryLanguage"></label>
+              <label
+                class="row-title"
+                for="taal"
+                data-i18n="summaryLanguage"
+                data-tip="summaryLanguage"
+              ></label>
             </div>
             <div class="row-control"><select id="taal"></select></div>
           </div>
@@ -181,14 +204,14 @@
           <p class="card-intro" data-i18n="readAloudIntro"></p>
           <div class="row">
             <div class="row-text">
-              <label class="row-title" for="stem" data-i18n="voice"></label>
+              <label class="row-title" for="stem" data-i18n="voice" data-tip="voice"></label>
               <p class="row-hint" id="stem-hint"></p>
             </div>
             <div class="row-control wide"><select id="stem"></select></div>
           </div>
           <div class="row">
             <div class="row-text">
-              <label class="row-title" for="spreeksnelheid" data-i18n="speed"></label>
+              <label class="row-title" for="spreeksnelheid" data-i18n="speed" data-tip="speed"></label>
             </div>
             <div class="row-control">
               <input id="spreeksnelheid" type="range" min="0.75" max="1.5" step="0.05" />
@@ -204,14 +227,19 @@
         <div class="card">
           <label class="row">
             <span class="row-text">
-              <span class="row-title" data-i18n="fallback"></span>
+              <span class="row-title" data-i18n="fallback" data-tip="fallback"></span>
               <span class="row-hint" data-i18n="fallbackHint"></span>
             </span>
             <input type="checkbox" class="switch" role="switch" id="geminiTerugval" />
           </label>
           <div class="row" id="confirm-row">
             <div class="row-text">
-              <label class="row-title" for="bevestigVanafMinuten" data-i18n="confirmLonger"></label>
+              <label
+                class="row-title"
+                for="bevestigVanafMinuten"
+                data-i18n="confirmLonger"
+                data-tip="confirm"
+              ></label>
             </div>
             <div class="row-control">
               <input id="bevestigVanafMinuten" type="number" min="1" max="600" step="1" />
@@ -222,7 +250,7 @@
       </section>
 
       <section class="group" aria-labelledby="h-update">
-        <h2 id="h-update" data-i18n="update:heading"></h2>
+        <h2 id="h-update" data-i18n="update:heading" data-tip="updates"></h2>
         <div class="card">
           <div class="row">
             <div class="row-text">
@@ -265,7 +293,7 @@
           </summary>
           <div class="row">
             <div class="row-text">
-              <span class="row-title" data-i18n="cacheHeading"></span>
+              <span class="row-title" data-i18n="cacheHeading" data-tip="cache"></span>
               <span class="row-hint" data-i18n="cacheText"></span>
               <span class="row-hint strong" id="cache-count">…</span>
             </div>
@@ -275,7 +303,7 @@
           </div>
           <label class="row">
             <span class="row-text">
-              <span class="row-title" data-i18n="debugHeading"></span>
+              <span class="row-title" data-i18n="debugHeading" data-tip="debug"></span>
               <span class="row-hint" data-i18n="debugCheck"></span>
             </span>
             <input type="checkbox" class="switch" role="switch" id="debugLog" />

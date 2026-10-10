@@ -68,6 +68,14 @@ Geef per takeaway aan hoe stellig de inhoud is:
 - "gerucht": de spreker noemt het zelf een gerucht, lek of onbevestigd bericht. Benoem dat in de zin.
 Kies bij twijfel de minder stellige categorie.
 
+# Soort moment
+
+Geef bij elke takeaway en bij het kritieke punt aan wat er op de tijdmarkering gebeurt ("moment"):
+- "gebeurtenis": er gebeurt iets in beeld of in de handeling, zoals een crash, doelpunt, ongeluk, inhaalactie, demonstratie, experiment of onthulling. Het commentaar in het transcript volgt vaak pas op de gebeurtenis.
+- "uitspraak": iemand zegt, beweert, beantwoordt of legt iets uit; het punt is wat er gezegd wordt.
+- "onderwerp": een nieuw onderwerp, hoofdstuk of stap begint op dit moment.
+De video start bij een tijdmarkering iets eerder, bij een gebeurtenis het meest, zodat de kijker die ziet gebeuren. Kies bij twijfel tussen "gebeurtenis" en "uitspraak" voor "gebeurtenis".
+
 # Het kritieke punt
 
 - Eén zin, maximaal 35 woorden, met dezelfde formuleerregels als een takeaway.
@@ -265,7 +273,7 @@ export function buildMergeMessage(meta: VideoMeta, partsJson: string[]): string 
     `Het transcript van deze video was te lang voor één keer en is in ${partsJson.length} delen geanalyseerd. Hieronder staan de resultaten per deel, in volgorde.`,
     'Voeg ze samen tot één eindresultaat volgens dezelfde regels:',
     '- Verwijder takeaways die hetzelfde punt maken; houd de beste formulering.',
-    '- Neem tijd, citaat, zekerheid en afgeleid ongewijzigd over van de takeaway die je houdt. Verzin geen nieuwe citaten of tijden.',
+    '- Neem tijd, citaat, zekerheid, afgeleid en moment ongewijzigd over van de takeaway die je houdt. Verzin geen nieuwe citaten of tijden.',
     '- Bepaal het kritieke punt, het videotype en het inhoudsoordeel opnieuw over de hele video.',
     '- Stelt de titel een vraag of belooft die een antwoord, dan is het kritieke punt het antwoord dat de video geeft, ook als dat maar in één deel staat.',
     '',
@@ -280,7 +288,7 @@ export const VIDEO_ADDENDUM = `
 
 Voor deze video is geen transcript beschikbaar. Je krijgt de video zelf (beeld en geluid). Volg alle regels hierboven, met deze aanpassingen:
 - "Transcript" betekent hier: wat er in de video wordt gezegd en getoond.
-- Gebruik als tijdmarkering het moment in de video in de vorm mm:ss of u:mm:ss.
+- Gebruik als tijdmarkering het moment in de video in de vorm mm:ss of u:mm:ss. Geef bij een "gebeurtenis" het moment waarop die in beeld begint.
 - Het "citaat" is een letterlijk gesproken fragment (maximaal 20 woorden) in de oorspronkelijke taal; is er geen gesproken tekst, citeer dan tekst die in beeld staat.`;
 
 export function buildVideoUserMessage(meta: VideoMeta): string {

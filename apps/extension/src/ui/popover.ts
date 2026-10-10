@@ -100,6 +100,7 @@ export class Popover {
       },
       {
         seekLabel: t.extension.openVideoAt,
+        seekMargin: this.speech?.settings?.springMarge,
         t,
         speech: this.speech
           ? {

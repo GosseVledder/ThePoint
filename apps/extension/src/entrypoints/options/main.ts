@@ -19,7 +19,10 @@ import type { DebugEntry } from '../../storage/debuglog';
 import { getApiKeys, setApiKey } from '../../storage/secrets';
 import { getSettings, saveSettings, type Settings } from '../../storage/settings';
 import { speaker } from '../../ui/speech';
+import { FIXED_MARGINS } from '@the-point/core/seek';
 import { groupVoices, pickVoice, voiceLabel } from '@the-point/core/ui/speechText';
+import { ICONS } from '@the-point/core/ui/styles';
+import { tooltips } from '@the-point/core/ui/tooltip';
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 const send = <T>(msg: RuntimeRequest) => browser.runtime.sendMessage(msg) as Promise<T>;
@@ -81,6 +84,7 @@ async function init(): Promise<void> {
   const [s, keys] = await Promise.all([getSettings(), getApiKeys()]);
   t = messages(s.interfaceTaal);
   $('#version').textContent = `The Point ${browser.runtime.getManifest().version}`;
+  initTips();
 
   // Languages: the interface language in its own name, summary languages in the
   // interface language.
@@ -193,6 +197,23 @@ async function init(): Promise<void> {
   $('#geminiTerugval').addEventListener('change', updateProviderSections);
   updateProviderSections();
 
+  // How much earlier a jump to a takeaway starts.
+  const marge = $<HTMLSelectElement>('#springMarge');
+  const fillMargins = () => {
+    const current = marge.value || String(s.springMarge);
+    marge.replaceChildren(
+      option('slim', t.settings.seekSmart),
+      ...FIXED_MARGINS.map((n) =>
+        option(String(n), n ? t.settings.seekSeconds(n) : t.settings.seekNone),
+      ),
+    );
+    marge.value = current;
+  };
+  onLanguage.push(fillMargins);
+  marge.addEventListener('change', () => {
+    void save({ springMarge: marge.value === 'slim' ? 'slim' : Number(marge.value) });
+  });
+
   const minutes = $<HTMLInputElement>('#bevestigVanafMinuten');
   minutes.value = String(s.bevestigVanafMinuten);
   minutes.addEventListener(
@@ -283,6 +304,26 @@ async function init(): Promise<void> {
   // Read aloud
   await initSpeech(s);
   applyTexts();
+}
+
+/**
+ * ⓘ next to every element with data-tip: the button sits beside the title (whose text
+ * data-i18n replaces) and shows the explanation from `t.tips`.
+ */
+function initTips(): void {
+  const tips = tooltips();
+  document.querySelectorAll<HTMLElement>('[data-tip]').forEach((el) => {
+    const key = el.dataset.tip as keyof Messages['tips'];
+    const line = document.createElement('span');
+    line.className = 'title-line';
+    el.replaceWith(line);
+    const button = document.createElement('button');
+    button.className = 'tip';
+    button.innerHTML = ICONS.info;
+    line.append(el, button);
+    tips.bind(button, () => t.tips[key]);
+    onLanguage.push(() => button.setAttribute('aria-label', `${t.settings.tipLabel}: ${el.textContent}`));
+  });
 }
 
 /**

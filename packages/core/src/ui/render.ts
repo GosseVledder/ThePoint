@@ -1,7 +1,8 @@
-import type { Summary, Takeaway } from '../engine/types';
+import type { Moment, Summary, Takeaway } from '../engine/types';
 import type { ErrorInfo, SummaryStep } from '../job';
 import { errorMessage, messages, type Messages } from '../i18n/messages';
 import { groupVoices, voiceLabel, type SpeechId, type VoiceLike } from './speechText';
+import { leadSeconds, type SeekMargin } from '../seek';
 import { ICONS } from './styles';
 
 export type ViewState =
@@ -12,7 +13,10 @@ export type ViewState =
   | { kind: 'confirm'; minuten: number };
 
 export interface ViewHandlers {
-  /** `id` tells which line the time belongs to: the critical point or a takeaway index. */
+  /**
+   * `seconds` is where the jump starts (the marker minus the lead from `seekMargin`);
+   * `id` tells which line the time belongs to: the critical point or a takeaway index.
+   */
   onSeek: (seconds: number, id: SpeechId) => void;
   onStart: () => void;
   onRefresh: () => void;
@@ -36,6 +40,8 @@ export interface ViewOptions {
   gateActive?: boolean;
   /** Label next to the time buttons ("Spring naar" vs "Open op"). */
   seekLabel?: string;
+  /** How much earlier a jump starts (setting springMarge); 'slim' when omitted. */
+  seekMargin?: SeekMargin;
   /** Interface texts; Dutch when omitted. */
   t?: Messages;
   speech?: SpeechView;
@@ -86,22 +92,35 @@ function iconButton(icon: string, label: string, onClick: () => void): HTMLButto
   return h('button', { class: 'icon-btn', title: label, 'aria-label': label, html: icon, onClick });
 }
 
+/** What every time button needs to jump. */
+interface SeekContext {
+  handlers: ViewHandlers;
+  label: string;
+  margin: SeekMargin;
+  v: Messages['view'];
+}
+
+/** Shows the marker itself; the jump starts `leadSeconds` earlier (data-start). */
 function timeButton(
   tijd: string,
   seconden: number,
+  moment: Moment | undefined,
   id: SpeechId,
-  handlers: ViewHandlers,
-  label: string,
+  seek: SeekContext,
 ): HTMLButtonElement {
+  const lead = Math.min(leadSeconds(moment, seek.margin), seconden);
+  const text =
+    lead > 0 ? `${seek.label} ${tijd} (${seek.v.leadIn(lead)})` : `${seek.label} ${tijd}`;
   return h(
     'button',
     {
       class: 'time',
-      title: `${label} ${tijd}`,
-      'aria-label': `${label} ${tijd}`,
+      title: text,
+      'aria-label': text,
+      'data-start': String(seconden - lead),
       onClick: (e: Event) => {
         e.stopPropagation();
-        handlers.onSeek(seconden, id);
+        seek.handlers.onSeek(seconden - lead, id);
       },
     },
     tijd,
@@ -116,7 +135,12 @@ export function renderView(
 ): void {
   const t = opts.t ?? messages('nl');
   const v = t.view;
-  const seekLabel = opts.seekLabel ?? v.seekTo;
+  const seek: SeekContext = {
+    handlers,
+    label: opts.seekLabel ?? v.seekTo,
+    margin: opts.seekMargin ?? 'slim',
+    v,
+  };
   const enabled = opts.enabled !== false;
   const headerButtons: Node[] = [];
   if (handlers.onToggleEnabled) {
@@ -270,9 +294,9 @@ export function renderView(
                 timeButton(
                   s.kritiekPunt.tijd,
                   s.kritiekPunt.seconden,
+                  s.kritiekPunt.moment,
                   'kritiek',
-                  handlers,
-                  seekLabel,
+                  seek,
                 ),
               )
             : null,
@@ -282,7 +306,7 @@ export function renderView(
         body.append(h('div', { class: 'section-label' }, v.takeaways(s.takeaways.length)));
         const list = h('ul', { class: 'takeaways' });
         s.takeaways.forEach((item, i) =>
-          list.append(renderTakeaway(item, i, handlers, seekLabel, v, speech)),
+          list.append(renderTakeaway(item, i, handlers, seek, v, speech)),
         );
         body.append(list);
       } else {
@@ -372,7 +396,7 @@ function renderTakeaway(
   t: Takeaway,
   index: number,
   handlers: ViewHandlers,
-  seekLabel: string,
+  seek: SeekContext,
   v: Messages['view'],
   speech?: SpeechView,
 ): HTMLLIElement {
@@ -408,7 +432,7 @@ function renderTakeaway(
   return h(
     'li',
     { class: speaking ? 'speaking' : undefined },
-    timeButton(t.tijd, t.seconden, index, handlers, seekLabel),
+    timeButton(t.tijd, t.seconden, t.moment, index, seek),
     zin,
     speak,
   );

@@ -1,6 +1,6 @@
 import type { ModelOutput } from './schema';
 import { formatTime, parseTime, type TranscriptLine } from './prompt';
-import type { Summary, Takeaway } from './types';
+import type { Moment, Summary, Takeaway } from './types';
 
 /** Lowercase, strip diacritics and punctuation, collapse whitespace. */
 export function normalizeText(text: string): string {
@@ -333,6 +333,7 @@ export function verifyAgainstTranscript(
       afgeleid: tk.afgeleid,
       citaat: tk.citaat.trim(),
       onbevestigd: !quoteOk || !numbersOk,
+      ...withMoment(tk.moment),
     });
   }
 
@@ -348,6 +349,7 @@ export function verifyAgainstTranscript(
         zin: out.kritiekPunt.zin.trim(),
         tijd: kpSec === null ? null : formatTime(kpSec),
         seconden: kpSec,
+        ...withMoment(out.kritiekPunt.moment),
       },
       takeaways: deduped,
     },
@@ -370,6 +372,7 @@ export function verifyVideoAnswer(out: ModelOutput, duurSeconden: number): Verif
       afgeleid: tk.afgeleid,
       citaat: tk.citaat.trim(),
       onbevestigd: false,
+      ...withMoment(tk.moment),
     });
   }
   const kp = parseTime(out.kritiekPunt.tijd);
@@ -379,9 +382,15 @@ export function verifyVideoAnswer(out: ModelOutput, duurSeconden: number): Verif
       zin: out.kritiekPunt.zin.trim(),
       tijd: kpSec === null ? null : formatTime(kpSec),
       seconden: kpSec,
+      ...withMoment(out.kritiekPunt.moment),
     },
     takeaways: dedupe(takeaways).sort((a, b) => a.seconden - b.seconden),
   };
+}
+
+/** Only set the field when the model gave it. */
+function withMoment(moment: Moment | undefined): { moment?: Moment } {
+  return moment ? { moment } : {};
 }
 
 export function dedupe(items: Takeaway[], threshold = 0.75): Takeaway[] {

@@ -76,6 +76,7 @@ export const en: Messages = {
     readFromHere: 'Read aloud from here',
     readFromPoint: (n) => `Read aloud from point ${n}`,
     seekTo: 'Jump to',
+    leadIn: (s) => `${s} s earlier`,
     openAt: 'Open at',
   },
 
@@ -146,6 +147,12 @@ export const en: Messages = {
     pause: 'Pause the video until the summary is ready',
     pauseHint: 'The "Watch anyway" button plays the video right away.',
     markers: "Mark the takeaways on the player's progress bar",
+    seekMargin: 'Start earlier when jumping',
+    seekMarginHint: 'So you see the event itself, not just the commentary after it.',
+    seekSmart: 'Smart (recommended)',
+    seekSeconds: (n) => `${n} seconds earlier`,
+    seekNone: 'Not earlier',
+    tipLabel: 'More info',
     readAloudHeading: 'Read aloud',
     readAloudIntro:
       'With Read aloud in the panel, the browser reads the summary aloud with a free voice from your browser or Windows. The last chosen voice is remembered per language. Edge has the most natural voices.',
@@ -197,6 +204,37 @@ export const en: Messages = {
     ],
   },
 
+  tips: {
+    provider:
+      'Which AI writes the summary. Claude and Gemini give similar results; only Gemini can watch a video without a transcript itself. You pay the service per summary through your own key.',
+    apiKey:
+      'A secret code that lets The Point use the AI service on your behalf; the costs go to your account. The key stays on this device and is only sent to that service.',
+    model:
+      'The AI model that makes the summary. Keep the default unless you want to try another model; "Test connection" checks that it exists.',
+    auto: 'On: every video you open is summarized right away; a new video costs one AI call. Off: only when you click "Summarize".',
+    pause:
+      'The video waits until the summary is ready, so you first read what it is about and then decide whether to watch.',
+    markers:
+      "A mark on the player's progress bar for each takeaway, so you see where in the video the points are. White is the key point.",
+    seekMargin:
+      'A time in the summary points at the moment in the transcript, but commentary often follows what happens on screen. That is why the video starts a little earlier. Smart: 10 seconds for an event (crash, goal), 4 for a statement, 2 for a new topic.',
+    interfaceLanguage:
+      "The language of The Point's buttons, labels and messages, separate from the summary language.",
+    summaryLanguage:
+      'The summary is written in this language, even when the video is in another language. Quotes stay in the original language.',
+    voice:
+      'Read aloud uses the free voices of your device (browser, Windows or Android). Your choice is remembered per language.',
+    speed: 'How fast the summary is read aloud; 1.00× is normal speed.',
+    fallback:
+      'If a video has no captions, Gemini can watch the video itself. That takes longer and costs more than the transcript route, and only works for public videos.',
+    confirm:
+      'Having Gemini watch a video costs more the longer the video is. Above this length The Point asks first.',
+    updates: 'Looks up the latest version of The Point on GitHub. No keys or other data are sent.',
+    cache:
+      'Every summary is kept, so opening the same video again costs nothing. Clearing removes all saved summaries; your key and settings stay.',
+    debug:
+      'For troubleshooting: records per AI call which model was used, how long it took and how many tokens it cost. Your key is never included.',
+  },
   update: {
     heading: 'Updates',
     installed: (v) => `Installed version: ${v}`,

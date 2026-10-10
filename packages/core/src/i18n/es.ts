@@ -78,6 +78,7 @@ export const es: Messages = {
     readFromHere: 'Leer desde aquí',
     readFromPoint: (n) => `Leer desde el punto ${n}`,
     seekTo: 'Ir a',
+    leadIn: (s) => `${s} s antes`,
     openAt: 'Abrir en',
   },
 
@@ -148,6 +149,12 @@ export const es: Messages = {
     pause: 'Pausar el vídeo hasta que el resumen esté listo',
     pauseHint: 'Con «Ver de todos modos» el vídeo se reproduce enseguida.',
     markers: 'Marcar las ideas clave en la barra de progreso del reproductor',
+    seekMargin: 'Empezar antes al saltar',
+    seekMarginHint: 'Para que veas el suceso en sí, no solo el comentario posterior.',
+    seekSmart: 'Inteligente (recomendado)',
+    seekSeconds: (n) => `${n} segundos antes`,
+    seekNone: 'Sin adelantar',
+    tipLabel: 'Explicación',
     readAloudHeading: 'Leer en voz alta',
     readAloudIntro:
       'Con Leer en voz alta en el panel, el navegador lee el resumen con una voz gratuita de tu navegador o de Windows. La última voz elegida se recuerda por idioma. Edge tiene la mayoría de las voces naturales.',
@@ -201,6 +208,37 @@ export const es: Messages = {
     ],
   },
 
+  tips: {
+    provider:
+      'Qué IA escribe el resumen. Claude y Gemini dan resultados parecidos; solo Gemini puede ver por sí mismo un vídeo sin transcripción. Pagas el servicio por resumen con tu propia clave.',
+    apiKey:
+      'Un código secreto con el que The Point usa el servicio de IA en tu nombre; el coste va a tu cuenta. La clave se queda en este dispositivo y solo se envía a ese servicio.',
+    model:
+      'El modelo de IA que crea el resumen. Deja el predeterminado salvo que quieras probar otro; «Probar conexión» comprueba que existe.',
+    auto: 'Activado: cada vídeo que abres se resume enseguida; un vídeo nuevo cuesta una llamada a la IA. Desactivado: solo cuando haces clic en «Resumir».',
+    pause:
+      'El vídeo espera hasta que el resumen esté listo, para que primero leas de qué trata y luego decidas si lo ves.',
+    markers:
+      'Una marca por cada punto clave en la barra de progreso del reproductor, para ver dónde están en el vídeo. La blanca es el punto principal.',
+    seekMargin:
+      'Una marca de tiempo del resumen apunta al momento de la transcripción, pero el comentario suele llegar después de lo que pasa en pantalla. Por eso el vídeo empieza un poco antes. Inteligente: 10 segundos en un suceso (accidente, gol), 4 en una declaración, 2 en un tema nuevo.',
+    interfaceLanguage:
+      'El idioma de los botones, etiquetas y mensajes de The Point, independiente del idioma del resumen.',
+    summaryLanguage:
+      'El resumen se escribe en este idioma, aunque el vídeo esté en otro. Las citas se quedan en el idioma original.',
+    voice:
+      'La lectura usa las voces gratuitas de tu dispositivo (navegador, Windows o Android). Tu elección se recuerda por idioma.',
+    speed: 'La velocidad de lectura; 1,00× es la velocidad normal.',
+    fallback:
+      'Si un vídeo no tiene subtítulos, Gemini puede ver el propio vídeo. Tarda más y cuesta más que con la transcripción, y solo funciona con vídeos públicos.',
+    confirm:
+      'Que Gemini vea un vídeo cuesta más cuanto más largo es. A partir de esta duración, The Point te pregunta primero.',
+    updates: 'Busca en GitHub la última versión de The Point. No se envían claves ni otros datos.',
+    cache:
+      'Cada resumen se guarda, así que volver a abrir el mismo vídeo no cuesta nada. Vaciar elimina todos los resúmenes guardados; tu clave y tus ajustes se mantienen.',
+    debug:
+      'Para resolver problemas: registra por cada llamada a la IA qué modelo se usó, cuánto tardó y cuántos tokens costó. Tu clave nunca aparece.',
+  },
   update: {
     heading: 'Actualizaciones',
     installed: (v) => `Versión instalada: ${v}`,

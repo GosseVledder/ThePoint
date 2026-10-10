@@ -32,6 +32,12 @@ export type VideoType =
 
 export type Zekerheid = 'feit' | 'bewering' | 'mening' | 'gerucht';
 
+/**
+ * What happens at a time marker: something on screen (commentary often follows it),
+ * something said, or the start of a topic. Decides how much earlier a jump starts.
+ */
+export type Moment = 'gebeurtenis' | 'uitspraak' | 'onderwerp';
+
 export interface Takeaway {
   zin: string;
   tijd: string;
@@ -41,6 +47,8 @@ export interface Takeaway {
   citaat: string;
   /** Set by the code checks, never by the model. */
   onbevestigd: boolean;
+  /** Missing in summaries cached before this field existed. */
+  moment?: Moment;
 }
 
 export interface Summary {
@@ -52,7 +60,7 @@ export interface Summary {
   model: string;
   aangemaaktOp: string;
   videoType: VideoType;
-  kritiekPunt: { zin: string; tijd: string | null; seconden: number | null };
+  kritiekPunt: { zin: string; tijd: string | null; seconden: number | null; moment?: Moment };
   takeaways: Takeaway[];
   inhoudsoordeel: { dichtheid: 'hoog' | 'gemiddeld' | 'laag'; toelichting: string };
   isInterview: boolean;

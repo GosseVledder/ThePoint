@@ -10,8 +10,8 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 
 | | Download | Installeren |
 |---|---|---|
-| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.5.0.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.5.0.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.4.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.4.0.zip)<br>183 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.0.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.0.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.5.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.0.zip)<br>206 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini) of Anthropic (Claude); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
@@ -22,7 +22,7 @@ Veel video's duren twintig minuten of langer, terwijl de kern in een paar zinnen
 ## Wat het doet
 
 - **Kernpunt en takeaways**: de hoofdboodschap in één zin en de belangrijkste punten, elk met een tijdstempel.
-- **Direct naar de onderbouwing**: tik of klik op een tijd en de video springt naar dat moment.
+- **Direct naar de onderbouwing**: tik of klik op een tijd en de video springt naar dat moment, net iets ervoor, zodat je ziet wat er gebeurt en niet alleen het commentaar erna. Slim: 10 seconden bij een gebeurtenis (crash, doelpunt), 4 bij een uitspraak, 2 bij een nieuw onderwerp; instelbaar bij *Eerder starten bij een tijd*.
 - **Eerlijke labels**: *bewering*, *mening* of *gerucht* als iets geen vaststaand feit is, *berekend* als een verhouding is uitgerekend, en ⚠ als een citaat of getal niet letterlijk in het transcript staat.
 - **Voorlezen** met de gratis stemmen van je browser, Windows of Android.
 - **Zeven talen**: de interface en de samenvatting stel je los van elkaar in (Nederlands, Engels, Duits, Frans, Spaans, Italiaans, Portugees).
@@ -41,11 +41,11 @@ Er zit geen server van The Point tussen: je apparaat praat rechtstreeks met YouT
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-0.5.0.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.5.0.apk) (ook in de map [`apk/`](apk/)) |
-| **Versie** | 0.5.0 (versionCode 5) |
+| **Bestand** | [`ThePoint-0.6.0.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.0.apk) (ook in de map [`apk/`](apk/)) |
+| **Versie** | 0.6.0 (versionCode 6) |
 | **Vereist** | Android 7.0 of nieuwer |
 | **Grootte** | 3 MB |
-| **SHA-256** | `c3b761d930ce160d3f664d038d15bd12947f7b33e49a0a74c10978a68c15c683` |
+| **SHA-256** | `fe217d6f41e4168fded0c172a66a64ddc05c57408a31bfb7059f15d27a516225` |
 
 De APK is een ondertekende release-build; hij staat niet in de Play Store.
 
@@ -84,15 +84,15 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.4.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.4.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.4.0 |
+| **Bestand** | [`ThePoint-extension-0.5.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.5.0 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
-| **Grootte** | 183 kB |
-| **SHA-256** | `ad23c3e72a1d50e34f0e5417496a98628dc6aa5b9db69394c3b663316d559a5a` |
+| **Grootte** | 206 kB |
+| **SHA-256** | `2adb6e9b4b9b2c20185bcbfa8117a299c8f44e701a1bafc792bad78387309cb9` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.4.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.4.0.zip).
+1. **Download** [`ThePoint-extension-0.5.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.0.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).
@@ -101,7 +101,7 @@ De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen;
 
 ### Zo gebruik je de extensie
 
-- Open een video op youtube.com: rechts naast de video (bij een smal venster eronder) verschijnt het **paneel** met de samenvatting. Klik op een tijdstempel en de speler springt naar dat moment.
+- Open een video op youtube.com: rechts naast de video (bij een smal venster eronder) verschijnt het **paneel** met de samenvatting. Klik op een tijdstempel en de speler springt naar dat moment (een paar seconden ervoor).
 - **Aan/uit-schakelaar** in de kop van het paneel: uit betekent geen samenvattingen, ook niet via thumbnails.
 - **Markeringen op de tijdbalk** van de speler voor elke takeaway (wit = kritiek punt).
 - **Knop in de spelerbalk** (het logo ▶.): in volledig scherm toont die de samenvatting als overlay.
@@ -118,7 +118,7 @@ The Point gebruikt je eigen sleutel; je betaalt de AI-dienst rechtstreeks per sa
 | **Gemini** (Google) | <https://aistudio.google.com/apikey> | `gemini-flash-latest` |
 | **Claude** (Anthropic) | <https://console.anthropic.com/settings/keys> | `claude-opus-5-5` |
 
-Open de instellingen (extensie: klik op het icoon in de werkbalk; app: het tandwiel), kies de AI-dienst, plak de sleutel en klik op **Test verbinding**. Dat kost niets. Wil je ook video's zonder transcript laten samenvatten, vul dan ook een Gemini-sleutel in.
+Open de instellingen (extensie: klik op het icoon in de werkbalk; app: het tandwiel), kies de AI-dienst, plak de sleutel en klik op **Test verbinding**. Dat kost niets. Wil je ook video's zonder transcript laten samenvatten, vul dan ook een Gemini-sleutel in. Bij elke instelling legt een ⓘ uit wat die doet.
 
 Gebruik bij voorkeur een aparte sleutel met een bestedingslimiet (Anthropic Console › Limits, Google AI Studio/Cloud › quota).
 

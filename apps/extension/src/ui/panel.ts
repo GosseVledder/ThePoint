@@ -218,6 +218,7 @@ export class WatchPanel {
         speech: this.speechView(),
         enabled: this.settings.actief,
         t: this.t,
+        seekMargin: this.settings.springMarge,
       });
     }
     if (this.overlay) this.renderOverlay();
@@ -366,7 +367,7 @@ export class WatchPanel {
         onToggleCollapse: undefined,
         onClose: () => this.hideOverlay(),
       },
-      { speech: this.speechView(), t: this.t },
+      { speech: this.speechView(), t: this.t, seekMargin: this.settings.springMarge },
     );
   }
 

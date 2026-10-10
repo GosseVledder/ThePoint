@@ -28,6 +28,8 @@ export const settingsSchema = z.object({
   bevestigVanafMinuten: z.number().int().min(1).max(600).catch(30),
   /** Markers for the takeaways on the player's progress bar. */
   markeringen: z.boolean().catch(true),
+  /** How much earlier a jump to a takeaway starts: 'slim' per kind of moment, or seconds. */
+  springMarge: z.union([z.literal('slim'), z.number().int().min(0).max(60)]).catch('slim'),
   /** Last chosen read-aloud voice (voiceURI) per summary language. */
   stemmen: z.record(z.string(), z.string()).catch({}),
   /** Read-aloud speed (1 = normal). */

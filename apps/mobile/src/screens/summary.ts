@@ -216,6 +216,7 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
       },
       {
         seekLabel: playerFailed ? t.view.openAt : t.view.seekTo,
+        seekMargin: settings?.springMarge,
         t,
         speech: {
           available: true,

@@ -77,6 +77,7 @@ export const de: Messages = {
     readFromHere: 'Ab hier vorlesen',
     readFromPoint: (n) => `Ab Punkt ${n} vorlesen`,
     seekTo: 'Springe zu',
+    leadIn: (s) => `${s} s früher`,
     openAt: 'Öffnen bei',
   },
 
@@ -153,6 +154,12 @@ export const de: Messages = {
     pause: 'Video pausieren, bis die Zusammenfassung fertig ist',
     pauseHint: 'Mit „Trotzdem ansehen“ spielst du das Video sofort ab.',
     markers: 'Kernaussagen auf der Zeitleiste des Players markieren',
+    seekMargin: 'Beim Springen früher starten',
+    seekMarginHint: 'Damit du das Ereignis selbst siehst, nicht nur den Kommentar danach.',
+    seekSmart: 'Intelligent (empfohlen)',
+    seekSeconds: (n) => `${n} Sekunden früher`,
+    seekNone: 'Nicht früher',
+    tipLabel: 'Erklärung',
     readAloudHeading: 'Vorlesen',
     readAloudIntro:
       'Mit Vorlesen im Panel liest der Browser die Zusammenfassung vor, mit einer kostenlosen Stimme deines Browsers oder von Windows. Die zuletzt gewählte Stimme wird pro Sprache gespeichert. Edge hat die meisten natürlichen Stimmen.',
@@ -207,6 +214,38 @@ export const de: Messages = {
     ],
   },
 
+  tips: {
+    provider:
+      'Welche KI die Zusammenfassung schreibt. Claude und Gemini liefern ähnliche Ergebnisse; nur Gemini kann ein Video ohne Transkript selbst ansehen. Du bezahlst den Dienst pro Zusammenfassung über deinen eigenen Schlüssel.',
+    apiKey:
+      'Ein geheimer Code, mit dem The Point den KI-Dienst in deinem Namen nutzt; die Kosten gehen auf dein Konto. Der Schlüssel bleibt auf diesem Gerät und geht nur an diesen Dienst.',
+    model:
+      'Das KI-Modell, das die Zusammenfassung erstellt. Lass den Standard stehen, außer du möchtest ein anderes Modell ausprobieren; „Verbindung testen“ prüft, ob es existiert.',
+    auto: 'An: Jedes Video, das du öffnest, wird sofort zusammengefasst; ein neues Video kostet einen KI-Aufruf. Aus: nur wenn du auf „Zusammenfassen“ klickst.',
+    pause:
+      'Das Video wartet, bis die Zusammenfassung da ist, damit du zuerst liest, worum es geht, und dann entscheidest, ob du es ansiehst.',
+    markers:
+      'Pro Takeaway eine Markierung auf der Zeitleiste des Players, damit du siehst, wo im Video die Punkte liegen. Weiß ist die Kernaussage.',
+    seekMargin:
+      'Eine Zeit in der Zusammenfassung zeigt auf die Stelle im Transkript, aber Kommentare folgen oft erst auf das, was im Bild passiert. Deshalb startet das Video etwas früher. Intelligent: 10 Sekunden bei einem Ereignis (Unfall, Tor), 4 bei einer Aussage, 2 bei einem neuen Thema.',
+    interfaceLanguage:
+      'Die Sprache der Schaltflächen, Beschriftungen und Meldungen von The Point, unabhängig von der Sprache der Zusammenfassung.',
+    summaryLanguage:
+      'Die Zusammenfassung wird in dieser Sprache geschrieben, auch wenn das Video eine andere Sprache hat. Zitate bleiben in der Originalsprache.',
+    voice:
+      'Vorlesen nutzt die kostenlosen Stimmen deines Geräts (Browser, Windows oder Android). Deine Wahl wird pro Sprache gespeichert.',
+    speed: 'Wie schnell vorgelesen wird; 1,00× ist normales Tempo.',
+    fallback:
+      'Hat ein Video keine Untertitel, kann Gemini das Video selbst ansehen. Das dauert länger und kostet mehr als über das Transkript und funktioniert nur bei öffentlichen Videos.',
+    confirm:
+      'Wenn Gemini ein Video ansieht, kostet das umso mehr, je länger es ist. Ab dieser Länge fragt The Point zuerst nach.',
+    updates:
+      'Sucht auf GitHub nach der neuesten Version von The Point. Es werden keine Schlüssel oder anderen Daten gesendet.',
+    cache:
+      'Jede Zusammenfassung wird gespeichert, damit dasselbe Video erneut zu öffnen nichts kostet. Leeren entfernt alle gespeicherten Zusammenfassungen; Schlüssel und Einstellungen bleiben.',
+    debug:
+      'Zur Fehlersuche: speichert pro KI-Aufruf, welches Modell verwendet wurde, wie lange es dauerte und wie viele Tokens es kostete. Dein Schlüssel ist nie enthalten.',
+  },
   update: {
     heading: 'Updates',
     installed: (v) => `Installierte Version: ${v}`,

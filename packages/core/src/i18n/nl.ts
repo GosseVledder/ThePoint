@@ -78,6 +78,7 @@ export const nl: Messages = {
     readFromHere: 'Vanaf hier voorlezen',
     readFromPoint: (n) => `Voorlezen vanaf punt ${n}`,
     seekTo: 'Spring naar',
+    leadIn: (s) => `${s} s eerder`,
     openAt: 'Open op',
   },
 
@@ -148,6 +149,12 @@ export const nl: Messages = {
     pause: 'Video pauzeren tot de samenvatting klaar is',
     pauseHint: 'Met de knop "Toch bekijken" speel je de video meteen af.',
     markers: 'Takeaways markeren op de tijdbalk van de speler',
+    seekMargin: 'Eerder starten bij een tijd',
+    seekMarginHint: 'Zodat je de gebeurtenis zelf ziet, niet alleen het commentaar erna.',
+    seekSmart: 'Slim (aanbevolen)',
+    seekSeconds: (n) => `${n} seconden eerder`,
+    seekNone: 'Niet eerder',
+    tipLabel: 'Uitleg',
     readAloudHeading: 'Voorlezen',
     readAloudIntro:
       'Met Voorlezen in het paneel leest de browser de samenvatting voor, met een gratis stem van je browser of Windows. De laatst gekozen stem wordt per taal onthouden. Edge heeft de meeste natuurlijke stemmen (bijvoorbeeld "Fenna" en "Maarten").',
@@ -200,6 +207,38 @@ export const nl: Messages = {
     ],
   },
 
+  tips: {
+    provider:
+      'Welke AI de samenvatting schrijft. Claude en Gemini geven vergelijkbare resultaten; alleen Gemini kan een video zonder transcript zelf bekijken. Je betaalt de dienst per samenvatting via je eigen sleutel.',
+    apiKey:
+      'Een geheime code waarmee The Point namens jou de AI-dienst gebruikt; de kosten komen op jouw account. De sleutel blijft op dit apparaat en gaat alleen naar die dienst.',
+    model:
+      'Het AI-model dat de samenvatting maakt. Laat de standaard staan, tenzij je een ander model wilt proberen; "Test verbinding" controleert of het bestaat.',
+    auto: 'Aan: elke video die je opent wordt meteen samengevat; een nieuwe video kost één AI-aanroep. Uit: alleen als je op "Samenvatten" klikt.',
+    pause:
+      'De video wacht tot de samenvatting er is, zodat je eerst leest waar hij over gaat en daarna beslist of je kijkt.',
+    markers:
+      'Per takeaway een streepje op de tijdbalk van de speler, zodat je ziet waar in de video de punten zitten. Wit is het kernpunt.',
+    seekMargin:
+      'Een tijd in de samenvatting wijst naar het moment in het transcript, maar commentaar volgt vaak pas op wat er in beeld gebeurt. Daarom start de video iets eerder. Slim: 10 seconden bij een gebeurtenis (crash, doelpunt), 4 bij een uitspraak, 2 bij een nieuw onderwerp.',
+    interfaceLanguage:
+      'De taal van knoppen, labels en meldingen van The Point, los van de taal van de samenvatting.',
+    summaryLanguage:
+      'De samenvatting wordt in deze taal geschreven, ook als de video in een andere taal is. Citaten blijven in de oorspronkelijke taal.',
+    voice:
+      'Voorlezen gebruikt de gratis stemmen van je apparaat (browser, Windows of Android). Je keuze wordt per taal onthouden.',
+    speed: 'Hoe snel er wordt voorgelezen; 1,00× is normaal tempo.',
+    fallback:
+      "Heeft een video geen ondertitels, dan kan Gemini de video zelf bekijken. Dat duurt langer en kost meer dan via het transcript, en werkt alleen voor openbare video's.",
+    confirm:
+      'Gemini een video laten bekijken kost meer naarmate de video langer is. Boven deze lengte vraagt The Point eerst of je dat wilt.',
+    updates:
+      'Zoekt op GitHub naar de nieuwste versie van The Point. Er gaan geen sleutels of andere gegevens mee.',
+    cache:
+      'Elke samenvatting wordt bewaard, zodat dezelfde video opnieuw openen niets kost. Wissen verwijdert alle bewaarde samenvattingen; je sleutel en instellingen blijven staan.',
+    debug:
+      'Voor probleemoplossing: houdt per AI-aanroep bij welk model is gebruikt, hoe lang het duurde en hoeveel tokens het kostte. Je sleutel staat er nooit in.',
+  },
   update: {
     heading: 'Updates',
     installed: (v) => `Geïnstalleerde versie: ${v}`,
