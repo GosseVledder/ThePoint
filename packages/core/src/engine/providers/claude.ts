@@ -10,11 +10,6 @@ import { errorMessageFrom, requestJson } from './http';
 
 const API = 'https://api.anthropic.com/v1';
 
-/** Models that accept output_config.effort. */
-function supportsEffort(model: string): boolean {
-  return /claude-(opus-(4-[5-9]|5)|sonnet-(4-6|5)|fable|mythos)/.test(model);
-}
-
 /** Models that accept the server-side refusal fallback ("fallbacks": "default"). */
 function supportsFallbacks(model: string): boolean {
   return /claude-(opus-5|sonnet-5-5|fable-5-1|mythos-5-1)/.test(model);
@@ -92,14 +87,12 @@ async function send(
 ): Promise<RawModelOutput> {
   const body: Record<string, unknown> = {
     model: opts.model,
-    max_tokens: ENGINE_DEFAULTS.maxOutputTokens,
+    max_tokens: ENGINE_DEFAULTS.claudeMaxOutputTokens,
     system: req.system,
     messages: [{ role: 'user', content: req.user }],
   };
-  const outputConfig: Record<string, unknown> = {};
-  if (supportsEffort(opts.model)) outputConfig.effort = ENGINE_DEFAULTS.claudeEffort;
-  if (withFormat) outputConfig.format = { type: 'json_schema', schema: req.schema };
-  if (Object.keys(outputConfig).length) body.output_config = outputConfig;
+  // No effort: every model uses its own default level, as Anthropic recommends.
+  if (withFormat) body.output_config = { format: { type: 'json_schema', schema: req.schema } };
   if (supportsFallbacks(opts.model)) body.fallbacks = 'default';
 
   const res = await requestJson(

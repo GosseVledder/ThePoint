@@ -10,8 +10,8 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 
 | | Download | Installeren |
 |---|---|---|
-| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.0.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.0.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.5.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.0.zip)<br>206 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.1.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.1.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.5.1.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.1.zip)<br>206 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini) of Anthropic (Claude); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
@@ -41,11 +41,11 @@ Er zit geen server van The Point tussen: je apparaat praat rechtstreeks met YouT
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-0.6.0.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.0.apk) (ook in de map [`apk/`](apk/)) |
-| **Versie** | 0.6.0 (versionCode 6) |
+| **Bestand** | [`ThePoint-0.6.1.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.1.apk) (ook in de map [`apk/`](apk/)) |
+| **Versie** | 0.6.1 (versionCode 7) |
 | **Vereist** | Android 7.0 of nieuwer |
 | **Grootte** | 3 MB |
-| **SHA-256** | `fe217d6f41e4168fded0c172a66a64ddc05c57408a31bfb7059f15d27a516225` |
+| **SHA-256** | `76b700186c5c36262d7a30dbd314318f705326e5d1793576f24f76f629b4d1f8` |
 
 De APK is een ondertekende release-build; hij staat niet in de Play Store.
 
@@ -84,15 +84,15 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.5.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.5.0 |
+| **Bestand** | [`ThePoint-extension-0.5.1.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.1.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.5.1 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
 | **Grootte** | 206 kB |
-| **SHA-256** | `2adb6e9b4b9b2c20185bcbfa8117a299c8f44e701a1bafc792bad78387309cb9` |
+| **SHA-256** | `d029d701260c38adec9f495bbe615978ebe24308599ecbf1947ffe74a08113b2` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.5.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.0.zip).
+1. **Download** [`ThePoint-extension-0.5.1.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.1.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).
@@ -116,7 +116,7 @@ The Point gebruikt je eigen sleutel; je betaalt de AI-dienst rechtstreeks per sa
 | Dienst | Sleutel aanmaken | Standaardmodel |
 |---|---|---|
 | **Gemini** (Google) | <https://aistudio.google.com/apikey> | `gemini-flash-latest` |
-| **Claude** (Anthropic) | <https://console.anthropic.com/settings/keys> | `claude-opus-5-5` |
+| **Claude** (Anthropic) | <https://console.anthropic.com/settings/keys> | `claude-haiku-5-5` (of `claude-sonnet-5-5`, `claude-opus-5-5`) |
 
 Open de instellingen (extensie: klik op het icoon in de werkbalk; app: het tandwiel), kies de AI-dienst, plak de sleutel en klik op **Test verbinding**. Dat kost niets. Wil je ook video's zonder transcript laten samenvatten, vul dan ook een Gemini-sleutel in. Bij elke instelling legt een ⓘ uit wat die doet.
 
