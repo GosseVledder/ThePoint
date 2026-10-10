@@ -3,147 +3,246 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <title>The Point – instellingen</title>
     <meta name="manifest.open_in_tab" content="true">
-    <script type="module" crossorigin src="/chunks/options-6jEvcIwL.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/options-DZn_6Xi_.css">
+    <link rel="icon" href="/icon/32.png">
+    <script type="module" crossorigin src="/chunks/options-DnYn6h0j.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/options-C3UycPnj.css">
   </head>
   <body>
     <!-- Texts come from @the-point/core/i18n: data-i18n="<key in settings>" sets the text. -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <img class="brand" src="/icon/128.png" alt="" width="36" height="36">
+        <div class="brand-text">
+          <h1>The Point</h1>
+          <p data-i18n="title"></p>
+        </div>
+        <span id="saved" class="saved" role="status" aria-live="polite"></span>
+      </div>
+    </header>
+
     <main>
-      <header>
-        <h1>The Point</h1>
-        <p class="sub">
-          <span data-i18n="autoSaved"></span>
-          <span id="saved" class="saved" aria-live="polite"></span>
-        </p>
-      </header>
+      <section class="group" aria-labelledby="h-ai">
+        <h2 id="h-ai" data-i18n="aiService"></h2>
+        <div class="card" id="ai-card">
+          <div class="segmented" role="radiogroup" data-i18n-aria="aiService">
+            <label class="segment">
+              <input type="radio" name="provider" value="claude">
+              <span><b>Claude</b><small>Anthropic</small></span>
+            </label>
+            <label class="segment">
+              <input type="radio" name="provider" value="gemini">
+              <span><b>Gemini</b><small>Google</small></span>
+            </label>
+          </div>
+          <p class="card-intro" data-i18n="providerHint"></p>
 
-      <section>
-        <h2 data-i18n="languageHeading"></h2>
-        <label class="field inline">
-          <span data-i18n="interfaceLanguage"></span>
-          <select id="interfaceTaal"></select>
-        </label>
-        <label class="field inline">
-          <span data-i18n="summaryLanguage"></span>
-          <select id="taal"></select>
-        </label>
-      </section>
+          <div class="provider" data-provider="claude">
+            <div class="provider-head"><h3>Claude</h3></div>
+            <div class="row">
+              <div class="row-text">
+                <label class="row-title" for="key-claude" data-i18n="apiKey"></label>
+                <p class="row-hint">
+                  <span data-i18n="keyHintBrowser.0"></span><a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer">console.anthropic.com</a><span data-i18n="keyHintBrowser.1"></span>
+                </p>
+              </div>
+              <div class="row-control wide">
+                <div class="input-group">
+                  <input id="key-claude" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
+                  <button type="button" data-toggle="key-claude"></button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row-text">
+                <label class="row-title" for="model-claude" data-i18n="model"></label>
+              </div>
+              <div class="row-control wide">
+                <input id="model-claude" list="models-claude" spellcheck="false">
+                <datalist id="models-claude"></datalist>
+              </div>
+            </div>
+            <div class="row test-row">
+              <div class="row-text">
+                <span class="test-result" id="test-claude" aria-live="polite"></span>
+              </div>
+              <div class="row-control">
+                <button type="button" class="btn" data-test="claude" data-i18n="testConnection"></button>
+              </div>
+            </div>
+          </div>
 
-      <section>
-        <h2 data-i18n="aiService"></h2>
-        <div class="radio-row" role="radiogroup" data-i18n-aria="aiService">
-          <label class="choice"><input type="radio" name="provider" value="claude">
-            <span><b>Claude</b> (Anthropic)</span></label>
-          <label class="choice"><input type="radio" name="provider" value="gemini">
-            <span><b>Gemini</b> (Google)</span></label>
-        </div>
-        <p class="hint" data-i18n="providerHint"></p>
-      </section>
-
-      <section data-provider="claude">
-        <h2>Claude</h2>
-        <label class="field">
-          <span data-i18n="apiKey"></span>
-          <span class="key-row">
-            <input id="key-claude" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
-            <button type="button" class="ghost" data-toggle="key-claude" data-i18n="show"></button>
-          </span>
-          <small><span data-i18n="keyHintBrowser.0"></span><a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer">console.anthropic.com</a><span data-i18n="keyHintBrowser.1"></span></small>
-        </label>
-        <label class="field">
-          <span data-i18n="model"></span>
-          <input id="model-claude" list="models-claude" spellcheck="false">
-          <datalist id="models-claude"></datalist>
-        </label>
-        <div class="test-row">
-          <button type="button" data-test="claude" data-i18n="testConnection"></button>
-          <span class="test-result" id="test-claude" aria-live="polite"></span>
-        </div>
-      </section>
-
-      <section data-provider="gemini">
-        <h2>Gemini</h2>
-        <label class="field">
-          <span data-i18n="apiKey"></span>
-          <span class="key-row">
-            <input id="key-gemini" type="password" autocomplete="off" spellcheck="false" placeholder="AIza…">
-            <button type="button" class="ghost" data-toggle="key-gemini" data-i18n="show"></button>
-          </span>
-          <small><span data-i18n="keyHintBrowser.0"></span><a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer">aistudio.google.com</a><span data-i18n="keyHintBrowser.1"></span></small>
-        </label>
-        <label class="field">
-          <span data-i18n="model"></span>
-          <input id="model-gemini" list="models-gemini" spellcheck="false">
-          <datalist id="models-gemini"></datalist>
-        </label>
-        <div class="test-row">
-          <button type="button" data-test="gemini" data-i18n="testConnection"></button>
-          <span class="test-result" id="test-gemini" aria-live="polite"></span>
-        </div>
-      </section>
-
-      <section>
-        <h2 data-i18n="summaryHeading"></h2>
-        <label class="check"><input type="checkbox" id="automatisch">
-          <span><span data-i18n="auto"></span><small data-i18n="autoHint"></small></span></label>
-        <label class="check"><input type="checkbox" id="autoplayPauzeren">
-          <span><span data-i18n="pause"></span><small data-i18n="pauseHint"></small></span></label>
-        <label class="check"><input type="checkbox" id="markeringen">
-          <span data-i18n="markers"></span></label>
-      </section>
-
-      <section>
-        <h2 data-i18n="readAloudHeading"></h2>
-        <p data-i18n="readAloudIntro"></p>
-        <label class="field">
-          <span data-i18n="voice"></span>
-          <select id="stem"></select>
-          <small id="stem-hint"></small>
-        </label>
-        <label class="field inline">
-          <span data-i18n="speed"></span>
-          <span class="unit">
-            <input id="spreeksnelheid" type="range" min="0.75" max="1.5" step="0.05">
-            <output id="spreeksnelheid-waarde"></output>
-          </span>
-        </label>
-        <div class="test-row">
-          <button type="button" id="test-stem" data-i18n="testVoice"></button>
+          <div class="provider" data-provider="gemini">
+            <div class="provider-head">
+              <h3>Gemini</h3>
+              <span class="tag" data-i18n="alsoForFallback"></span>
+            </div>
+            <div class="row">
+              <div class="row-text">
+                <label class="row-title" for="key-gemini" data-i18n="apiKey"></label>
+                <p class="row-hint">
+                  <span data-i18n="keyHintBrowser.0"></span><a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer">aistudio.google.com</a><span data-i18n="keyHintBrowser.1"></span>
+                </p>
+              </div>
+              <div class="row-control wide">
+                <div class="input-group">
+                  <input id="key-gemini" type="password" autocomplete="off" spellcheck="false" placeholder="AIza…">
+                  <button type="button" data-toggle="key-gemini"></button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row-text">
+                <label class="row-title" for="model-gemini" data-i18n="model"></label>
+              </div>
+              <div class="row-control wide">
+                <input id="model-gemini" list="models-gemini" spellcheck="false">
+                <datalist id="models-gemini"></datalist>
+              </div>
+            </div>
+            <div class="row test-row">
+              <div class="row-text">
+                <span class="test-result" id="test-gemini" aria-live="polite"></span>
+              </div>
+              <div class="row-control">
+                <button type="button" class="btn" data-test="gemini" data-i18n="testConnection"></button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section>
-        <h2 data-i18n="noTranscriptHeading"></h2>
-        <label class="check"><input type="checkbox" id="geminiTerugval">
-          <span><span data-i18n="fallback"></span><small data-i18n="fallbackHint"></small></span></label>
-        <label class="field inline">
-          <span data-i18n="confirmLonger"></span>
-          <span class="unit"><input id="bevestigVanafMinuten" type="number" min="1" max="600" step="1">
-            <span data-i18n="minutes"></span></span>
-        </label>
-      </section>
-
-      <section>
-        <h2 data-i18n="cacheHeading"></h2>
-        <p data-i18n="cacheText"></p>
-        <div class="test-row">
-          <span id="cache-count">…</span>
-          <button type="button" id="clear-cache" data-i18n="clearCache"></button>
+      <section class="group" aria-labelledby="h-summary">
+        <h2 id="h-summary" data-i18n="summaryHeading"></h2>
+        <div class="card">
+          <label class="row">
+            <span class="row-text">
+              <span class="row-title" data-i18n="auto"></span>
+              <span class="row-hint" data-i18n="autoHint"></span>
+            </span>
+            <input type="checkbox" class="switch" role="switch" id="automatisch">
+          </label>
+          <label class="row">
+            <span class="row-text">
+              <span class="row-title" data-i18n="pause"></span>
+              <span class="row-hint" data-i18n="pauseHint"></span>
+            </span>
+            <input type="checkbox" class="switch" role="switch" id="autoplayPauzeren">
+          </label>
+          <label class="row">
+            <span class="row-text">
+              <span class="row-title" data-i18n="markers"></span>
+            </span>
+            <input type="checkbox" class="switch" role="switch" id="markeringen">
+          </label>
         </div>
       </section>
 
-      <section>
-        <h2 data-i18n="debugHeading"></h2>
-        <label class="check"><input type="checkbox" id="debugLog">
-          <span data-i18n="debugCheck"></span></label>
-        <div class="test-row">
-          <button type="button" id="show-log" data-i18n="showLog"></button>
-          <button type="button" id="clear-log" class="ghost" data-i18n="clearLog"></button>
+      <section class="group" aria-labelledby="h-language">
+        <h2 id="h-language" data-i18n="languageHeading"></h2>
+        <div class="card">
+          <div class="row">
+            <div class="row-text">
+              <label class="row-title" for="interfaceTaal" data-i18n="interfaceLanguage"></label>
+            </div>
+            <div class="row-control"><select id="interfaceTaal"></select></div>
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label class="row-title" for="taal" data-i18n="summaryLanguage"></label>
+            </div>
+            <div class="row-control"><select id="taal"></select></div>
+          </div>
         </div>
-        <div id="log" class="log" hidden></div>
       </section>
+
+      <section class="group" aria-labelledby="h-speech">
+        <h2 id="h-speech" data-i18n="readAloudHeading"></h2>
+        <div class="card">
+          <p class="card-intro" data-i18n="readAloudIntro"></p>
+          <div class="row">
+            <div class="row-text">
+              <label class="row-title" for="stem" data-i18n="voice"></label>
+              <p class="row-hint" id="stem-hint"></p>
+            </div>
+            <div class="row-control wide"><select id="stem"></select></div>
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label class="row-title" for="spreeksnelheid" data-i18n="speed"></label>
+            </div>
+            <div class="row-control">
+              <input id="spreeksnelheid" type="range" min="0.75" max="1.5" step="0.05">
+              <output id="spreeksnelheid-waarde" for="spreeksnelheid"></output>
+              <button type="button" class="btn" id="test-stem" data-i18n="testVoice"></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="group" aria-labelledby="h-fallback">
+        <h2 id="h-fallback" data-i18n="noTranscriptHeading"></h2>
+        <div class="card">
+          <label class="row">
+            <span class="row-text">
+              <span class="row-title" data-i18n="fallback"></span>
+              <span class="row-hint" data-i18n="fallbackHint"></span>
+            </span>
+            <input type="checkbox" class="switch" role="switch" id="geminiTerugval">
+          </label>
+          <div class="row" id="confirm-row">
+            <div class="row-text">
+              <label class="row-title" for="bevestigVanafMinuten" data-i18n="confirmLonger"></label>
+            </div>
+            <div class="row-control">
+              <input id="bevestigVanafMinuten" type="number" min="1" max="600" step="1">
+              <span class="unit" data-i18n="minutes"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="group">
+        <details class="card advanced">
+          <summary>
+            <span class="row-text">
+              <span class="row-title" data-i18n="advanced"></span>
+              <span class="row-hint"><span data-i18n="cacheHeading"></span> · <span data-i18n="debugHeading"></span></span>
+            </span>
+          </summary>
+          <div class="row">
+            <div class="row-text">
+              <span class="row-title" data-i18n="cacheHeading"></span>
+              <span class="row-hint" data-i18n="cacheText"></span>
+              <span class="row-hint strong" id="cache-count">…</span>
+            </div>
+            <div class="row-control">
+              <button type="button" class="btn danger" id="clear-cache" data-i18n="clearCache"></button>
+            </div>
+          </div>
+          <label class="row">
+            <span class="row-text">
+              <span class="row-title" data-i18n="debugHeading"></span>
+              <span class="row-hint" data-i18n="debugCheck"></span>
+            </span>
+            <input type="checkbox" class="switch" role="switch" id="debugLog">
+          </label>
+          <div class="row log-row">
+            <div class="row-control">
+              <button type="button" class="btn" id="show-log" data-i18n="showLog"></button>
+              <button type="button" class="btn quiet" id="clear-log" data-i18n="clearLog"></button>
+            </div>
+            <div id="log" class="log" hidden></div>
+          </div>
+        </details>
+      </section>
+
+      <footer class="foot">
+        <span id="version"></span>
+        <span data-i18n="autoSaved"></span>
+      </footer>
     </main>
   </body>
 </html>

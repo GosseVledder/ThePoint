@@ -1,5 +1,7 @@
-// Settings: AI service, keys and models (with "Test verbinding"), language, the
-// video fallback, read aloud and the cache. Every change is saved directly.
+// Settings: AI service, keys and models (with "Test verbinding"), language, read aloud,
+// the video fallback and the cache. Every change is saved directly. Same design as the
+// extension's options page: grouped cards with switches and stacked fields.
+import { App as CapApp } from '@capacitor/app';
 import { MODEL_SUGGESTIONS } from '@the-point/core/engine/config';
 import { LANGUAGES } from '@the-point/core/engine/prompt';
 import {
@@ -19,13 +21,22 @@ import type { App, Screen } from '../app';
 import { nativeFetch } from '../nativeFetch';
 
 const PROVIDER_IDS: ProviderId[] = ['claude', 'gemini'];
-const PROVIDER_INFO: Record<ProviderId, { name: string; placeholder: string; url: string }> = {
+const PROVIDER_INFO: Record<
+  ProviderId,
+  { name: string; vendor: string; placeholder: string; url: string }
+> = {
   claude: {
     name: 'Claude',
+    vendor: 'Anthropic',
     placeholder: 'sk-ant-…',
     url: 'https://console.anthropic.com/settings/keys',
   },
-  gemini: { name: 'Gemini', placeholder: 'AIza…', url: 'https://aistudio.google.com/apikey' },
+  gemini: {
+    name: 'Gemini',
+    vendor: 'Google',
+    placeholder: 'AIza…',
+    url: 'https://aistudio.google.com/apikey',
+  },
 };
 
 function debounce<A extends unknown[]>(fn: (...a: A) => void, ms: number): (...a: A) => void {
@@ -36,11 +47,39 @@ function debounce<A extends unknown[]>(fn: (...a: A) => void, ms: number): (...a
   };
 }
 
+/** A titled group with one card. */
+const group = (title: string, ...children: (Node | null)[]) =>
+  h('section', { class: 'group' }, h('h2', {}, title), h('div', { class: 'card' }, ...children));
+
+/** Label above a full-width control, optional hint below. */
+const field = (title: Node | string, control: Node, hint?: Node | string | null) =>
+  h(
+    'label',
+    { class: 'field' },
+    h('span', { class: 'row-title' }, title),
+    control,
+    hint ? h('span', { class: 'row-hint' }, hint) : null,
+  );
+
+/** A whole-row switch: text on the left, the switch on the right. */
+const switchRow = (title: string, hint: string, input: HTMLInputElement) =>
+  h(
+    'label',
+    { class: 'row' },
+    h(
+      'span',
+      { class: 'row-text' },
+      h('span', { class: 'row-title' }, title),
+      h('span', { class: 'row-hint' }, hint),
+    ),
+    input,
+  );
+
 export function settingsScreen(app: App): Screen {
   const el = h(
     'div',
     { class: 'screen settings' },
-    h('p', { class: 'hint' }, app.t.settings.loading),
+    h('p', { class: 'hint loading' }, app.t.settings.loading),
   );
   let refreshVoices = () => {};
   void build(app, el).then((r) => (refreshVoices = r));
@@ -56,18 +95,23 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
     s = await app.settings.save(patch);
   };
 
-  // AI service
-  const sections: Partial<Record<ProviderId, HTMLElement>> = {};
-  const updateSections = () => {
+  // AI service: the chosen provider's key block; Gemini also while the fallback is on.
+  const blocks = Object.fromEntries(
+    PROVIDER_IDS.map((p) => [p, providerBlock(app, p, keys[p], () => s, save)]),
+  ) as Record<ProviderId, HTMLElement>;
+  const aiCard = h('div', { class: 'card' });
+  const updateBlocks = () => {
+    let shown = 0;
     for (const p of PROVIDER_IDS) {
-      const sec = sections[p];
-      if (sec) sec.hidden = p !== s.provider && !(p === 'gemini' && s.geminiTerugval);
+      blocks[p].hidden = p !== s.provider && !(p === 'gemini' && s.geminiTerugval);
+      if (!blocks[p].hidden) shown++;
     }
+    aiCard.classList.toggle('both', shown > 1);
   };
-  const radios = PROVIDER_IDS.map((p) =>
+  const segments = PROVIDER_IDS.map((p) =>
     h(
       'label',
-      { class: 'choice' },
+      { class: 'segment' },
       h('input', {
         type: 'radio',
         name: 'provider',
@@ -75,14 +119,17 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
         checked: s.provider === p,
         onChange: async () => {
           await save({ provider: p });
-          updateSections();
+          updateBlocks();
         },
       }),
-      h('span', {}, PROVIDER_INFO[p].name),
+      h('span', {}, h('b', {}, PROVIDER_INFO[p].name), h('small', {}, PROVIDER_INFO[p].vendor)),
     ),
   );
-
-  for (const p of PROVIDER_IDS) sections[p] = providerSection(app, p, keys[p], () => s, save);
+  aiCard.append(
+    h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': T.aiService }, ...segments),
+    h('p', { class: 'card-intro' }, T.providerHint),
+    ...PROVIDER_IDS.map((p) => blocks[p]),
+  );
 
   // Interface language (each in its own name); changing it rebuilds the screen.
   const interfaceTaal = h(
@@ -113,15 +160,7 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
     ),
   );
 
-  // Video fallback
-  const fallback = h('input', {
-    type: 'checkbox',
-    checked: s.geminiTerugval,
-    onChange: async (e: Event) => {
-      await save({ geminiTerugval: (e.target as HTMLInputElement).checked });
-      updateSections();
-    },
-  });
+  // Video fallback; the confirmation only applies to it.
   const minutes = h('input', {
     type: 'number',
     min: '1',
@@ -133,6 +172,25 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
       const input = e.target as HTMLInputElement;
       await save({ bevestigVanafMinuten: Number(input.value) });
       input.value = String(s.bevestigVanafMinuten);
+    },
+  });
+  const minutesField = field(
+    T.confirmLonger,
+    h('span', { class: 'unit-row' }, minutes, h('span', { class: 'unit' }, T.minutes)),
+  );
+  const updateMinutes = () => {
+    minutes.disabled = !s.geminiTerugval;
+    minutesField.classList.toggle('dim', !s.geminiTerugval);
+  };
+  const fallback = h('input', {
+    type: 'checkbox',
+    class: 'switch',
+    role: 'switch',
+    checked: s.geminiTerugval,
+    onChange: async (e: Event) => {
+      await save({ geminiTerugval: (e.target as HTMLInputElement).checked });
+      updateBlocks();
+      updateMinutes();
     },
   });
 
@@ -183,7 +241,7 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
       .catch((e) => app.toast(T.speechFailed(String(e))));
 
   // Cache
-  const count = h('span', {}, '…');
+  const count = h('span', { class: 'row-hint' }, '…');
   const updateCount = async () => {
     const n = (await app.cache.recent()).length;
     count.textContent = T.summaryCount(n);
@@ -194,55 +252,51 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
     await updateCount();
   };
 
+  const version = h('span', {});
   el.replaceChildren(
-    h(
-      'section',
-      {},
-      h('h2', {}, T.languageHeading),
-      h('label', { class: 'field' }, h('span', {}, T.interfaceLanguage), interfaceTaal),
-      h('label', { class: 'field' }, h('span', {}, T.summaryLanguage), taal),
+    h('section', { class: 'group' }, h('h2', {}, T.aiService), aiCard),
+    group(
+      T.languageHeading,
+      field(T.interfaceLanguage, interfaceTaal),
+      field(T.summaryLanguage, taal),
     ),
-    h(
-      'section',
-      {},
-      h('h2', {}, T.aiService),
-      h('div', { class: 'radio-row', role: 'radiogroup', 'aria-label': T.aiService }, ...radios),
-    ),
-    ...PROVIDER_IDS.map((p) => sections[p]!),
-    h(
-      'section',
-      {},
-      h('h2', {}, T.noTranscriptHeading),
+    group(
+      T.readAloudHeading,
+      field(T.voice, voiceSelect),
+      field(h('span', { class: 'title-value' }, h('span', {}, T.speed), rateOut), rate),
       h(
-        'label',
-        { class: 'check' },
-        fallback,
-        h('span', {}, T.fallbackShort, h('small', {}, T.fallbackHintShort)),
+        'div',
+        { class: 'actions' },
+        h('button', { class: 'btn', onClick: testVoice }, T.testVoice),
       ),
-      h('label', { class: 'field' }, h('span', {}, T.confirmFromMinutes), minutes),
     ),
-    h(
-      'section',
-      {},
-      h('h2', {}, T.readAloudHeading),
-      h('label', { class: 'field' }, h('span', {}, T.voice), voiceSelect),
-      h('label', { class: 'field' }, h('span', {}, `${T.speed} `, rateOut), rate),
-      h('div', { class: 'row' }, h('button', { onClick: testVoice }, T.testVoice)),
+    group(
+      T.noTranscriptHeading,
+      switchRow(T.fallbackShort, T.fallbackHintShort, fallback),
+      minutesField,
     ),
-    h(
-      'section',
-      {},
-      h('h2', {}, T.savedSummaries),
-      h('div', { class: 'row' }, count, h('button', { onClick: () => void clear() }, T.clear)),
+    group(
+      T.savedSummaries,
+      h(
+        'div',
+        { class: 'row' },
+        h('span', { class: 'row-text' }, h('span', { class: 'row-title' }, T.cacheHeading), count),
+        h('button', { class: 'btn danger', onClick: () => void clear() }, T.clear),
+      ),
     ),
+    h('footer', { class: 'foot' }, version, h('span', {}, T.autoSaved)),
   );
-  updateSections();
-  fillVoices();
+  updateBlocks();
+  updateMinutes();
   void updateCount();
+  fillVoices();
+  void CapApp.getInfo()
+    .then((info) => (version.textContent = `The Point ${info.version}`))
+    .catch(() => undefined);
   return fillVoices;
 }
 
-function providerSection(
+function providerBlock(
   app: App,
   p: ProviderId,
   key: string,
@@ -266,7 +320,7 @@ function providerSection(
   const toggle: HTMLButtonElement = h(
     'button',
     {
-      class: 'ghost',
+      type: 'button',
       onClick: () => {
         const show = keyInput.type === 'password';
         keyInput.type = show ? 'text' : 'password';
@@ -321,33 +375,31 @@ function providerSection(
   };
 
   return h(
-    'section',
-    { 'data-provider': p },
-    h('h2', {}, info.name),
+    'div',
+    { class: 'provider', 'data-provider': p },
     h(
-      'label',
-      { class: 'field' },
-      h('span', {}, T.apiKey),
-      h('span', { class: 'key-row' }, keyInput, toggle),
+      'div',
+      { class: 'provider-head' },
+      h('h3', {}, info.name),
+      p === 'gemini' ? h('span', { class: 'tag' }, T.alsoForFallback) : null,
+    ),
+    field(
+      T.apiKey,
+      h('span', { class: 'input-group' }, keyInput, toggle),
       h(
-        'small',
+        'span',
         {},
         T.keyHintDevice[0],
         h('a', { href: info.url }, new URL(info.url).hostname),
         T.keyHintDevice[1],
       ),
     ),
-    h(
-      'label',
-      { class: 'field' },
-      h('span', {}, T.model),
-      model,
-      h('datalist', { id: listId }, ...MODEL_SUGGESTIONS[p].map((m) => h('option', { value: m }))),
-    ),
+    field(T.model, model),
+    h('datalist', { id: listId }, ...MODEL_SUGGESTIONS[p].map((m) => h('option', { value: m }))),
     h(
       'div',
-      { class: 'row' },
-      h('button', { onClick: () => void test() }, T.testConnection),
+      { class: 'actions' },
+      h('button', { class: 'btn', onClick: () => void test() }, T.testConnection),
       result,
     ),
   );

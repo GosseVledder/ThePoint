@@ -168,6 +168,7 @@ export const de: Messages = {
       `${n} ${n === 1 ? 'Stimme' : 'Stimmen'} für ${l}; Stimmen unterscheiden sich je nach Browser.`,
     speechFailed: (e) => `Vorlesen fehlgeschlagen: ${e}`,
     noTranscriptHeading: 'Videos ohne Transkript',
+    alsoForFallback: 'Auch für Videos ohne Transkript',
     fallback: 'Gemini das Video selbst ansehen lassen, wenn es kein Transkript gibt',
     fallbackShort: 'Gemini das Video selbst ansehen lassen',
     fallbackHint:
@@ -187,6 +188,7 @@ export const de: Messages = {
       n === 1 ? '1 Zusammenfassung gespeichert' : `${n} Zusammenfassungen gespeichert`,
     summaryCount: (n) => (n === 1 ? '1 Zusammenfassung' : `${n} Zusammenfassungen`),
     confirmClear: 'Alle gespeicherten Zusammenfassungen löschen?',
+    advanced: 'Erweitert',
     debugHeading: 'Debug-Protokoll',
     debugCheck: 'Pro Aufruf Anbieter, Modell, Eingabelänge, Dauer und Tokens protokollieren',
     showLog: 'Protokoll anzeigen',
@@ -235,6 +237,9 @@ export const de: Messages = {
     seekTitle: (t) => (t ? `Zu ${t} im Video` : 'Zum Video'),
     playerOff: 'Der YouTube-Player ist aus.',
     showPlayerAndSeek: (t) => (t ? `Player zeigen und zu ${t} springen` : 'Player zeigen'),
+    openInYouTubeAt: (t) =>
+      t ? `In der YouTube-App bei ${t} öffnen` : 'In der YouTube-App öffnen',
+    openedInYouTube: (t) => (t ? `YouTube springt zu ${t}` : 'In YouTube geöffnet'),
     readEvidence: 'Beleg vorlesen',
     cancel: 'Abbrechen',
   },

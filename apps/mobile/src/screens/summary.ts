@@ -9,7 +9,8 @@ import type { Settings } from '@the-point/core/settings';
 import { getTranscriptById } from '@the-point/core/youtube/transcript';
 import { isDark, type App, type Screen } from '../app';
 import { nativeFetch } from '../nativeFetch';
-import { createPlayer, youtubeAppUrl, type EmbeddedPlayer } from '../player';
+import { createPlayer, type EmbeddedPlayer } from '../player';
+import { inSplitScreen, openInYouTubeApp } from '../youtubeApp';
 
 const VIEW_CSS = `
 .root { padding: 12px 16px 32px; }
@@ -41,7 +42,9 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
   let ready: EmbeddedPlayer | null = null;
   let playerFailed = false;
   let playerGen = 0;
-  const openInYouTube = (sec: number) => (window.location.href = youtubeAppUrl(videoId, sec));
+  // In split screen the YouTube app opens in the other half, so The Point stays visible.
+  const openInYouTube = async (sec: number) =>
+    openInYouTubeApp(videoId, sec, await inSplitScreen());
   const showPlayer = (at: number | null): Promise<EmbeddedPlayer> => {
     if (player) return player;
     const gen = ++playerGen;
@@ -56,7 +59,7 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
             'div',
             { class: 'player-fallback' },
             h('p', {}, t.app.cannotPlay(code)),
-            h('button', { onClick: () => openInYouTube(at ?? 0) }, t.app.openInYouTube),
+            h('button', { onClick: () => void openInYouTube(at ?? 0) }, t.app.openInYouTube),
           ),
         );
         render();
@@ -88,10 +91,21 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
     const gen = playerGen;
     void showPlayer(sec).then((p) => gen === playerGen && p.seekTo(sec));
   };
+  const timeOf = (id: SpeechId) => {
+    const summary = state.kind === 'done' ? state.summary : null;
+    return (id === 'kritiek' ? summary?.kritiekPunt.tijd : summary?.takeaways[id]?.tijd) ?? null;
+  };
+  // Split screen with the player off: the YouTube app next to The Point jumps to the
+  // moment directly (it opens there if it is not open yet).
+  const jumpInYouTube = async (sec: number, id: SpeechId) => {
+    app.speaker.stop();
+    await openInYouTubeApp(videoId, sec, true);
+    app.toast(t.app.openedInYouTube(timeOf(id)));
+  };
   const seek = (sec: number, id: SpeechId) => {
-    if (playerFailed) openInYouTube(sec);
+    if (playerFailed) void openInYouTube(sec);
     else if (player) playAt(sec);
-    else askSeek(sec, id);
+    else void inSplitScreen().then((split) => (split ? jumpInYouTube(sec, id) : askSeek(sec, id)));
   };
 
   // Without a player, a time stamp asks what to do: show the player, or only hear the
@@ -105,8 +119,7 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
   function askSeek(sec: number, id: SpeechId) {
     closeDialog();
     const summary = state.kind === 'done' ? state.summary : null;
-    const tijd =
-      (id === 'kritiek' ? summary?.kritiekPunt.tijd : summary?.takeaways[id]?.tijd) ?? null;
+    const tijd = timeOf(id);
     const evidence = summary ? buildEvidenceSpeech(summary, id) : null;
     const backdrop: HTMLElement = h(
       'div',
@@ -129,6 +142,17 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
             },
           },
           t.app.showPlayerAndSeek(tijd),
+        ),
+        h(
+          'button',
+          {
+            onClick: () => {
+              closeDialog();
+              app.speaker.stop();
+              void openInYouTube(sec);
+            },
+          },
+          t.app.openInYouTubeAt(tijd),
         ),
         evidence
           ? h(

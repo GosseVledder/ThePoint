@@ -163,6 +163,7 @@ export const es: Messages = {
       `${n} ${n === 1 ? 'voz' : 'voces'} en ${l}; las voces varían según el navegador.`,
     speechFailed: (e) => `Error al leer en voz alta: ${e}`,
     noTranscriptHeading: 'Vídeos sin transcripción',
+    alsoForFallback: 'También para vídeos sin transcripción',
     fallback: 'Dejar que Gemini vea el vídeo por sí mismo si no hay transcripción',
     fallbackShort: 'Dejar que Gemini vea el vídeo por sí mismo',
     fallbackHint:
@@ -180,6 +181,7 @@ export const es: Messages = {
     cacheCount: (n) => (n === 1 ? '1 resumen guardado' : `${n} resúmenes guardados`),
     summaryCount: (n) => (n === 1 ? '1 resumen' : `${n} resúmenes`),
     confirmClear: '¿Borrar todos los resúmenes guardados?',
+    advanced: 'Avanzado',
     debugHeading: 'Registro de depuración',
     debugCheck:
       'Registrar por llamada el proveedor, el modelo, la longitud, la duración y los tokens',
@@ -229,6 +231,9 @@ export const es: Messages = {
     seekTitle: (t) => (t ? `Ir a ${t} en el vídeo` : 'Ir al vídeo'),
     playerOff: 'El reproductor de YouTube está desactivado.',
     showPlayerAndSeek: (t) => (t ? `Mostrar el reproductor e ir a ${t}` : 'Mostrar el reproductor'),
+    openInYouTubeAt: (t) =>
+      t ? `Abrir en la aplicación de YouTube en ${t}` : 'Abrir en la aplicación de YouTube',
+    openedInYouTube: (t) => (t ? `YouTube salta a ${t}` : 'Abierto en YouTube'),
     readEvidence: 'Leer el fundamento en voz alta',
     cancel: 'Cancelar',
   },

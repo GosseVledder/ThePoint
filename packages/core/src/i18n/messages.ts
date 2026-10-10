@@ -140,6 +140,8 @@ export interface Messages {
     voicesFor: (n: number, language: string) => string;
     speechFailed: (e: string) => string;
     noTranscriptHeading: string;
+    /** Tag on the Gemini key block when only the video fallback needs it. */
+    alsoForFallback: string;
     fallback: string;
     fallbackShort: string;
     fallbackHint: string;
@@ -155,6 +157,7 @@ export interface Messages {
     cacheCount: (n: number) => string;
     summaryCount: (n: number) => string;
     confirmClear: string;
+    advanced: string;
     debugHeading: string;
     debugCheck: string;
     showLog: string;
@@ -194,6 +197,10 @@ export interface Messages {
     seekTitle: (time: string | null) => string;
     playerOff: string;
     showPlayerAndSeek: (time: string | null) => string;
+    /** Seek dialog: open the video at this time in the YouTube app. */
+    openInYouTubeAt: (time: string | null) => string;
+    /** Split screen: toast after a time stamp moved the YouTube app next to us. */
+    openedInYouTube: (time: string | null) => string;
     readEvidence: string;
     cancel: string;
   };

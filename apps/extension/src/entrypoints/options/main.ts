@@ -47,9 +47,9 @@ let savedTimer: number | undefined;
 function flashSaved(): void {
   const el = $('#saved');
   el.textContent = t.settings.saved;
-  el.style.opacity = '1';
+  el.classList.add('show');
   window.clearTimeout(savedTimer);
-  savedTimer = window.setTimeout(() => (el.style.opacity = '0'), 1500);
+  savedTimer = window.setTimeout(() => el.classList.remove('show'), 1500);
 }
 
 async function save(patch: Partial<Settings>): Promise<void> {
@@ -71,6 +71,7 @@ const option = (value: string, text: string) =>
 async function init(): Promise<void> {
   const [s, keys] = await Promise.all([getSettings(), getApiKeys()]);
   t = messages(s.interfaceTaal);
+  $('#version').textContent = `The Point ${browser.runtime.getManifest().version}`;
 
   // Languages: the interface language in its own name, summary languages in the
   // interface language.
@@ -192,6 +193,14 @@ async function init(): Promise<void> {
       if (Number.isFinite(n) && n >= 1 && n <= 600) void save({ bevestigVanafMinuten: n });
     }, 400),
   );
+  // The confirmation only applies to the video fallback.
+  const fallback = $<HTMLInputElement>('#geminiTerugval');
+  const updateConfirmRow = () => {
+    $('#confirm-row').classList.toggle('dim', !fallback.checked);
+    minutes.disabled = !fallback.checked;
+  };
+  fallback.addEventListener('change', updateConfirmRow);
+  updateConfirmRow();
 
   // Cache
   let aantal: number | null = null;
@@ -357,16 +366,20 @@ async function initSpeech(initial: Settings): Promise<void> {
 }
 
 /**
- * Show only the selected provider's section. Gemini stays visible next to Claude while
- * the no-transcript fallback is on, because that fallback needs a Gemini key.
+ * Show only the selected provider's key block. Gemini stays visible next to Claude while
+ * the no-transcript fallback is on, because that fallback needs a Gemini key; with two
+ * blocks each gets a heading.
  */
 function updateProviderSections(): void {
   const p = document.querySelector<HTMLInputElement>('input[name="provider"]:checked')?.value;
   const fallback = $<HTMLInputElement>('#geminiTerugval').checked;
-  document.querySelectorAll<HTMLElement>('section[data-provider]').forEach((sec) => {
-    const own = sec.dataset.provider;
-    sec.hidden = own !== p && !(own === 'gemini' && fallback);
+  let shown = 0;
+  document.querySelectorAll<HTMLElement>('[data-provider]').forEach((block) => {
+    const own = block.dataset.provider;
+    block.hidden = own !== p && !(own === 'gemini' && fallback);
+    if (!block.hidden) shown++;
   });
+  $('#ai-card').classList.toggle('both', shown > 1);
 }
 
 void init();
