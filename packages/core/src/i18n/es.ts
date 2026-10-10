@@ -201,6 +201,31 @@ export const es: Messages = {
     ],
   },
 
+  update: {
+    heading: 'Actualizaciones',
+    installed: (v) => `Versión instalada: ${v}`,
+    check: 'Buscar actualizaciones',
+    checking: 'Comprobando…',
+    upToDate: 'Tienes la última versión.',
+    available: (v) => `La versión ${v} está disponible.`,
+    none: 'Aún no hay ninguna versión en GitHub.',
+    failed: (e) => `No se pudo comprobar: ${e}`,
+    whatsNew: 'Novedades',
+    download: (v) => `Descargar la versión ${v}`,
+    extensionSteps: [
+      'Descarga el zip con la nueva versión.',
+      'Descomprímelo sobre la carpeta de The Point (sustituye los archivos).',
+      'Haz clic en Recargar; después esta página se vuelve a abrir.',
+    ],
+    reload: 'Recargar',
+    downloadInstall: 'Descargar e instalar',
+    downloading: 'Descargando…',
+    opening: 'Abriendo el instalador…',
+    installHint:
+      'La primera vez, Android te pide que permitas instalar desde The Point; después la app se reinicia y vuelves a tocar este botón. Tu clave, tus ajustes y tus resúmenes se conservan.',
+    checksumFailed: 'El archivo descargado no coincide (SHA-256). Inténtalo de nuevo.',
+    downloadFailed: (e) => `No se pudo descargar: ${e}`,
+  },
   extension: {
     actionTitle: 'The Point – ajustes',
     playerButton: 'The Point: resumen',

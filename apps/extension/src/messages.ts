@@ -1,9 +1,12 @@
 // Message contracts between the content script, the options page and the background.
 import type { ProviderId } from '@the-point/core/engine/types';
 import type { ErrorInfo, JobEvent, JobRequest } from '@the-point/core/job';
+import type { UpdateCheck } from '@the-point/core/update';
 import { isVideoId } from '@the-point/core/youtube/videoId';
 
 export const SUMMARIZE_PORT = 'the-point-summarize';
+/** storage.local flag: the options page reloads the extension and wants to be reopened. */
+export const REOPEN_OPTIONS_KEY = 'reopenOptions';
 
 export type { ErrorCode, ErrorInfo, SummaryStep } from '@the-point/core/job';
 
@@ -23,9 +26,12 @@ export type RuntimeRequest =
   | { type: 'clearCache' }
   | { type: 'getDebugLog' }
   | { type: 'clearDebugLog' }
-  | { type: 'getTranscript'; videoId: string };
+  | { type: 'getTranscript'; videoId: string }
+  | { type: 'checkUpdate' };
 
 export type TestConnectionResult = { ok: true } | { ok: false; error: ErrorInfo };
+
+export type UpdateCheckResult = { ok: true; check: UpdateCheck } | { ok: false; error: string };
 
 /** Messages content scripts (inside youtube.com pages) may send. */
 const CONTENT_ALLOWED: ReadonlySet<RuntimeRequest['type']> = new Set([

@@ -1,15 +1,18 @@
 import { PROVIDERS } from '@the-point/core/engine/summarize';
 import type { CallLog, ProviderId } from '@the-point/core/engine/types';
 import { runSummaryJob, toErrorInfo, type JobDeps } from '@the-point/core/job';
+import { checkForUpdate } from '@the-point/core/update';
 import { getTranscriptById } from '@the-point/core/youtube/transcript';
 import { isVideoId } from '@the-point/core/youtube/videoId';
 import {
   isAllowedRequest,
+  REOPEN_OPTIONS_KEY,
   SUMMARIZE_PORT,
   type PortEvent,
   type PortRequest,
   type RuntimeRequest,
   type TestConnectionResult,
+  type UpdateCheckResult,
 } from '../messages';
 import {
   cachedVideoIds,
@@ -43,6 +46,8 @@ export default defineBackground(() => {
   );
   rulesReadyPromise = rulesReady;
   void migrateLegacyKeys().catch((e) => console.warn('[the-point] sleutels migreren', e));
+  // A reload (also the one from the options page) starts the worker with this event.
+  browser.runtime.onInstalled.addListener(() => void reopenOptionsAfterReload());
 
   browser.runtime.onConnect.addListener((port) => {
     if (port.name !== SUMMARIZE_PORT || port.sender?.id !== browser.runtime.id) return;
@@ -110,7 +115,30 @@ async function handleRuntime(msg: RuntimeRequest): Promise<unknown> {
     case 'getTranscript':
       await rulesReadyPromise;
       return getTranscriptById(msg.videoId);
+    case 'checkUpdate':
+      return checkUpdate();
   }
+}
+
+/** Compare the installed version with the latest GitHub release. */
+async function checkUpdate(): Promise<UpdateCheckResult> {
+  try {
+    const current = browser.runtime.getManifest().version;
+    return { ok: true, check: await checkForUpdate({ target: 'extension', current }) };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+/**
+ * "Herladen" on the options page (after extracting an update over the folder) reloads
+ * the extension, which closes that page; open it again so the new version shows.
+ */
+async function reopenOptionsAfterReload(): Promise<void> {
+  const flag = await browser.storage.local.get(REOPEN_OPTIONS_KEY);
+  if (!flag[REOPEN_OPTIONS_KEY]) return;
+  await browser.storage.local.remove(REOPEN_OPTIONS_KEY);
+  await browser.runtime.openOptionsPage();
 }
 
 async function testConnection(

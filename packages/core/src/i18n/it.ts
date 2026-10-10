@@ -199,6 +199,31 @@ export const it: Messages = {
     ],
   },
 
+  update: {
+    heading: 'Aggiornamenti',
+    installed: (v) => `Versione installata: ${v}`,
+    check: 'Controlla aggiornamenti',
+    checking: 'Controllo in corso…',
+    upToDate: "Hai l'ultima versione.",
+    available: (v) => `È disponibile la versione ${v}.`,
+    none: 'Nessuna versione trovata su GitHub per ora.',
+    failed: (e) => `Controllo non riuscito: ${e}`,
+    whatsNew: 'Novità',
+    download: (v) => `Scarica la versione ${v}`,
+    extensionSteps: [
+      'Scarica lo zip con la nuova versione.',
+      'Estrailo nella cartella di The Point (sostituisci i file).',
+      'Fai clic su Ricarica; questa pagina si riapre subito dopo.',
+    ],
+    reload: 'Ricarica',
+    downloadInstall: 'Scarica e installa',
+    downloading: 'Download in corso…',
+    opening: "Apertura dell'installazione…",
+    installHint:
+      "La prima volta Android ti chiede di consentire le installazioni da The Point; poi l'app si riavvia e tocchi di nuovo questo pulsante. Chiave, impostazioni e riassunti vengono mantenuti.",
+    checksumFailed: 'Il file scaricato non corrisponde (SHA-256). Riprova.',
+    downloadFailed: (e) => `Download non riuscito: ${e}`,
+  },
   extension: {
     actionTitle: 'The Point – impostazioni',
     playerButton: 'The Point: riassunto',

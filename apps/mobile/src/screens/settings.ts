@@ -1,7 +1,6 @@
 // Settings: AI service, keys and models (with "Test verbinding"), language, read aloud,
 // the video fallback and the cache. Every change is saved directly. Same design as the
 // extension's options page: grouped cards with switches and stacked fields.
-import { App as CapApp } from '@capacitor/app';
 import { MODEL_SUGGESTIONS } from '@the-point/core/engine/config';
 import { LANGUAGES } from '@the-point/core/engine/prompt';
 import {
@@ -17,7 +16,9 @@ import { toErrorInfo } from '@the-point/core/job';
 import { h } from '@the-point/core/ui/render';
 import { groupVoices, voiceLabel } from '@the-point/core/ui/speechText';
 import type { Settings } from '@the-point/core/settings';
+import type { ReleaseAsset } from '@the-point/core/update';
 import type { App, Screen } from '../app';
+import { checkAppUpdate, downloadAndInstall, installedVersion, UpdateError } from '../appUpdate';
 import { nativeFetch } from '../nativeFetch';
 
 const PROVIDER_IDS: ProviderId[] = ['claude', 'gemini'];
@@ -252,7 +253,8 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
     await updateCount();
   };
 
-  const version = h('span', {});
+  const version = installedVersion();
+  const versionText = h('span', {});
   el.replaceChildren(
     h('section', { class: 'group' }, h('h2', {}, T.aiService), aiCard),
     group(
@@ -284,16 +286,110 @@ async function build(app: App, el: HTMLElement): Promise<() => void> {
         h('button', { class: 'btn danger', onClick: () => void clear() }, T.clear),
       ),
     ),
-    h('footer', { class: 'foot' }, version, h('span', {}, T.autoSaved)),
+    updateGroup(app, version),
+    h('footer', { class: 'foot' }, versionText, h('span', {}, T.autoSaved)),
   );
   updateBlocks();
   updateMinutes();
   void updateCount();
   fillVoices();
-  void CapApp.getInfo()
-    .then((info) => (version.textContent = `The Point ${info.version}`))
-    .catch(() => undefined);
+  void version.then((v) => v && (versionText.textContent = `The Point ${v}`));
   return fillVoices;
+}
+
+/**
+ * Updates: compare with the latest GitHub release; a newer APK is downloaded, checked
+ * (SHA-256) and handed to the Android installer, which asks the user to confirm.
+ */
+function updateGroup(app: App, version: Promise<string | null>): HTMLElement {
+  const U = app.t.update;
+  const title = h('span', { class: 'row-title' }, U.installed('…'));
+  const status = h('span', { class: 'row-hint update-status', 'aria-live': 'polite' });
+  const panel = h('div', { class: 'update-panel', hidden: true });
+  let current: string | null = null;
+  const setStatus = (text: string, state: string) => {
+    status.textContent = text;
+    status.dataset.state = state;
+  };
+
+  const showAvailable = (asset: ReleaseAsset, page: string) => {
+    const progress = h('span', { class: 'row-hint', 'aria-live': 'polite' });
+    const install: HTMLButtonElement = h(
+      'button',
+      {
+        class: 'btn primary',
+        onClick: async () => {
+          install.disabled = true;
+          progress.className = 'row-hint';
+          progress.textContent = U.downloading;
+          try {
+            await downloadAndInstall(
+              asset,
+              (p) => (progress.textContent = `${U.downloading} ${p}%`),
+            );
+            progress.textContent = U.opening;
+          } catch (e) {
+            progress.className = 'row-hint bad';
+            progress.textContent =
+              e instanceof UpdateError && e.code === 'checksum'
+                ? U.checksumFailed
+                : U.downloadFailed(e instanceof Error ? e.message : String(e));
+          }
+          install.disabled = false;
+        },
+      },
+      U.downloadInstall,
+    );
+    panel.replaceChildren(
+      h(
+        'p',
+        { class: 'update-head' },
+        h('b', {}, U.available(asset.version)),
+        h('a', { href: page }, U.whatsNew),
+      ),
+      install,
+      progress,
+      h('span', { class: 'row-hint' }, U.installHint),
+    );
+    panel.hidden = false;
+  };
+
+  const check: HTMLButtonElement = h(
+    'button',
+    {
+      class: 'btn',
+      disabled: true,
+      onClick: async () => {
+        if (!current) return;
+        check.disabled = true;
+        panel.hidden = true;
+        setStatus(U.checking, 'checking');
+        try {
+          const r = await checkAppUpdate(current);
+          if (r.status === 'available') {
+            setStatus('', 'available');
+            showAvailable(r.asset, r.page);
+          } else setStatus(r.status === 'current' ? U.upToDate : U.none, r.status);
+        } catch (e) {
+          setStatus(U.failed(e instanceof Error ? e.message : String(e)), 'error');
+        }
+        check.disabled = false;
+      },
+    },
+    U.check,
+  );
+  void version.then((v) => {
+    current = v;
+    title.textContent = U.installed(v ?? '–');
+    check.disabled = !v;
+  });
+
+  return group(
+    U.heading,
+    h('div', { class: 'field' }, title, status),
+    h('div', { class: 'actions' }, check),
+    panel,
+  );
 }
 
 function providerBlock(

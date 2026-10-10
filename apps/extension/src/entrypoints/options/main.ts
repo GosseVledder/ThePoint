@@ -9,7 +9,12 @@ import {
   type Messages,
   type UiLang,
 } from '@the-point/core/i18n/messages';
-import type { RuntimeRequest, TestConnectionResult } from '../../messages';
+import {
+  REOPEN_OPTIONS_KEY,
+  type RuntimeRequest,
+  type TestConnectionResult,
+  type UpdateCheckResult,
+} from '../../messages';
 import type { DebugEntry } from '../../storage/debuglog';
 import { getApiKeys, setApiKey } from '../../storage/secrets';
 import { getSettings, saveSettings, type Settings } from '../../storage/settings';
@@ -25,11 +30,15 @@ let t: Messages = messages('nl');
 /** Parts of the page that show computed texts and must follow a language change. */
 const onLanguage: (() => void)[] = [];
 
-/** Fill every [data-i18n] element; "keyHintBrowser.0" picks an element of an array. */
+/**
+ * Fill every [data-i18n] element. Keys come from `settings` unless prefixed with another
+ * section ("update:check"); "keyHintBrowser.0" picks an element of an array.
+ */
 function applyTexts(): void {
   const lookup = (key: string): string => {
-    const [name, index] = key.split('.');
-    const value = (t.settings as unknown as Record<string, unknown>)[name!];
+    const [path, index] = key.split('.');
+    const [section, name] = path!.includes(':') ? path!.split(':') : ['settings', path];
+    const value = (t as unknown as Record<string, Record<string, unknown>>)[section!]?.[name!];
     return String(Array.isArray(value) ? value[Number(index)] : (value ?? key));
   };
   document.documentElement.lang = t.locale.split('-')[0]!;
@@ -269,9 +278,63 @@ async function init(): Promise<void> {
     logShown = false;
   });
 
+  initUpdate();
+
   // Read aloud
   await initSpeech(s);
   applyTexts();
+}
+
+/**
+ * Updates: compare with the latest GitHub release (in the background). An unpacked
+ * extension cannot replace its own files, so a newer version is three steps: download
+ * the zip, extract it over the folder, reload (which reopens this page).
+ */
+function initUpdate(): void {
+  const version = browser.runtime.getManifest().version;
+  const button = $<HTMLButtonElement>('#check-update');
+  const status = $('#update-status');
+  const panel = $('#update-panel');
+  let state: UpdateCheckResult | 'checking' | null = null;
+
+  const show = () => {
+    $('#installed-version').textContent = t.update.installed(version);
+    panel.hidden = true;
+    status.dataset.state = state === null ? '' : state === 'checking' ? 'checking' : state.ok ? state.check.status : 'error';
+    if (state === null) status.textContent = '';
+    else if (state === 'checking') status.textContent = t.update.checking;
+    else if (!state.ok) status.textContent = t.update.failed(state.error);
+    else if (state.check.status === 'none') status.textContent = t.update.none;
+    else if (state.check.status === 'current') status.textContent = t.update.upToDate;
+    else {
+      const { asset, page } = state.check;
+      status.textContent = '';
+      panel.hidden = false;
+      $('#update-available').textContent = t.update.available(asset.version);
+      $<HTMLAnchorElement>('#update-notes').href = page;
+      const download = $<HTMLAnchorElement>('#update-download');
+      download.href = asset.url;
+      download.textContent = t.update.download(asset.version);
+    }
+  };
+  onLanguage.push(show);
+
+  button.addEventListener('click', async () => {
+    button.disabled = true;
+    state = 'checking';
+    show();
+    state = await send<UpdateCheckResult>({ type: 'checkUpdate' }).catch((e: unknown) => ({
+      ok: false as const,
+      error: String(e),
+    }));
+    button.disabled = false;
+    show();
+  });
+
+  $('#update-reload').addEventListener('click', async () => {
+    await browser.storage.local.set({ [REOPEN_OPTIONS_KEY]: true });
+    browser.runtime.reload();
+  });
 }
 
 async function initSpeech(initial: Settings): Promise<void> {

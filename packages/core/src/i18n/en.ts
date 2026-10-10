@@ -197,6 +197,31 @@ export const en: Messages = {
     ],
   },
 
+  update: {
+    heading: 'Updates',
+    installed: (v) => `Installed version: ${v}`,
+    check: 'Check for updates',
+    checking: 'Checking…',
+    upToDate: 'You have the latest version.',
+    available: (v) => `Version ${v} is available.`,
+    none: 'No version found on GitHub yet.',
+    failed: (e) => `Check failed: ${e}`,
+    whatsNew: "What's new?",
+    download: (v) => `Download version ${v}`,
+    extensionSteps: [
+      'Download the zip with the new version.',
+      'Extract it over the The Point folder (replace the files).',
+      'Click Reload; this page then opens again.',
+    ],
+    reload: 'Reload',
+    downloadInstall: 'Download and install',
+    downloading: 'Downloading…',
+    opening: 'Opening the installer…',
+    installHint:
+      'The first time, Android asks you to allow installs from The Point; the app then restarts and you tap this button once more. Your key, settings and summaries are kept.',
+    checksumFailed: "The downloaded file doesn't match (SHA-256). Please try again.",
+    downloadFailed: (e) => `Download failed: ${e}`,
+  },
   extension: {
     actionTitle: 'The Point – settings',
     playerButton: 'The Point: summary',

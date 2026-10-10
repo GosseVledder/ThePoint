@@ -199,6 +199,31 @@ export const pt: Messages = {
     ],
   },
 
+  update: {
+    heading: 'Atualizações',
+    installed: (v) => `Versão instalada: ${v}`,
+    check: 'Procurar atualizações',
+    checking: 'A verificar…',
+    upToDate: 'Tem a versão mais recente.',
+    available: (v) => `A versão ${v} está disponível.`,
+    none: 'Ainda não foi encontrada nenhuma versão no GitHub.',
+    failed: (e) => `A verificação falhou: ${e}`,
+    whatsNew: 'Novidades',
+    download: (v) => `Transferir a versão ${v}`,
+    extensionSteps: [
+      'Transfira o zip com a nova versão.',
+      'Extraia-o por cima da pasta do The Point (substitua os ficheiros).',
+      'Clique em Recarregar; esta página volta a abrir-se.',
+    ],
+    reload: 'Recarregar',
+    downloadInstall: 'Transferir e instalar',
+    downloading: 'A transferir…',
+    opening: 'A abrir a instalação…',
+    installHint:
+      'Na primeira vez, o Android pede-lhe que permita instalações a partir do The Point; depois a app reinicia e toca novamente neste botão. A sua chave, definições e resumos são mantidos.',
+    checksumFailed: 'O ficheiro transferido não corresponde (SHA-256). Tente novamente.',
+    downloadFailed: (e) => `A transferência falhou: ${e}`,
+  },
   extension: {
     actionTitle: 'The Point – definições',
     playerButton: 'The Point: resumo',

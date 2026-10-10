@@ -166,6 +166,31 @@ export interface Messages {
     logHead: [string, string, string, string, string, string, string, string, string];
   };
 
+  /** Update check on the options page and in the app's settings. */
+  update: {
+    heading: string;
+    installed: (version: string) => string;
+    check: string;
+    checking: string;
+    upToDate: string;
+    available: (version: string) => string;
+    none: string;
+    failed: (error: string) => string;
+    whatsNew: string;
+    /** Extension: the zip download button. */
+    download: (version: string) => string;
+    /** Extension: download, extract over the folder, reload. */
+    extensionSteps: [string, string, string];
+    reload: string;
+    /** App: download the APK and open the Android installer. */
+    downloadInstall: string;
+    downloading: string;
+    opening: string;
+    installHint: string;
+    checksumFailed: string;
+    downloadFailed: (error: string) => string;
+  };
+
   extension: {
     actionTitle: string;
     playerButton: string;

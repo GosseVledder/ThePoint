@@ -10,10 +10,10 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 
 | | Download | Installeren |
 |---|---|---|
-| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.4.0.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.4.0.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.3.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.3.0.zip)<br>175 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.5.0.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.5.0.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.4.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.4.0.zip)<br>183 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
-Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini) of Anthropic (Claude); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund.
+Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini) of Anthropic (Claude); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
 ## Waarom The Point?
 
@@ -41,11 +41,11 @@ Er zit geen server van The Point tussen: je apparaat praat rechtstreeks met YouT
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-0.4.0.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.4.0.apk) (ook in de map [`apk/`](apk/)) |
-| **Versie** | 0.4.0 (versionCode 4) |
+| **Bestand** | [`ThePoint-0.5.0.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.5.0.apk) (ook in de map [`apk/`](apk/)) |
+| **Versie** | 0.5.0 (versionCode 5) |
 | **Vereist** | Android 7.0 of nieuwer |
 | **Grootte** | 3 MB |
-| **SHA-256** | `3afa884317d9ce0a4efb86b631092987e2d898de70acb6e87c7027c3f64f882c` |
+| **SHA-256** | `c3b761d930ce160d3f664d038d15bd12947f7b33e49a0a74c10978a68c15c683` |
 
 De APK is een ondertekende release-build; hij staat niet in de Play Store.
 
@@ -84,15 +84,15 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.3.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.3.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.3.0 |
+| **Bestand** | [`ThePoint-extension-0.4.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.4.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.4.0 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
-| **Grootte** | 175 kB |
-| **SHA-256** | `fe8e61edda69681a7d360034802c4220c2f4197b974ef93f8a4331b47646cc9e` |
+| **Grootte** | 183 kB |
+| **SHA-256** | `ad23c3e72a1d50e34f0e5417496a98628dc6aa5b9db69394c3b663316d559a5a` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.3.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.3.0.zip).
+1. **Download** [`ThePoint-extension-0.4.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.4.0.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).
@@ -124,18 +124,23 @@ Gebruik bij voorkeur een aparte sleutel met een bestedingslimiet (Anthropic Cons
 
 ## Bijwerken
 
-- **App**: download de nieuwe APK en installeer hem over de oude heen.
-- **Extensie**: pak de nieuwe zip uit over de oude map heen (bestanden vervangen), klik in `chrome://extensions` of `edge://extensions` bij The Point op het herlaadicoon (↻) en vernieuw de YouTube-tab.
+De app (vanaf 0.5.0) en de extensie (vanaf 0.4.0) zoeken zelf de nieuwste versie op: **Instellingen › Updates › Controleren op updates**. Elke versie staat ook bij de [Releases](https://github.com/GosseVledder/ThePoint/releases).
 
-Je sleutel, instellingen en samenvattingen blijven in beide gevallen bewaard.
+- **App**: is er een nieuwe versie, tik dan op **Downloaden en installeren**. De app downloadt de APK, controleert de SHA-256 en opent de installatie van Android; bevestig met *Bijwerken*. De eerste keer vraagt Android om installeren via The Point toe te staan; de app start daarna opnieuw en je tikt nog een keer op de knop.
+- **Extensie**: een uitgepakte extensie kan zichzelf niet vervangen, dus het zijn drie stappen op de instellingenpagina: de zip **downloaden**, hem **uitpakken over de map** van The Point heen (bestanden vervangen) en op **Herladen** klikken. De instellingenpagina opent daarna opnieuw met de nieuwe versie; vernieuw open YouTube-tabs.
 
-Controleren of een bestand ongewijzigd is (optioneel), op Windows: `certutil -hashfile <bestand> SHA256`; op macOS/Linux: `sha256sum <bestand>`. De uitkomst moet gelijk zijn aan de SHA-256 hierboven.
+Oudere versies werk je met de hand bij: installeer de nieuwe APK over de oude heen, of pak de nieuwe zip uit over de oude map en klik in `chrome://extensions` of `edge://extensions` bij The Point op het herlaadicoon (↻).
+
+Je sleutel, instellingen en samenvattingen blijven in alle gevallen bewaard.
+
+Controleren of een bestand ongewijzigd is (optioneel), op Windows: `certutil -hashfile <bestand> SHA256`; op macOS/Linux: `sha256sum <bestand>`. De uitkomst moet gelijk zijn aan de SHA-256 hierboven of bij de release.
 
 ## Privacy en sleutels
 
 - **Extensie**: sleutels staan alleen in je browser, in de eigen opslag van de extensie (IndexedDB). YouTube-pagina's en de scripts die de extensie in YouTube uitvoert kunnen ze niet lezen.
 - **App**: sleutels staan in de beveiligde opslag van Android (Keystore); back-ups van de app staan uit.
 - De sleutel gaat alleen naar `api.anthropic.com` of `generativelanguage.googleapis.com`, in een header (niet in de URL), en staat nooit in de code of de repository.
+- *Controleren op updates* vraagt alleen de nieuwste release op bij `api.github.com`; er gaan geen sleutels of andere gegevens mee.
 
 ## Bekende beperkingen
 

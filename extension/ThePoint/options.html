@@ -7,8 +7,8 @@
     <title>The Point – instellingen</title>
     <meta name="manifest.open_in_tab" content="true">
     <link rel="icon" href="/icon/32.png">
-    <script type="module" crossorigin src="/chunks/options-DnYn6h0j.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/options-C3UycPnj.css">
+    <script type="module" crossorigin src="/chunks/options-BMY00dQw.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/options-Cj678Dno.css">
   </head>
   <body>
     <!-- Texts come from @the-point/core/i18n: data-i18n="<key in settings>" sets the text. -->
@@ -200,6 +200,38 @@
               <input id="bevestigVanafMinuten" type="number" min="1" max="600" step="1">
               <span class="unit" data-i18n="minutes"></span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="group" aria-labelledby="h-update">
+        <h2 id="h-update" data-i18n="update:heading"></h2>
+        <div class="card">
+          <div class="row">
+            <div class="row-text">
+              <span class="row-title" id="installed-version"></span>
+              <span class="row-hint" id="update-status" aria-live="polite"></span>
+            </div>
+            <div class="row-control">
+              <button type="button" class="btn" id="check-update" data-i18n="update:check"></button>
+            </div>
+          </div>
+          <div class="update-panel" id="update-panel" hidden>
+            <p class="update-head">
+              <b id="update-available"></b>
+              <a id="update-notes" target="_blank" rel="noreferrer" data-i18n="update:whatsNew"></a>
+            </p>
+            <ol class="steps">
+              <li>
+                <span data-i18n="update:extensionSteps.0"></span>
+                <a class="btn primary" id="update-download" target="_blank" rel="noreferrer"></a>
+              </li>
+              <li><span data-i18n="update:extensionSteps.1"></span></li>
+              <li>
+                <span data-i18n="update:extensionSteps.2"></span>
+                <button type="button" class="btn" id="update-reload" data-i18n="update:reload"></button>
+              </li>
+            </ol>
           </div>
         </div>
       </section>

@@ -207,6 +207,31 @@ export const de: Messages = {
     ],
   },
 
+  update: {
+    heading: 'Updates',
+    installed: (v) => `Installierte Version: ${v}`,
+    check: 'Nach Updates suchen',
+    checking: 'Wird geprüft…',
+    upToDate: 'Du hast die neueste Version.',
+    available: (v) => `Version ${v} ist verfügbar.`,
+    none: 'Noch keine Version auf GitHub gefunden.',
+    failed: (e) => `Prüfung fehlgeschlagen: ${e}`,
+    whatsNew: 'Was ist neu?',
+    download: (v) => `Version ${v} herunterladen`,
+    extensionSteps: [
+      'Lade die ZIP-Datei mit der neuen Version herunter.',
+      'Entpacke sie in den Ordner von The Point (Dateien ersetzen).',
+      'Klicke auf „Neu laden“; diese Seite öffnet sich danach erneut.',
+    ],
+    reload: 'Neu laden',
+    downloadInstall: 'Herunterladen und installieren',
+    downloading: 'Wird heruntergeladen…',
+    opening: 'Installation wird geöffnet…',
+    installHint:
+      'Beim ersten Mal bittet Android dich, Installationen über The Point zu erlauben; danach startet die App neu und du tippst noch einmal auf diese Schaltfläche. Schlüssel, Einstellungen und Zusammenfassungen bleiben erhalten.',
+    checksumFailed: 'Die heruntergeladene Datei stimmt nicht (SHA-256). Bitte versuche es erneut.',
+    downloadFailed: (e) => `Herunterladen fehlgeschlagen: ${e}`,
+  },
   extension: {
     actionTitle: 'The Point – Einstellungen',
     playerButton: 'The Point: Zusammenfassung',

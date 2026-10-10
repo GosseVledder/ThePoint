@@ -200,6 +200,31 @@ export const nl: Messages = {
     ],
   },
 
+  update: {
+    heading: 'Updates',
+    installed: (v) => `Geïnstalleerde versie: ${v}`,
+    check: 'Controleren op updates',
+    checking: 'Controleren…',
+    upToDate: 'Je hebt de nieuwste versie.',
+    available: (v) => `Versie ${v} is beschikbaar.`,
+    none: 'Nog geen versie gevonden op GitHub.',
+    failed: (e) => `Controleren mislukt: ${e}`,
+    whatsNew: 'Wat is er nieuw?',
+    download: (v) => `Versie ${v} downloaden`,
+    extensionSteps: [
+      'Download de zip met de nieuwe versie.',
+      'Pak hem uit over de map van The Point heen (bestanden vervangen).',
+      'Klik op Herladen; deze pagina opent daarna opnieuw.',
+    ],
+    reload: 'Herladen',
+    downloadInstall: 'Downloaden en installeren',
+    downloading: 'Downloaden…',
+    opening: 'Installatie wordt geopend…',
+    installHint:
+      'De eerste keer vraagt Android om installeren via The Point toe te staan; daarna start de app opnieuw en tik je nog een keer op deze knop. Je sleutel, instellingen en samenvattingen blijven bewaard.',
+    checksumFailed: 'Het gedownloade bestand klopt niet (SHA-256). Probeer het opnieuw.',
+    downloadFailed: (e) => `Downloaden mislukt: ${e}`,
+  },
   extension: {
     actionTitle: 'The Point – instellingen',
     playerButton: 'The Point: samenvatting',
