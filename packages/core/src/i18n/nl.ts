@@ -154,6 +154,14 @@ export const nl: Messages = {
     seekSmart: 'Slim (aanbevolen)',
     seekSeconds: (n) => `${n} seconden eerder`,
     seekNone: 'Niet eerder',
+    takeawayList: 'Lijst met takeaways',
+    takeawayListHint:
+      'Scrollen: het paneel blijft kort, de rest van de lijst bereik je door te scrollen.',
+    listFull: 'Volledige lijst',
+    listScroll: 'Scrollen',
+    scrollAfter: 'Zichtbare takeaways',
+    scrollAfterHint: 'Daarna scroll je door de lijst.',
+    takeawaysUnit: 'takeaways',
     tipLabel: 'Uitleg',
     readAloudHeading: 'Voorlezen',
     readAloudIntro:
@@ -221,6 +229,8 @@ export const nl: Messages = {
       'Per takeaway een streepje op de tijdbalk van de speler, zodat je ziet waar in de video de punten zitten. Wit is het kernpunt.',
     seekMargin:
       'Een tijd in de samenvatting wijst naar het moment in het transcript, maar commentaar volgt vaak pas op wat er in beeld gebeurt. Daarom start de video iets eerder. Slim: 10 seconden bij een gebeurtenis (crash, doelpunt), 4 bij een uitspraak, 2 bij een nieuw onderwerp.',
+    takeawayList:
+      'Volledige lijst: alle takeaways staan onder elkaar, het paneel wordt zo lang als nodig. Scrollen: zijn er meer takeaways dan het ingestelde aantal, dan zie je dat aantal en scroll je in de lijst naar de rest, zodat het paneel kort blijft en het kernpunt en het oordeel in beeld blijven.',
     interfaceLanguage:
       'De taal van knoppen, labels en meldingen van The Point, los van de taal van de samenvatting.',
     summaryLanguage:

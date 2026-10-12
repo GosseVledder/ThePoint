@@ -9,6 +9,7 @@ import { sendRuntime, SummarySession } from './session';
 import { SpeechControl } from './speech';
 import { ICONS } from '@the-point/core/ui/styles';
 import { messages, type Messages } from '@the-point/core/i18n/messages';
+import { scrollAfter } from '@the-point/core/settings';
 
 const PANEL_CSS = `
 :host { display: block; }
@@ -106,10 +107,13 @@ export class WatchPanel {
   updateSettings(settings: Settings): void {
     const markersChanged = settings.markeringen !== this.settings.markeringen;
     const enabledChanged = settings.actief !== this.settings.actief;
-    const languageChanged = settings.interfaceTaal !== this.settings.interfaceTaal;
+    const viewChanged =
+      settings.interfaceTaal !== this.settings.interfaceTaal ||
+      settings.takeawayLijst !== this.settings.takeawayLijst ||
+      settings.takeawayZichtbaar !== this.settings.takeawayZichtbaar;
     this.settings = settings;
     if (enabledChanged) this.applyEnabled();
-    else if (languageChanged) this.render();
+    else if (viewChanged) this.render();
     else if (markersChanged) this.renderMarkers();
   }
 
@@ -219,6 +223,7 @@ export class WatchPanel {
         enabled: this.settings.actief,
         t: this.t,
         seekMargin: this.settings.springMarge,
+        scrollAfter: scrollAfter(this.settings),
       });
     }
     if (this.overlay) this.renderOverlay();
@@ -367,7 +372,12 @@ export class WatchPanel {
         onToggleCollapse: undefined,
         onClose: () => this.hideOverlay(),
       },
-      { speech: this.speechView(), t: this.t, seekMargin: this.settings.springMarge },
+      {
+        speech: this.speechView(),
+        t: this.t,
+        seekMargin: this.settings.springMarge,
+        scrollAfter: scrollAfter(this.settings),
+      },
     );
   }
 

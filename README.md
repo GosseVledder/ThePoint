@@ -11,7 +11,7 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 | | Download | Installeren |
 |---|---|---|
 | 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.1.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.1.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.5.1.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.1.zip)<br>206 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.6.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.0.zip)<br>211 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini) of Anthropic (Claude); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
@@ -84,15 +84,15 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.5.1.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.1.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.5.1 |
+| **Bestand** | [`ThePoint-extension-0.6.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.6.0 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
-| **Grootte** | 206 kB |
-| **SHA-256** | `d029d701260c38adec9f495bbe615978ebe24308599ecbf1947ffe74a08113b2` |
+| **Grootte** | 211 kB |
+| **SHA-256** | `3f9a48a8be2b6190fe8aadc5de93464c3002f48c9519e8b125b82290e60bb71a` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.5.1.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.5.1.zip).
+1. **Download** [`ThePoint-extension-0.6.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.0.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).
@@ -103,6 +103,7 @@ De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen;
 
 - Open een video op youtube.com: rechts naast de video (bij een smal venster eronder) verschijnt het **paneel** met de samenvatting. Klik op een tijdstempel en de speler springt naar dat moment (een paar seconden ervoor).
 - **Aan/uit-schakelaar** in de kop van het paneel: uit betekent geen samenvattingen, ook niet via thumbnails.
+- **Korte lijst**: bij veel takeaways toont het paneel er standaard 5 en scroll je door de rest. Het aantal stel je in bij *Zichtbare takeaways*; bij *Lijst met takeaways* kies je eventueel de volledige lijst.
 - **Markeringen op de tijdbalk** van de speler voor elke takeaway (wit = kritiek punt).
 - **Knop in de spelerbalk** (het logo ▶.): in volledig scherm toont die de samenvatting als overlay.
 - **Knop "Samenvat" op thumbnails** (homepagina, zoekresultaten, aanbevelingen): toont de samenvatting zonder de video te openen. Thumbnails met een bewaarde samenvatting krijgen een geel ▶.-icoon.

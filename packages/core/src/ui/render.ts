@@ -42,6 +42,8 @@ export interface ViewOptions {
   seekLabel?: string;
   /** How much earlier a jump starts (setting springMarge); 'slim' when omitted. */
   seekMargin?: SeekMargin;
+  /** More takeaways than this: show this many and scroll the rest. Omitted = the full list. */
+  scrollAfter?: number;
   /** Interface texts; Dutch when omitted. */
   t?: Messages;
   speech?: SpeechView;
@@ -126,6 +128,9 @@ function timeButton(
     tijd,
   );
 }
+
+/** Speaking item per view, to scroll a newly read takeaway into the scrolling list's view. */
+const lastSpeaking = new WeakMap<HTMLElement, SpeechId | null>();
 
 export function renderView(
   root: HTMLElement,
@@ -304,7 +309,8 @@ export function renderView(
       );
       if (s.takeaways.length > 0) {
         body.append(h('div', { class: 'section-label' }, v.takeaways(s.takeaways.length)));
-        const list = h('ul', { class: 'takeaways' });
+        const scroll = !!opts.scrollAfter && s.takeaways.length > opts.scrollAfter;
+        const list = h('ul', { class: scroll ? 'takeaways scroll' : 'takeaways' });
         s.takeaways.forEach((item, i) =>
           list.append(renderTakeaway(item, i, handlers, seek, v, speech)),
         );
@@ -345,7 +351,47 @@ export function renderView(
     }
   }
 
+  // Re-rendering replaces the list; keep where the user had scrolled to.
+  const scrollTop = root.querySelector('ul.takeaways.scroll')?.scrollTop ?? 0;
   root.replaceChildren(card);
+  const list = root.querySelector<HTMLElement>('ul.takeaways.scroll');
+  if (list) {
+    fitScrollList(list, opts.scrollAfter ?? 0);
+    list.scrollTop = scrollTop;
+    const speakingId = opts.speech?.speakingId ?? null;
+    if (speakingId !== lastSpeaking.get(root)) {
+      const item = list.querySelector<HTMLElement>('li.speaking');
+      if (item) scrollIntoList(list, item);
+    }
+  }
+  lastSpeaking.set(root, opts.speech?.speakingId ?? null);
+}
+
+/** Limits the list to exactly `visible` items, also when the panel changes width. */
+function fitScrollList(list: HTMLElement, visible: number): void {
+  const fit = () => {
+    const first = list.children[0] as HTMLElement | undefined;
+    const last = list.children[visible - 1] as HTMLElement | undefined;
+    if (!first || !last) return;
+    const height = last.offsetTop + last.offsetHeight - first.offsetTop;
+    // Zero while collapsed or hidden: keep the CSS fallback.
+    if (height > 0) list.style.maxHeight = `${height}px`;
+  };
+  fit();
+  if (typeof ResizeObserver === 'undefined') return;
+  const observer = new ResizeObserver(() => {
+    if (list.isConnected) fit();
+    else observer.disconnect();
+  });
+  observer.observe(list);
+}
+
+/** Scrolls the list (not the page) just enough to show the item. */
+function scrollIntoList(list: HTMLElement, item: HTMLElement): void {
+  const top = item.offsetTop - (list.children[0] as HTMLElement).offsetTop;
+  const bottom = top + item.offsetHeight;
+  if (top < list.scrollTop) list.scrollTop = top;
+  else if (bottom > list.scrollTop + list.clientHeight) list.scrollTop = bottom - list.clientHeight;
 }
 
 function renderSpeechBar(speech: SpeechView, handlers: ViewHandlers, t: Messages): HTMLElement {

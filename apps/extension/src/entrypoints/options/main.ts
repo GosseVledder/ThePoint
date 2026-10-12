@@ -214,6 +214,34 @@ async function init(): Promise<void> {
     void save({ springMarge: marge.value === 'slim' ? 'slim' : Number(marge.value) });
   });
 
+  // Full takeaway list, or one that shows a number of takeaways and scrolls the rest.
+  const lijst = $<HTMLSelectElement>('#takeawayLijst');
+  const zichtbaar = $<HTMLInputElement>('#takeawayZichtbaar');
+  const zichtbaarRow = $('#row-takeawayZichtbaar');
+  const fillLists = () => {
+    const current = lijst.value || s.takeawayLijst;
+    lijst.replaceChildren(
+      option('volledig', t.settings.listFull),
+      option('scrollen', t.settings.listScroll),
+    );
+    lijst.value = current;
+  };
+  onLanguage.push(fillLists);
+  const updateZichtbaar = () => (zichtbaarRow.hidden = lijst.value !== 'scrollen');
+  lijst.addEventListener('change', () => {
+    updateZichtbaar();
+    void save({ takeawayLijst: lijst.value === 'volledig' ? 'volledig' : 'scrollen' });
+  });
+  zichtbaarRow.hidden = s.takeawayLijst !== 'scrollen';
+  zichtbaar.value = String(s.takeawayZichtbaar);
+  zichtbaar.addEventListener(
+    'input',
+    debounce(() => {
+      const n = Math.round(Number(zichtbaar.value));
+      if (Number.isFinite(n) && n >= 1 && n <= 20) void save({ takeawayZichtbaar: n });
+    }, 400),
+  );
+
   const minutes = $<HTMLInputElement>('#bevestigVanafMinuten');
   minutes.value = String(s.bevestigVanafMinuten);
   minutes.addEventListener(

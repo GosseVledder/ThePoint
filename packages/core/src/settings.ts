@@ -30,6 +30,10 @@ export const settingsSchema = z.object({
   markeringen: z.boolean().catch(true),
   /** How much earlier a jump to a takeaway starts: 'slim' per kind of moment, or seconds. */
   springMarge: z.union([z.literal('slim'), z.number().int().min(0).max(60)]).catch('slim'),
+  /** Takeaway list in the extension: 'scrollen' shows takeawayZichtbaar items and scrolls the rest. */
+  takeawayLijst: z.enum(['volledig', 'scrollen']).catch('scrollen'),
+  /** Number of takeaways visible before the list scrolls. */
+  takeawayZichtbaar: z.number().int().min(1).max(20).catch(5),
   /** Last chosen read-aloud voice (voiceURI) per summary language. */
   stemmen: z.record(z.string(), z.string()).catch({}),
   /** Read-aloud speed (1 = normal). */
@@ -41,6 +45,11 @@ export const settingsSchema = z.object({
 export type Settings = z.infer<typeof settingsSchema>;
 
 export const DEFAULT_SETTINGS: Settings = settingsSchema.parse({});
+
+/** Visible takeaways before the list scrolls; undefined = the full list. */
+export function scrollAfter(s: Settings): number | undefined {
+  return s.takeawayLijst === 'scrollen' ? s.takeawayZichtbaar : undefined;
+}
 
 export function parseSettings(raw: unknown): Settings {
   return settingsSchema.parse(raw && typeof raw === 'object' ? raw : {});

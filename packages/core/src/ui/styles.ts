@@ -66,6 +66,9 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px soli
 .section-label { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: .5px; color: var(--yt-text-2); margin: 14px 0 6px; }
 ul.takeaways { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
 ul.takeaways li { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; padding: 6px 8px; margin: 0 -8px; border-radius: 8px; align-items: start; }
+/* Scrolling list: max-height is set to the visible items by render.ts; this is the fallback. The padding
+   keeps the items' negative margin inside the scroll box. */
+ul.takeaways.scroll { position: relative; max-height: 24em; overflow-y: auto; overflow-x: hidden; margin: 0 -8px; padding: 0 8px; overscroll-behavior: contain; }
 ul.takeaways li:hover { background: var(--yt-card-hover); }
 ul.takeaways li.speaking, .kritiek.speaking { background: var(--yt-accent-bg); box-shadow: inset 3px 0 0 var(--yt-accent); }
 .kritiek.speaking { border-radius: 8px; padding: 4px 8px; margin-left: -8px; margin-right: -8px; }

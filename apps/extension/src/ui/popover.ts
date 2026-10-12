@@ -4,6 +4,7 @@ import { renderView } from '@the-point/core/ui/render';
 import { sendRuntime, SummarySession } from './session';
 import { SpeechControl } from './speech';
 import { messages } from '@the-point/core/i18n/messages';
+import { DEFAULT_SETTINGS, scrollAfter } from '@the-point/core/settings';
 
 const POPOVER_CSS = `
 :host { position: fixed; z-index: 2300; width: 400px; display: block; }
@@ -101,6 +102,7 @@ export class Popover {
       {
         seekLabel: t.extension.openVideoAt,
         seekMargin: this.speech?.settings?.springMarge,
+        scrollAfter: scrollAfter(this.speech?.settings ?? DEFAULT_SETTINGS),
         t,
         speech: this.speech
           ? {

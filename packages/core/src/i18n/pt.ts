@@ -153,6 +153,13 @@ export const pt: Messages = {
     seekSmart: 'Inteligente (recomendado)',
     seekSeconds: (n) => `${n} segundos antes`,
     seekNone: 'Sem antecipar',
+    takeawayList: 'Lista de ideias-chave',
+    takeawayListHint: 'Deslocar: o painel fica curto; chegas ao resto da lista deslocando.',
+    listFull: 'Lista completa',
+    listScroll: 'Deslocar',
+    scrollAfter: 'Ideias-chave visíveis',
+    scrollAfterHint: 'Depois deslocas a lista.',
+    takeawaysUnit: 'ideias-chave',
     tipLabel: 'Explicação',
     readAloudHeading: 'Ler em voz alta',
     readAloudIntro:
@@ -220,6 +227,8 @@ export const pt: Messages = {
       'Uma marca por cada ponto-chave na barra de progresso do leitor, para ver onde estão no vídeo. A branca é o ponto principal.',
     seekMargin:
       'Um tempo no resumo aponta para o momento na transcrição, mas o comentário surge muitas vezes depois do que acontece no ecrã. Por isso o vídeo começa um pouco antes. Inteligente: 10 segundos num acontecimento (acidente, golo), 4 numa afirmação, 2 num novo tema.',
+    takeawayList:
+      'Lista completa: todas as ideias-chave aparecem umas por baixo das outras e o painel cresce o necessário. Deslocar: se houver mais ideias-chave do que o número definido, vês esse número e deslocas a lista para ver o resto, para que o painel fique curto e o ponto principal e a avaliação continuem visíveis.',
     interfaceLanguage:
       'O idioma dos botões, etiquetas e mensagens do The Point, independente do idioma do resumo.',
     summaryLanguage:

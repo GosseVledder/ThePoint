@@ -2,7 +2,7 @@
   "name": "@the-point/extension",
   "description": "Chromium extension: AI summary panel on YouTube",
   "private": true,
-  "version": "0.5.1",
+  "version": "0.6.0",
   "license": "MIT",
   "type": "module",
   "scripts": {

@@ -154,6 +154,14 @@ export const fr: Messages = {
     seekSmart: 'Intelligent (recommandé)',
     seekSeconds: (n) => `${n} secondes plus tôt`,
     seekNone: 'Pas plus tôt',
+    takeawayList: 'Liste des points clés',
+    takeawayListHint:
+      "Défilement : le panneau reste court, le reste de la liste s'atteint en faisant défiler.",
+    listFull: 'Liste complète',
+    listScroll: 'Défilement',
+    scrollAfter: 'Points clés visibles',
+    scrollAfterHint: 'Ensuite, la liste défile.',
+    takeawaysUnit: 'points clés',
     tipLabel: 'Explication',
     readAloudHeading: 'Lecture à voix haute',
     readAloudIntro:
@@ -222,6 +230,8 @@ export const fr: Messages = {
       'Un repère par point clé sur la barre de progression du lecteur, pour voir où se trouvent les points dans la vidéo. Le blanc indique le point essentiel.',
     seekMargin:
       "Un horodatage du résumé renvoie au moment dans la transcription, mais le commentaire suit souvent ce qui se passe à l'image. La vidéo démarre donc un peu plus tôt. Intelligent : 10 secondes pour un événement (accident, but), 4 pour une déclaration, 2 pour un nouveau sujet.",
+    takeawayList:
+      "Liste complète : tous les points clés s'affichent les uns sous les autres et le panneau s'allonge autant que nécessaire. Défilement : s'il y a plus de points clés que le nombre choisi, vous en voyez ce nombre et faites défiler la liste pour le reste, pour que le panneau reste court et que le point essentiel et l'évaluation restent visibles.",
     interfaceLanguage:
       'La langue des boutons, libellés et messages de The Point, indépendamment de la langue du résumé.',
     summaryLanguage:

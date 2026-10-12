@@ -153,6 +153,14 @@ export const it: Messages = {
     seekSmart: 'Intelligente (consigliato)',
     seekSeconds: (n) => `${n} secondi prima`,
     seekNone: 'Non prima',
+    takeawayList: 'Elenco dei punti chiave',
+    takeawayListHint:
+      "Scorrimento: il pannello resta corto, il resto dell'elenco lo raggiungi scorrendo.",
+    listFull: 'Elenco completo',
+    listScroll: 'Scorrimento',
+    scrollAfter: 'Punti chiave visibili',
+    scrollAfterHint: "Poi scorri l'elenco.",
+    takeawaysUnit: 'punti chiave',
     tipLabel: 'Spiegazione',
     readAloudHeading: 'Lettura ad alta voce',
     readAloudIntro:
@@ -220,6 +228,8 @@ export const it: Messages = {
       'Un segno per ogni punto chiave sulla barra di avanzamento del player, per vedere dove si trovano nel video. Il bianco è il punto principale.',
     seekMargin:
       "Un orario nel riassunto indica il momento nella trascrizione, ma il commento spesso segue ciò che accade sullo schermo. Per questo il video parte un po' prima. Intelligente: 10 secondi per un evento (incidente, gol), 4 per un'affermazione, 2 per un nuovo argomento.",
+    takeawayList:
+      "Elenco completo: tutti i punti chiave sono uno sotto l'altro e il pannello si allunga quanto serve. Scorrimento: se ci sono più punti chiave del numero impostato, ne vedi quel numero e scorri l'elenco per il resto, così il pannello resta corto e il punto principale e il giudizio restano visibili.",
     interfaceLanguage:
       'La lingua di pulsanti, etichette e messaggi di The Point, indipendente dalla lingua del riassunto.',
     summaryLanguage:

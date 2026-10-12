@@ -159,6 +159,14 @@ export const de: Messages = {
     seekSmart: 'Intelligent (empfohlen)',
     seekSeconds: (n) => `${n} Sekunden früher`,
     seekNone: 'Nicht früher',
+    takeawayList: 'Liste der Takeaways',
+    takeawayListHint:
+      'Scrollen: Das Panel bleibt kurz, den Rest der Liste erreichst du per Scrollen.',
+    listFull: 'Vollständige Liste',
+    listScroll: 'Scrollen',
+    scrollAfter: 'Sichtbare Takeaways',
+    scrollAfterHint: 'Danach scrollst du durch die Liste.',
+    takeawaysUnit: 'Takeaways',
     tipLabel: 'Erklärung',
     readAloudHeading: 'Vorlesen',
     readAloudIntro:
@@ -228,6 +236,8 @@ export const de: Messages = {
       'Pro Takeaway eine Markierung auf der Zeitleiste des Players, damit du siehst, wo im Video die Punkte liegen. Weiß ist die Kernaussage.',
     seekMargin:
       'Eine Zeit in der Zusammenfassung zeigt auf die Stelle im Transkript, aber Kommentare folgen oft erst auf das, was im Bild passiert. Deshalb startet das Video etwas früher. Intelligent: 10 Sekunden bei einem Ereignis (Unfall, Tor), 4 bei einer Aussage, 2 bei einem neuen Thema.',
+    takeawayList:
+      'Vollständige Liste: Alle Takeaways stehen untereinander, das Panel wird so lang wie nötig. Scrollen: Gibt es mehr Takeaways als die eingestellte Anzahl, siehst du diese Anzahl und scrollst in der Liste zum Rest, damit das Panel kurz bleibt und Kernpunkt und Bewertung sichtbar bleiben.',
     interfaceLanguage:
       'Die Sprache der Schaltflächen, Beschriftungen und Meldungen von The Point, unabhängig von der Sprache der Zusammenfassung.',
     summaryLanguage:

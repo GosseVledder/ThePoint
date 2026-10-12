@@ -152,6 +152,13 @@ export const en: Messages = {
     seekSmart: 'Smart (recommended)',
     seekSeconds: (n) => `${n} seconds earlier`,
     seekNone: 'Not earlier',
+    takeawayList: 'Takeaway list',
+    takeawayListHint: 'Scroll: the panel stays short; you scroll to reach the rest of the list.',
+    listFull: 'Full list',
+    listScroll: 'Scroll',
+    scrollAfter: 'Visible takeaways',
+    scrollAfterHint: 'Then you scroll through the list.',
+    takeawaysUnit: 'takeaways',
     tipLabel: 'More info',
     readAloudHeading: 'Read aloud',
     readAloudIntro:
@@ -218,6 +225,8 @@ export const en: Messages = {
       "A mark on the player's progress bar for each takeaway, so you see where in the video the points are. White is the key point.",
     seekMargin:
       'A time in the summary points at the moment in the transcript, but commentary often follows what happens on screen. That is why the video starts a little earlier. Smart: 10 seconds for an event (crash, goal), 4 for a statement, 2 for a new topic.',
+    takeawayList:
+      'Full list: all takeaways are shown one below the other and the panel grows as long as needed. Scroll: if there are more takeaways than the number you set, you see that many and scroll within the list for the rest, so the panel stays short and the key point and verdict stay in view.',
     interfaceLanguage:
       "The language of The Point's buttons, labels and messages, separate from the summary language.",
     summaryLanguage:

@@ -135,6 +135,13 @@ export interface Messages {
     seekSmart: string;
     seekSeconds: (n: number) => string;
     seekNone: string;
+    takeawayList: string;
+    takeawayListHint: string;
+    listFull: string;
+    listScroll: string;
+    scrollAfter: string;
+    scrollAfterHint: string;
+    takeawaysUnit: string;
     /** Accessible name of the ⓘ buttons. */
     tipLabel: string;
     readAloudHeading: string;
@@ -184,6 +191,7 @@ export interface Messages {
     pause: string;
     markers: string;
     seekMargin: string;
+    takeawayList: string;
     interfaceLanguage: string;
     summaryLanguage: string;
     voice: string;
