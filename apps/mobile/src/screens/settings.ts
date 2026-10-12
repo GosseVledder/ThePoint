@@ -20,13 +20,14 @@ import { groupVoices, voiceLabel } from '@the-point/core/ui/speechText';
 import type { Settings } from '@the-point/core/settings';
 import type { ReleaseAsset } from '@the-point/core/update';
 import { FIXED_MARGINS } from '@the-point/core/seek';
+import { keySteps, KEY_URLS } from '@the-point/core/ui/keySteps';
 import { ICONS } from '@the-point/core/ui/styles';
 import { tooltips } from '@the-point/core/ui/tooltip';
 import type { App, Screen } from '../app';
 import { checkAppUpdate, downloadAndInstall, installedVersion, UpdateError } from '../appUpdate';
 import { nativeFetch } from '../nativeFetch';
 
-const PROVIDER_IDS: ProviderId[] = ['claude', 'gemini'];
+const PROVIDER_IDS: ProviderId[] = ['gemini', 'claude'];
 const PROVIDER_INFO: Record<
   ProviderId,
   { name: string; vendor: string; placeholder: string; url: string }
@@ -35,13 +36,13 @@ const PROVIDER_INFO: Record<
     name: 'Claude',
     vendor: 'Anthropic',
     placeholder: 'sk-ant-…',
-    url: 'https://console.anthropic.com/settings/keys',
+    url: KEY_URLS.claude,
   },
   gemini: {
     name: 'Gemini',
     vendor: 'Google',
     placeholder: 'AIza…',
-    url: 'https://aistudio.google.com/apikey',
+    url: KEY_URLS.gemini,
   },
 };
 
@@ -593,6 +594,7 @@ function providerBlock(
       ),
       tipButton(app.t, 'apiKey', T.apiKeyOf(info.name)),
     ),
+    keySteps(app.t, p),
     field(T.model, model, null, tipButton(app.t, 'model', T.modelOf(info.name))),
     h('datalist', { id: listId }, ...MODEL_SUGGESTIONS[p].map((m) => h('option', { value: m }))),
     h(

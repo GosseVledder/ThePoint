@@ -521,6 +521,38 @@ input.switch:checked::before {
   color: var(--text);
 }
 
+/* "How do I get a key?" (collapsed, under the key row) */
+.key-steps {
+  margin-top: -6px;
+  padding: 0 16px 14px;
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.key-steps > summary {
+  width: fit-content;
+  color: var(--accent);
+  font-weight: 500;
+  cursor: pointer;
+}
+.key-steps > summary:hover {
+  text-decoration: underline;
+}
+.key-steps ol {
+  margin: 8px 0 6px;
+  padding-left: 22px;
+  color: var(--text);
+}
+.key-steps li + li {
+  margin-top: 2px;
+}
+.key-steps a {
+  color: var(--accent);
+}
+.key-steps .key-cost {
+  margin: 0;
+}
+
 /* Advanced (collapsed) */
 .advanced > summary {
   display: flex;

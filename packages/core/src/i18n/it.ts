@@ -137,6 +137,29 @@ export const it: Messages = {
     keyHintBrowser: ['Crea una chiave su ', '. La chiave resta solo in questo browser.'],
     keyHintDevice: ['Crea una chiave su ', '. La chiave è salvata cifrata su questo dispositivo.'],
     model: 'Modello',
+    keyStepsTitle: 'Come ottengo una chiave?',
+    keySteps: {
+      gemini: [
+        'Apri {site} e accedi con il tuo account Google.',
+        'Accetta i termini (solo la prima volta).',
+        'Fai clic su «Create API key»; se richiesto, scegli un progetto o lascialo creare.',
+        'Copia la chiave (inizia con AIza) e incollala sopra in Chiave API.',
+        'Fai clic su «Prova connessione».',
+      ],
+      claude: [
+        'Apri {site} e crea un account o accedi.',
+        'Acquista credito in «Billing» (prepagato); è consigliabile impostare anche un tetto di spesa.',
+        'Scegli «Create key» tra le chiavi API e dai un nome alla chiave.',
+        'Copia subito la chiave (inizia con sk-ant-): viene mostrata una sola volta. Incollala sopra in Chiave API.',
+        'Fai clic su «Prova connessione».',
+      ],
+    },
+    keyCost: {
+      gemini:
+        'Gratis, con un limite al minuto e al giorno, finché non colleghi la fatturazione (billing) al progetto Google. Se il limite è raggiunto, The Point lo segnala; riprova più tardi.',
+      claude:
+        'A pagamento: ogni riassunto viene scalato dal tuo credito. Senza credito la chiave non funziona.',
+    },
     testConnection: 'Prova connessione',
     busy: 'Un momento…',
     testOk: '✓ La connessione funziona e il modello esiste.',
@@ -216,9 +239,9 @@ export const it: Messages = {
 
   tips: {
     provider:
-      'Quale IA scrive il riassunto. Claude e Gemini danno risultati simili; solo Gemini può guardare da sé un video senza trascrizione. Paghi il servizio per riassunto con la tua chiave.',
+      'Quale IA scrive il riassunto. Claude e Gemini danno risultati simili; solo Gemini può guardare da sé un video senza trascrizione. Gemini si può usare gratis (con un limite giornaliero); Claude si paga per riassunto.',
     apiKey:
-      'Un codice segreto con cui The Point usa il servizio di IA per conto tuo; i costi vanno sul tuo account. La chiave resta su questo dispositivo e viene inviata solo a quel servizio.',
+      'Un codice segreto con cui The Point usa il servizio di IA per conto tuo; gli eventuali costi vanno sul tuo account. La chiave resta su questo dispositivo e viene inviata solo a quel servizio.',
     model:
       'Il modello di IA che crea il riassunto. Lascia quello predefinito, a meno che tu non voglia provarne un altro; «Prova connessione» verifica che esista.',
     auto: "Attivo: ogni video che apri viene riassunto subito; un nuovo video costa una chiamata all'IA. Disattivo: solo quando fai clic su «Riassumi».",

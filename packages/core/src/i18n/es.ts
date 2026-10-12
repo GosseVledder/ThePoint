@@ -138,6 +138,28 @@ export const es: Messages = {
     keyHintBrowser: ['Crea una clave en ', '. La clave solo se guarda en este navegador.'],
     keyHintDevice: ['Crea una clave en ', '. La clave se guarda cifrada en este dispositivo.'],
     model: 'Modelo',
+    keyStepsTitle: '¿Cómo consigo una clave?',
+    keySteps: {
+      gemini: [
+        'Abre {site} e inicia sesión con tu cuenta de Google.',
+        'Acepta las condiciones (solo la primera vez).',
+        'Haz clic en «Create API key»; si te lo pide, elige un proyecto o deja que se cree uno.',
+        'Copia la clave (empieza por AIza) y pégala arriba en Clave API.',
+        'Haz clic en «Probar conexión».',
+      ],
+      claude: [
+        'Abre {site} y crea una cuenta o inicia sesión.',
+        'Compra saldo en «Billing» (prepago); conviene fijar también un tope de gasto.',
+        'Elige «Create key» en las claves API y ponle un nombre.',
+        'Copia la clave (empieza por sk-ant-) enseguida: solo se muestra una vez. Pégala arriba en Clave API.',
+        'Haz clic en «Probar conexión».',
+      ],
+    },
+    keyCost: {
+      gemini:
+        'Gratis, con un límite por minuto y por día, mientras no vincules facturación (billing) al proyecto de Google. Si se alcanza el límite, The Point lo indica; inténtalo más tarde.',
+      claude: 'De pago: cada resumen se descuenta de tu saldo. Sin saldo, la clave no funciona.',
+    },
     testConnection: 'Probar conexión',
     busy: 'Un momento…',
     testOk: '✓ La conexión funciona y el modelo existe.',
@@ -218,9 +240,9 @@ export const es: Messages = {
 
   tips: {
     provider:
-      'Qué IA escribe el resumen. Claude y Gemini dan resultados parecidos; solo Gemini puede ver por sí mismo un vídeo sin transcripción. Pagas el servicio por resumen con tu propia clave.',
+      'Qué IA escribe el resumen. Claude y Gemini dan resultados parecidos; solo Gemini puede ver por sí mismo un vídeo sin transcripción. Gemini se puede usar gratis (con un límite diario); Claude se paga por resumen.',
     apiKey:
-      'Un código secreto con el que The Point usa el servicio de IA en tu nombre; el coste va a tu cuenta. La clave se queda en este dispositivo y solo se envía a ese servicio.',
+      'Un código secreto con el que The Point usa el servicio de IA en tu nombre; el posible coste va a tu cuenta. La clave se queda en este dispositivo y solo se envía a ese servicio.',
     model:
       'El modelo de IA que crea el resumen. Deja el predeterminado salvo que quieras probar otro; «Probar conexión» comprueba que existe.',
     auto: 'Activado: cada vídeo que abres se resume enseguida; un vídeo nuevo cuesta una llamada a la IA. Desactivado: solo cuando haces clic en «Resumir».',

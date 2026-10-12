@@ -29,59 +29,15 @@
         <div class="card" id="ai-card">
           <div class="segmented" role="radiogroup" data-i18n-aria="aiService">
             <label class="segment">
-              <input type="radio" name="provider" value="claude" />
-              <span><b>Claude</b><small>Anthropic</small></span>
-            </label>
-            <label class="segment">
               <input type="radio" name="provider" value="gemini" />
               <span><b>Gemini</b><small>Google</small></span>
             </label>
+            <label class="segment">
+              <input type="radio" name="provider" value="claude" />
+              <span><b>Claude</b><small>Anthropic</small></span>
+            </label>
           </div>
           <p class="card-intro" data-i18n="providerHint"></p>
-
-          <div class="provider" data-provider="claude">
-            <div class="provider-head"><h3>Claude</h3></div>
-            <div class="row">
-              <div class="row-text">
-                <label class="row-title" for="key-claude" data-i18n="apiKey" data-tip="apiKey"></label>
-                <p class="row-hint">
-                  <span data-i18n="keyHintBrowser.0"></span
-                  ><a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer"
-                    >console.anthropic.com</a
-                  ><span data-i18n="keyHintBrowser.1"></span>
-                </p>
-              </div>
-              <div class="row-control wide">
-                <div class="input-group">
-                  <input
-                    id="key-claude"
-                    type="password"
-                    autocomplete="off"
-                    spellcheck="false"
-                    placeholder="sk-ant-…"
-                  />
-                  <button type="button" data-toggle="key-claude"></button>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="row-text">
-                <label class="row-title" for="model-claude" data-i18n="model" data-tip="model"></label>
-              </div>
-              <div class="row-control wide">
-                <input id="model-claude" list="models-claude" spellcheck="false" />
-                <datalist id="models-claude"></datalist>
-              </div>
-            </div>
-            <div class="row test-row">
-              <div class="row-text">
-                <span class="test-result" id="test-claude" aria-live="polite"></span>
-              </div>
-              <div class="row-control">
-                <button type="button" class="btn" data-test="claude" data-i18n="testConnection"></button>
-              </div>
-            </div>
-          </div>
 
           <div class="provider" data-provider="gemini">
             <div class="provider-head">
@@ -126,6 +82,50 @@
               </div>
               <div class="row-control">
                 <button type="button" class="btn" data-test="gemini" data-i18n="testConnection"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="provider" data-provider="claude">
+            <div class="provider-head"><h3>Claude</h3></div>
+            <div class="row">
+              <div class="row-text">
+                <label class="row-title" for="key-claude" data-i18n="apiKey" data-tip="apiKey"></label>
+                <p class="row-hint">
+                  <span data-i18n="keyHintBrowser.0"></span
+                  ><a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer"
+                    >console.anthropic.com</a
+                  ><span data-i18n="keyHintBrowser.1"></span>
+                </p>
+              </div>
+              <div class="row-control wide">
+                <div class="input-group">
+                  <input
+                    id="key-claude"
+                    type="password"
+                    autocomplete="off"
+                    spellcheck="false"
+                    placeholder="sk-ant-…"
+                  />
+                  <button type="button" data-toggle="key-claude"></button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row-text">
+                <label class="row-title" for="model-claude" data-i18n="model" data-tip="model"></label>
+              </div>
+              <div class="row-control wide">
+                <input id="model-claude" list="models-claude" spellcheck="false" />
+                <datalist id="models-claude"></datalist>
+              </div>
+            </div>
+            <div class="row test-row">
+              <div class="row-text">
+                <span class="test-result" id="test-claude" aria-live="polite"></span>
+              </div>
+              <div class="row-control">
+                <button type="button" class="btn" data-test="claude" data-i18n="testConnection"></button>
               </div>
             </div>
           </div>

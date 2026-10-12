@@ -136,6 +136,29 @@ export const en: Messages = {
     keyHintBrowser: ['Create a key at ', '. The key stays in this browser only.'],
     keyHintDevice: ['Create a key at ', '. The key is stored encrypted on this device.'],
     model: 'Model',
+    keyStepsTitle: 'How do I get a key?',
+    keySteps: {
+      gemini: [
+        'Open {site} and sign in with your Google account.',
+        'Accept the terms (first time only).',
+        'Click "Create API key"; if asked, choose a project or let one be created.',
+        'Copy the key (it starts with AIza) and paste it above under API key.',
+        'Click "Test connection".',
+      ],
+      claude: [
+        'Open {site} and create an account or sign in.',
+        'Buy credit under "Billing" (prepaid); preferably also set a cap on your spending.',
+        'Choose "Create key" under API keys and give the key a name.',
+        'Copy the key (it starts with sk-ant-) right away: it is shown only once. Paste it above under API key.',
+        'Click "Test connection".',
+      ],
+    },
+    keyCost: {
+      gemini:
+        "Free, with a limit per minute and per day, as long as you don't link billing to the Google project. When the limit is reached, The Point says so; try again later.",
+      claude:
+        'Paid: each summary is deducted from your credit. Without credit the key does not work.',
+    },
     testConnection: 'Test connection',
     busy: 'Working…',
     testOk: '✓ The connection works and the model exists.',
@@ -213,9 +236,9 @@ export const en: Messages = {
 
   tips: {
     provider:
-      'Which AI writes the summary. Claude and Gemini give similar results; only Gemini can watch a video without a transcript itself. You pay the service per summary through your own key.',
+      'Which AI writes the summary. Claude and Gemini give similar results; only Gemini can watch a video without a transcript itself. Gemini can be used for free (with a daily limit); Claude is paid per summary.',
     apiKey:
-      'A secret code that lets The Point use the AI service on your behalf; the costs go to your account. The key stays on this device and is only sent to that service.',
+      'A secret code that lets The Point use the AI service on your behalf; any costs go to your account. The key stays on this device and is only sent to that service.',
     model:
       'The AI model that makes the summary. Keep the default unless you want to try another model; "Test connection" checks that it exists.',
     auto: 'On: every video you open is summarized right away; a new video costs one AI call. Off: only when you click "Summarize".',

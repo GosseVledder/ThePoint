@@ -143,6 +143,29 @@ export const de: Messages = {
       '. Der Schlüssel wird verschlüsselt auf diesem Gerät gespeichert.',
     ],
     model: 'Modell',
+    keyStepsTitle: 'Wie bekomme ich einen Schlüssel?',
+    keySteps: {
+      gemini: [
+        'Öffne {site} und melde dich mit deinem Google-Konto an.',
+        'Akzeptiere die Bedingungen (nur beim ersten Mal).',
+        'Klicke auf „Create API key“; wähle bei Bedarf ein Projekt oder lass eines anlegen.',
+        'Kopiere den Schlüssel (beginnt mit AIza) und füge ihn oben unter API-Schlüssel ein.',
+        'Klicke auf „Verbindung testen“.',
+      ],
+      claude: [
+        'Öffne {site} und erstelle ein Konto oder melde dich an.',
+        'Kaufe Guthaben unter „Billing“ (Vorauszahlung); lege am besten auch eine Ausgabengrenze fest.',
+        'Wähle bei den API-Schlüsseln „Create key“ und gib dem Schlüssel einen Namen.',
+        'Kopiere den Schlüssel (beginnt mit sk-ant-) sofort: Er wird nur einmal angezeigt. Füge ihn oben unter API-Schlüssel ein.',
+        'Klicke auf „Verbindung testen“.',
+      ],
+    },
+    keyCost: {
+      gemini:
+        'Kostenlos, mit einem Limit pro Minute und pro Tag, solange du keine Abrechnung (Billing) mit dem Google-Projekt verknüpfst. Ist das Limit erreicht, meldet The Point das; versuche es später erneut.',
+      claude:
+        'Kostenpflichtig: Jede Zusammenfassung wird von deinem Guthaben abgezogen. Ohne Guthaben funktioniert der Schlüssel nicht.',
+    },
     testConnection: 'Verbindung testen',
     busy: 'Bitte warten…',
     testOk: '✓ Die Verbindung funktioniert und das Modell existiert.',
@@ -224,9 +247,9 @@ export const de: Messages = {
 
   tips: {
     provider:
-      'Welche KI die Zusammenfassung schreibt. Claude und Gemini liefern ähnliche Ergebnisse; nur Gemini kann ein Video ohne Transkript selbst ansehen. Du bezahlst den Dienst pro Zusammenfassung über deinen eigenen Schlüssel.',
+      'Welche KI die Zusammenfassung schreibt. Claude und Gemini liefern ähnliche Ergebnisse; nur Gemini kann ein Video ohne Transkript selbst ansehen. Gemini ist kostenlos nutzbar (mit Tageslimit); Claude bezahlst du pro Zusammenfassung.',
     apiKey:
-      'Ein geheimer Code, mit dem The Point den KI-Dienst in deinem Namen nutzt; die Kosten gehen auf dein Konto. Der Schlüssel bleibt auf diesem Gerät und geht nur an diesen Dienst.',
+      'Ein geheimer Code, mit dem The Point den KI-Dienst in deinem Namen nutzt; etwaige Kosten gehen auf dein Konto. Der Schlüssel bleibt auf diesem Gerät und geht nur an diesen Dienst.',
     model:
       'Das KI-Modell, das die Zusammenfassung erstellt. Lass den Standard stehen, außer du möchtest ein anderes Modell ausprobieren; „Verbindung testen“ prüft, ob es existiert.',
     auto: 'An: Jedes Video, das du öffnest, wird sofort zusammengefasst; ein neues Video kostet einen KI-Aufruf. Aus: nur wenn du auf „Zusammenfassen“ klickst.',

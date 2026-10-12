@@ -22,11 +22,12 @@ import { speaker } from '../../ui/speech';
 import { FIXED_MARGINS } from '@the-point/core/seek';
 import { groupVoices, pickVoice, voiceLabel } from '@the-point/core/ui/speechText';
 import { ICONS } from '@the-point/core/ui/styles';
+import { keySteps } from '@the-point/core/ui/keySteps';
 import { tooltips } from '@the-point/core/ui/tooltip';
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 const send = <T>(msg: RuntimeRequest) => browser.runtime.sendMessage(msg) as Promise<T>;
-const PROVIDERS: ProviderId[] = ['claude', 'gemini'];
+const PROVIDERS: ProviderId[] = ['gemini', 'claude'];
 
 /** Interface texts; replaced when the interface language changes. */
 let t: Messages = messages('nl');
@@ -139,6 +140,18 @@ async function init(): Promise<void> {
     }, 400);
     key.addEventListener('input', saveKey);
     model.addEventListener('input', saveModel);
+
+    // "How do I get a key?" under the key row; rebuilt (keeping open/closed) on a language change.
+    let steps: HTMLDetailsElement | undefined;
+    const renderSteps = () => {
+      const next = keySteps(t, p);
+      next.open = steps?.open ?? false;
+      if (steps) steps.replaceWith(next);
+      else key.closest('.row')!.after(next);
+      steps = next;
+    };
+    renderSteps();
+    onLanguage.push(renderSteps);
     model.addEventListener('blur', async () => {
       if (!model.value.trim()) model.value = (await getSettings()).models[p];
     });

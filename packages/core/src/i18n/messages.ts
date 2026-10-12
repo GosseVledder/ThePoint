@@ -2,7 +2,7 @@
 // language is a setting of its own (`interfaceTaal`), separate from the summary
 // language. Spoken connecting words ("Punt 1.") follow the summary language instead,
 // because the voice reads the summary in that language.
-import type { Summary, Takeaway } from '../engine/types';
+import type { ProviderId, Summary, Takeaway } from '../engine/types';
 import type { ErrorCode, ErrorInfo, SummaryStep } from '../job';
 import { de } from './de';
 import { en } from './en';
@@ -118,6 +118,11 @@ export interface Messages {
     hide: string;
     keyHintBrowser: Around;
     keyHintDevice: Around;
+    /** "How do I get a key?" under the key field; "{site}" becomes the link to the key page. */
+    keyStepsTitle: string;
+    keySteps: Record<ProviderId, string[]>;
+    /** What a key costs, below the steps. */
+    keyCost: Record<ProviderId, string>;
     model: string;
     testConnection: string;
     busy: string;

@@ -538,9 +538,37 @@ select {
   font-size: 12px;
   font-weight: 500;
 }
-.settings .provider .field + .field {
+.settings .provider .field + .field,
+.settings .provider .key-steps + .field {
   border-top: 0;
   padding-top: 0;
+}
+.settings .key-steps {
+  margin-top: -6px;
+  padding: 0 16px 14px;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.settings .key-steps > summary {
+  width: fit-content;
+  padding: 4px 0;
+  color: var(--accent);
+  font-weight: 500;
+}
+.settings .key-steps ol {
+  margin: 6px 0;
+  padding-left: 22px;
+  color: var(--text);
+}
+.settings .key-steps li + li {
+  margin-top: 4px;
+}
+.settings .key-steps a {
+  color: var(--accent);
+}
+.settings .key-steps .key-cost {
+  margin: 0;
 }
 .settings .test-result {
   font-size: 14px;

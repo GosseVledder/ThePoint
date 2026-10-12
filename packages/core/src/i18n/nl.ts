@@ -138,6 +138,29 @@ export const nl: Messages = {
     keyHintBrowser: ['Maak een sleutel aan op ', '. De sleutel blijft alleen in deze browser.'],
     keyHintDevice: ['Maak een sleutel aan op ', '. De sleutel staat versleuteld op dit toestel.'],
     model: 'Model',
+    keyStepsTitle: 'Hoe kom ik aan een sleutel?',
+    keySteps: {
+      gemini: [
+        'Open {site} en log in met je Google-account.',
+        'Accepteer de voorwaarden (alleen de eerste keer).',
+        'Klik op "Create API key"; kies zo nodig een project of laat er een aanmaken.',
+        'Kopieer de sleutel (begint met AIza) en plak hem hierboven bij API-sleutel.',
+        'Klik op "Test verbinding".',
+      ],
+      claude: [
+        'Open {site} en maak een account aan of log in.',
+        'Koop tegoed onder "Billing" (vooraf betaald); zet bij voorkeur ook een maximum op je uitgaven.',
+        'Kies "Create key" bij de API-sleutels en geef de sleutel een naam.',
+        'Kopieer de sleutel (begint met sk-ant-) meteen: je ziet hem maar één keer. Plak hem hierboven bij API-sleutel.',
+        'Klik op "Test verbinding".',
+      ],
+    },
+    keyCost: {
+      gemini:
+        'Gratis, met een limiet per minuut en per dag, zolang je geen facturering (billing) aan het Google-project koppelt. Is de limiet bereikt, dan meldt The Point dat; probeer het later opnieuw.',
+      claude:
+        'Betaald: elke samenvatting gaat van je tegoed af. Zonder tegoed werkt de sleutel niet.',
+    },
     testConnection: 'Test verbinding',
     busy: 'Bezig…',
     testOk: '✓ Verbinding werkt en het model bestaat.',
@@ -217,9 +240,9 @@ export const nl: Messages = {
 
   tips: {
     provider:
-      'Welke AI de samenvatting schrijft. Claude en Gemini geven vergelijkbare resultaten; alleen Gemini kan een video zonder transcript zelf bekijken. Je betaalt de dienst per samenvatting via je eigen sleutel.',
+      'Welke AI de samenvatting schrijft. Claude en Gemini geven vergelijkbare resultaten; alleen Gemini kan een video zonder transcript zelf bekijken. Gemini is gratis te gebruiken (met een daglimiet); Claude betaal je per samenvatting.',
     apiKey:
-      'Een geheime code waarmee The Point namens jou de AI-dienst gebruikt; de kosten komen op jouw account. De sleutel blijft op dit apparaat en gaat alleen naar die dienst.',
+      'Een geheime code waarmee The Point namens jou de AI-dienst gebruikt; eventuele kosten komen op jouw account. De sleutel blijft op dit apparaat en gaat alleen naar die dienst.',
     model:
       'Het AI-model dat de samenvatting maakt. Laat de standaard staan, tenzij je een ander model wilt proberen; "Test verbinding" controleert of het bestaat.',
     auto: 'Aan: elke video die je opent wordt meteen samengevat; een nieuwe video kost één AI-aanroep. Uit: alleen als je op "Samenvatten" klikt.',

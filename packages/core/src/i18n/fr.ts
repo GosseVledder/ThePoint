@@ -138,6 +138,29 @@ export const fr: Messages = {
     keyHintBrowser: ['Créez une clé sur ', '. La clé reste uniquement dans ce navigateur.'],
     keyHintDevice: ['Créez une clé sur ', '. La clé est stockée chiffrée sur cet appareil.'],
     model: 'Modèle',
+    keyStepsTitle: 'Comment obtenir une clé ?',
+    keySteps: {
+      gemini: [
+        'Ouvrez {site} et connectez-vous avec votre compte Google.',
+        'Acceptez les conditions (la première fois seulement).',
+        'Cliquez sur « Create API key » ; si demandé, choisissez un projet ou laissez-en créer un.',
+        'Copiez la clé (elle commence par AIza) et collez-la ci-dessus dans Clé API.',
+        'Cliquez sur « Tester la connexion ».',
+      ],
+      claude: [
+        'Ouvrez {site} et créez un compte ou connectez-vous.',
+        'Achetez du crédit sous « Billing » (prépayé) ; fixez de préférence aussi un plafond de dépenses.',
+        'Choisissez « Create key » dans les clés API et donnez un nom à la clé.',
+        "Copiez la clé (elle commence par sk-ant-) tout de suite : elle ne s'affiche qu'une fois. Collez-la ci-dessus dans Clé API.",
+        'Cliquez sur « Tester la connexion ».',
+      ],
+    },
+    keyCost: {
+      gemini:
+        "Gratuit, avec une limite par minute et par jour, tant que vous ne liez pas de facturation (billing) au projet Google. Si la limite est atteinte, The Point l'indique ; réessayez plus tard.",
+      claude:
+        'Payant : chaque résumé est déduit de votre crédit. Sans crédit, la clé ne fonctionne pas.',
+    },
     testConnection: 'Tester la connexion',
     busy: 'Un instant…',
     testOk: '✓ La connexion fonctionne et le modèle existe.',
@@ -218,9 +241,9 @@ export const fr: Messages = {
 
   tips: {
     provider:
-      "L'IA qui rédige le résumé. Claude et Gemini donnent des résultats similaires ; seul Gemini peut regarder lui-même une vidéo sans transcription. Vous payez le service par résumé avec votre propre clé.",
+      "L'IA qui rédige le résumé. Claude et Gemini donnent des résultats similaires ; seul Gemini peut regarder lui-même une vidéo sans transcription. Gemini est utilisable gratuitement (avec une limite quotidienne) ; Claude se paie par résumé.",
     apiKey:
-      "Un code secret qui permet à The Point d'utiliser le service d'IA en votre nom ; les coûts sont imputés à votre compte. La clé reste sur cet appareil et n'est envoyée qu'à ce service.",
+      "Un code secret qui permet à The Point d'utiliser le service d'IA en votre nom ; les éventuels coûts sont imputés à votre compte. La clé reste sur cet appareil et n'est envoyée qu'à ce service.",
     model:
       "Le modèle d'IA qui crée le résumé. Gardez celui par défaut, sauf si vous voulez en essayer un autre ; « Tester la connexion » vérifie qu'il existe.",
     auto: "Activé : chaque vidéo ouverte est résumée immédiatement ; une nouvelle vidéo coûte un appel à l'IA. Désactivé : uniquement quand vous cliquez sur « Résumer ».",
