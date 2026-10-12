@@ -570,6 +570,9 @@ select {
 .settings .key-steps .key-cost {
   margin: 0;
 }
+.settings .key-steps .key-cost + .key-cost {
+  margin-top: 8px;
+}
 .settings .test-result {
   font-size: 14px;
 }

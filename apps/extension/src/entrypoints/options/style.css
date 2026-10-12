@@ -552,6 +552,9 @@ input.switch:checked::before {
 .key-steps .key-cost {
   margin: 0;
 }
+.key-steps .key-cost + .key-cost {
+  margin-top: 8px;
+}
 
 /* Advanced (collapsed) */
 .advanced > summary {

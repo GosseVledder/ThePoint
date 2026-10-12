@@ -10,8 +10,8 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 
 | | Download | Installeren |
 |---|---|---|
-| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.2.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.2.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.6.1.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.1.zip)<br>219 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.3.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.3.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.6.2.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.2.zip)<br>222 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini, gratis) of Anthropic (Claude, betaald); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
@@ -41,11 +41,11 @@ Er zit geen server van The Point tussen: je apparaat praat rechtstreeks met YouT
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-0.6.2.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.2.apk) (ook in de map [`apk/`](apk/)) |
-| **Versie** | 0.6.2 (versionCode 8) |
+| **Bestand** | [`ThePoint-0.6.3.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.3.apk) (ook in de map [`apk/`](apk/)) |
+| **Versie** | 0.6.3 (versionCode 9) |
 | **Vereist** | Android 7.0 of nieuwer |
 | **Grootte** | 3 MB |
-| **SHA-256** | `b2562886065202afd537666ffd8fb1bc131c9e708e865ec77eebff8bf78b9ab3` |
+| **SHA-256** | `34091be4b3e32ae2632d61090ffad03588717055bc01a5eed41c3ea46b20c93d` |
 
 De APK is een ondertekende release-build; hij staat niet in de Play Store.
 
@@ -84,15 +84,15 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.6.1.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.1.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.6.1 |
+| **Bestand** | [`ThePoint-extension-0.6.2.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.2.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.6.2 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
-| **Grootte** | 219 kB |
-| **SHA-256** | `ac0b4e3ad1e28950c54ab34fc4c2bf05a2edae82805425bfe183422009f61665` |
+| **Grootte** | 222 kB |
+| **SHA-256** | `dd3bb81739a09477637ab98e4411b346be644e25bb67943ab42d9d0028346348` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.6.1.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.1.zip).
+1. **Download** [`ThePoint-extension-0.6.2.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.2.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).
@@ -112,11 +112,11 @@ De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen;
 
 ## API-sleutel instellen
 
-The Point gebruikt je eigen sleutel. **Gemini is gratis te gebruiken**, met een limiet per minuut en per dag; **Claude betaal je** per samenvatting van vooraf gekocht tegoed. Er is één Gemini-sleutel: of je betaalt, hangt af van je Google-project, niet van The Point. Zolang je daar geen facturering (billing) koppelt, blijft het gratis.
+The Point gebruikt je eigen sleutel. **Gemini is gratis te gebruiken** (Flash-modellen, ongeveer 10 samenvattingen per minuut en 200 per dag); **Claude betaal je** per samenvatting van vooraf gekocht tegoed. Er is één Gemini-sleutel: of je betaalt, hangt af van je Google-project, niet van The Point. Zolang je daar geen facturering (billing) koppelt, blijft het gratis.
 
 | Dienst | Kosten | Sleutel aanmaken | Standaardmodel |
 |---|---|---|---|
-| **Gemini** (Google) | gratis, met limieten | <https://aistudio.google.com/apikey> | `gemini-flash-latest` |
+| **Gemini** (Google) | gratis (± 10/min, ± 200/dag) | <https://aistudio.google.com/apikey> | `gemini-flash-latest` |
 | **Claude** (Anthropic) | tegoed, per samenvatting | <https://console.anthropic.com/settings/keys> | `claude-haiku-5-5` (of `claude-sonnet-5-5`, `claude-opus-5-5`) |
 
 ### Gemini-sleutel (gratis)
@@ -127,7 +127,15 @@ The Point gebruikt je eigen sleutel. **Gemini is gratis te gebruiken**, met een 
 4. Kopieer de sleutel (begint met `AIza`).
 5. Open de instellingen van The Point, kies **Gemini**, plak de sleutel bij *API-sleutel* en klik op **Test verbinding**.
 
-Koppel geen facturering aan het project als je het gratis wilt houden. Is de limiet bereikt, dan meldt The Point dat; probeer het later opnieuw.
+**Gratis gebruik**: zolang je geen facturering aan het project koppelt.
+
+| | |
+|---|---|
+| **Gratis modellen** | Flash en Flash-Lite: `gemini-flash-latest` (standaard), `gemini-3.8-flash`, `gemini-flash-lite-latest` |
+| **Niet gratis** | Pro: `gemini-pro-latest`; werkt alleen met facturering |
+| **Verwachte limiet** | ongeveer 10 samenvattingen per minuut en 200 per dag, per Google-project |
+
+Google publiceert geen vaste getallen en kan de limieten wijzigen; je eigen limiet zie je in AI Studio (*View your active rate limits*). Elke nieuwe video kost één aanroep, een eerder samengevatte video niets. Met *Automatisch samenvatten* aan telt elke geopende video mee. Is de limiet bereikt, dan meldt The Point dat; probeer het later opnieuw.
 
 ### Claude-sleutel (betaald)
 

@@ -123,6 +123,8 @@ export interface Messages {
     keySteps: Record<ProviderId, string[]>;
     /** What a key costs, below the steps. */
     keyCost: Record<ProviderId, string>;
+    /** Which models the key can use (free or paid), below the cost line. */
+    keyModels: Record<ProviderId, string>;
     model: string;
     testConnection: string;
     busy: string;

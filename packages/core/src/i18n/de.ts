@@ -162,9 +162,15 @@ export const de: Messages = {
     },
     keyCost: {
       gemini:
-        'Kostenlos, mit einem Limit pro Minute und pro Tag, solange du keine Abrechnung (Billing) mit dem Google-Projekt verknüpfst. Ist das Limit erreicht, meldet The Point das; versuche es später erneut.',
+        'Kostenlos, solange du keine Abrechnung (Billing) mit dem Google-Projekt verknüpfst. Rechne mit etwa 10 Zusammenfassungen pro Minute und 200 pro Tag; Google kann das ändern, dein eigenes Limit siehst du in AI Studio. Jedes neue Video kostet einen Aufruf, ein schon zusammengefasstes nichts. Ist das Limit erreicht, meldet The Point das; versuche es später erneut.',
       claude:
         'Kostenpflichtig: Jede Zusammenfassung wird von deinem Guthaben abgezogen. Ohne Guthaben funktioniert der Schlüssel nicht.',
+    },
+    keyModels: {
+      gemini:
+        'Kostenlos über AI Studio: die Flash- und Flash-Lite-Modelle (gemini-flash-latest, gemini-3.8-flash, gemini-flash-lite-latest). Nicht kostenlos: die Pro-Modelle (gemini-pro-latest); sie funktionieren nur mit Abrechnung.',
+      claude:
+        'Alle Claude-Modelle sind kostenpflichtig; Haiku ist am günstigsten, Opus am teuersten.',
     },
     testConnection: 'Verbindung testen',
     busy: 'Bitte warten…',
@@ -251,7 +257,7 @@ export const de: Messages = {
     apiKey:
       'Ein geheimer Code, mit dem The Point den KI-Dienst in deinem Namen nutzt; etwaige Kosten gehen auf dein Konto. Der Schlüssel bleibt auf diesem Gerät und geht nur an diesen Dienst.',
     model:
-      'Das KI-Modell, das die Zusammenfassung erstellt. Lass den Standard stehen, außer du möchtest ein anderes Modell ausprobieren; „Verbindung testen“ prüft, ob es existiert.',
+      'Das KI-Modell, das die Zusammenfassung erstellt. Lass den Standard stehen, außer du möchtest ein anderes Modell ausprobieren; „Verbindung testen“ prüft, ob es existiert. Mit einem kostenlosen Gemini-Schlüssel funktionieren nur die Flash- und Flash-Lite-Modelle; Pro braucht eine Abrechnung.',
     auto: 'An: Jedes Video, das du öffnest, wird sofort zusammengefasst; ein neues Video kostet einen KI-Aufruf. Aus: nur wenn du auf „Zusammenfassen“ klickst.',
     pause:
       'Das Video wartet, bis die Zusammenfassung da ist, damit du zuerst liest, worum es geht, und dann entscheidest, ob du es ansiehst.',

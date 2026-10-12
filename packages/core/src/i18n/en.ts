@@ -155,9 +155,14 @@ export const en: Messages = {
     },
     keyCost: {
       gemini:
-        "Free, with a limit per minute and per day, as long as you don't link billing to the Google project. When the limit is reached, The Point says so; try again later.",
+        "Free as long as you don't link billing to the Google project. Expect about 10 summaries per minute and 200 per day; Google can change this and AI Studio shows your own limit. Each new video costs one call, a video summarized before costs nothing. When the limit is reached, The Point says so; try again later.",
       claude:
         'Paid: each summary is deducted from your credit. Without credit the key does not work.',
+    },
+    keyModels: {
+      gemini:
+        'Free via AI Studio: the Flash and Flash-Lite models (gemini-flash-latest, gemini-3.8-flash, gemini-flash-lite-latest). Not free: the Pro models (gemini-pro-latest); they only work with billing.',
+      claude: 'All Claude models are paid; Haiku is the cheapest, Opus the most expensive.',
     },
     testConnection: 'Test connection',
     busy: 'Working…',
@@ -240,7 +245,7 @@ export const en: Messages = {
     apiKey:
       'A secret code that lets The Point use the AI service on your behalf; any costs go to your account. The key stays on this device and is only sent to that service.',
     model:
-      'The AI model that makes the summary. Keep the default unless you want to try another model; "Test connection" checks that it exists.',
+      'The AI model that makes the summary. Keep the default unless you want to try another model; "Test connection" checks that it exists. With a free Gemini key only the Flash and Flash-Lite models work; Pro needs billing.',
     auto: 'On: every video you open is summarized right away; a new video costs one AI call. Off: only when you click "Summarize".',
     pause:
       'The video waits until the summary is ready, so you first read what it is about and then decide whether to watch.',

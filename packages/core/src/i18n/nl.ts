@@ -157,9 +157,14 @@ export const nl: Messages = {
     },
     keyCost: {
       gemini:
-        'Gratis, met een limiet per minuut en per dag, zolang je geen facturering (billing) aan het Google-project koppelt. Is de limiet bereikt, dan meldt The Point dat; probeer het later opnieuw.',
+        'Gratis zolang je geen facturering (billing) aan het Google-project koppelt. Reken op ongeveer 10 samenvattingen per minuut en 200 per dag; Google kan dat wijzigen en je eigen limiet zie je in AI Studio. Elke nieuwe video kost één aanroep, een eerder samengevatte video niets. Is de limiet bereikt, dan meldt The Point dat; probeer het later opnieuw.',
       claude:
         'Betaald: elke samenvatting gaat van je tegoed af. Zonder tegoed werkt de sleutel niet.',
+    },
+    keyModels: {
+      gemini:
+        'Gratis via AI Studio: de Flash- en Flash-Lite-modellen (gemini-flash-latest, gemini-3.8-flash, gemini-flash-lite-latest). Niet gratis: de Pro-modellen (gemini-pro-latest); die werken alleen met facturering.',
+      claude: 'Alle Claude-modellen zijn betaald; Haiku is het goedkoopst, Opus het duurst.',
     },
     testConnection: 'Test verbinding',
     busy: 'Bezig…',
@@ -244,7 +249,7 @@ export const nl: Messages = {
     apiKey:
       'Een geheime code waarmee The Point namens jou de AI-dienst gebruikt; eventuele kosten komen op jouw account. De sleutel blijft op dit apparaat en gaat alleen naar die dienst.',
     model:
-      'Het AI-model dat de samenvatting maakt. Laat de standaard staan, tenzij je een ander model wilt proberen; "Test verbinding" controleert of het bestaat.',
+      'Het AI-model dat de samenvatting maakt. Laat de standaard staan, tenzij je een ander model wilt proberen; "Test verbinding" controleert of het bestaat. Met een gratis Gemini-sleutel werken alleen de Flash- en Flash-Lite-modellen; Pro vraagt facturering.',
     auto: 'Aan: elke video die je opent wordt meteen samengevat; een nieuwe video kost één AI-aanroep. Uit: alleen als je op "Samenvatten" klikt.',
     pause:
       'De video wacht tot de samenvatting er is, zodat je eerst leest waar hij over gaat en daarna beslist of je kijkt.',

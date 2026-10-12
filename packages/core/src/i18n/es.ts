@@ -157,8 +157,13 @@ export const es: Messages = {
     },
     keyCost: {
       gemini:
-        'Gratis, con un límite por minuto y por día, mientras no vincules facturación (billing) al proyecto de Google. Si se alcanza el límite, The Point lo indica; inténtalo más tarde.',
+        'Gratis mientras no vincules facturación (billing) al proyecto de Google. Cuenta con unos 10 resúmenes por minuto y 200 al día; Google puede cambiarlo y tu propio límite aparece en AI Studio. Cada vídeo nuevo cuesta una llamada; uno ya resumido, nada. Si se alcanza el límite, The Point lo indica; inténtalo más tarde.',
       claude: 'De pago: cada resumen se descuenta de tu saldo. Sin saldo, la clave no funciona.',
+    },
+    keyModels: {
+      gemini:
+        'Gratis vía AI Studio: los modelos Flash y Flash-Lite (gemini-flash-latest, gemini-3.8-flash, gemini-flash-lite-latest). De pago: los modelos Pro (gemini-pro-latest); solo funcionan con facturación.',
+      claude: 'Todos los modelos de Claude son de pago; Haiku es el más barato y Opus el más caro.',
     },
     testConnection: 'Probar conexión',
     busy: 'Un momento…',
@@ -244,7 +249,7 @@ export const es: Messages = {
     apiKey:
       'Un código secreto con el que The Point usa el servicio de IA en tu nombre; el posible coste va a tu cuenta. La clave se queda en este dispositivo y solo se envía a ese servicio.',
     model:
-      'El modelo de IA que crea el resumen. Deja el predeterminado salvo que quieras probar otro; «Probar conexión» comprueba que existe.',
+      'El modelo de IA que crea el resumen. Deja el predeterminado salvo que quieras probar otro; «Probar conexión» comprueba que existe. Con una clave gratuita de Gemini solo funcionan los modelos Flash y Flash-Lite; Pro requiere facturación.',
     auto: 'Activado: cada vídeo que abres se resume enseguida; un vídeo nuevo cuesta una llamada a la IA. Desactivado: solo cuando haces clic en «Resumir».',
     pause:
       'El vídeo espera hasta que el resumen esté listo, para que primero leas de qué trata y luego decidas si lo ves.',

@@ -157,9 +157,14 @@ export const fr: Messages = {
     },
     keyCost: {
       gemini:
-        "Gratuit, avec une limite par minute et par jour, tant que vous ne liez pas de facturation (billing) au projet Google. Si la limite est atteinte, The Point l'indique ; réessayez plus tard.",
+        "Gratuit tant que vous ne liez pas de facturation (billing) au projet Google. Comptez environ 10 résumés par minute et 200 par jour ; Google peut modifier ces limites et AI Studio affiche la vôtre. Chaque nouvelle vidéo coûte un appel, une vidéo déjà résumée rien. Si la limite est atteinte, The Point l'indique ; réessayez plus tard.",
       claude:
         'Payant : chaque résumé est déduit de votre crédit. Sans crédit, la clé ne fonctionne pas.',
+    },
+    keyModels: {
+      gemini:
+        'Gratuits via AI Studio : les modèles Flash et Flash-Lite (gemini-flash-latest, gemini-3.8-flash, gemini-flash-lite-latest). Payants : les modèles Pro (gemini-pro-latest) ; ils ne fonctionnent qu’avec la facturation.',
+      claude: 'Tous les modèles Claude sont payants ; Haiku est le moins cher, Opus le plus cher.',
     },
     testConnection: 'Tester la connexion',
     busy: 'Un instant…',
@@ -245,7 +250,7 @@ export const fr: Messages = {
     apiKey:
       "Un code secret qui permet à The Point d'utiliser le service d'IA en votre nom ; les éventuels coûts sont imputés à votre compte. La clé reste sur cet appareil et n'est envoyée qu'à ce service.",
     model:
-      "Le modèle d'IA qui crée le résumé. Gardez celui par défaut, sauf si vous voulez en essayer un autre ; « Tester la connexion » vérifie qu'il existe.",
+      "Le modèle d'IA qui crée le résumé. Gardez celui par défaut, sauf si vous voulez en essayer un autre ; « Tester la connexion » vérifie qu'il existe. Avec une clé Gemini gratuite, seuls les modèles Flash et Flash-Lite fonctionnent ; Pro exige la facturation.",
     auto: "Activé : chaque vidéo ouverte est résumée immédiatement ; une nouvelle vidéo coûte un appel à l'IA. Désactivé : uniquement quand vous cliquez sur « Résumer ».",
     pause:
       "La vidéo attend que le résumé soit prêt : vous lisez d'abord de quoi elle parle, puis vous décidez de la regarder ou non.",

@@ -156,9 +156,15 @@ export const it: Messages = {
     },
     keyCost: {
       gemini:
-        'Gratis, con un limite al minuto e al giorno, finché non colleghi la fatturazione (billing) al progetto Google. Se il limite è raggiunto, The Point lo segnala; riprova più tardi.',
+        'Gratis finché non colleghi la fatturazione (billing) al progetto Google. Conta su circa 10 riassunti al minuto e 200 al giorno; Google può cambiarli e il tuo limite lo vedi in AI Studio. Ogni nuovo video costa una chiamata, un video già riassunto niente. Se il limite è raggiunto, The Point lo segnala; riprova più tardi.',
       claude:
         'A pagamento: ogni riassunto viene scalato dal tuo credito. Senza credito la chiave non funziona.',
+    },
+    keyModels: {
+      gemini:
+        'Gratis tramite AI Studio: i modelli Flash e Flash-Lite (gemini-flash-latest, gemini-3.8-flash, gemini-flash-lite-latest). A pagamento: i modelli Pro (gemini-pro-latest); funzionano solo con la fatturazione.',
+      claude:
+        'Tutti i modelli Claude sono a pagamento; Haiku è il più economico, Opus il più caro.',
     },
     testConnection: 'Prova connessione',
     busy: 'Un momento…',
@@ -243,7 +249,7 @@ export const it: Messages = {
     apiKey:
       'Un codice segreto con cui The Point usa il servizio di IA per conto tuo; gli eventuali costi vanno sul tuo account. La chiave resta su questo dispositivo e viene inviata solo a quel servizio.',
     model:
-      'Il modello di IA che crea il riassunto. Lascia quello predefinito, a meno che tu non voglia provarne un altro; «Prova connessione» verifica che esista.',
+      'Il modello di IA che crea il riassunto. Lascia quello predefinito, a meno che tu non voglia provarne un altro; «Prova connessione» verifica che esista. Con una chiave Gemini gratuita funzionano solo i modelli Flash e Flash-Lite; Pro richiede la fatturazione.',
     auto: "Attivo: ogni video che apri viene riassunto subito; un nuovo video costa una chiamata all'IA. Disattivo: solo quando fai clic su «Riassumi».",
     pause:
       'Il video attende che il riassunto sia pronto, così leggi prima di cosa parla e poi decidi se guardarlo.',

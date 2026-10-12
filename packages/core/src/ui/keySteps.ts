@@ -1,6 +1,6 @@
 // "How do I get a key?" on the settings pages (extension options and the app): a
 // collapsed step list per AI service under the key field, with the key page linked in
-// the first step and a line about what the key costs.
+// the first step, what the key costs and which models it can use.
 import type { ProviderId } from '../engine/types';
 import type { Messages } from '../i18n/messages';
 
@@ -44,6 +44,7 @@ export function keySteps(
     el('summary', t.settings.keyStepsTitle),
     list,
     Object.assign(el('p', t.settings.keyCost[provider]), { className: 'key-cost' }),
+    Object.assign(el('p', t.settings.keyModels[provider]), { className: 'key-cost' }),
   );
   return details;
 }

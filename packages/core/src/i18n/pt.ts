@@ -156,8 +156,13 @@ export const pt: Messages = {
     },
     keyCost: {
       gemini:
-        'Grátis, com um limite por minuto e por dia, enquanto não associar faturação (billing) ao projeto Google. Se o limite for atingido, o The Point avisa; tente mais tarde.',
+        'Grátis enquanto não associar faturação (billing) ao projeto Google. Conte com cerca de 10 resumos por minuto e 200 por dia; a Google pode alterar isto e o seu limite aparece no AI Studio. Cada vídeo novo custa uma chamada, um vídeo já resumido nada. Se o limite for atingido, o The Point avisa; tente mais tarde.',
       claude: 'Pago: cada resumo é descontado do seu crédito. Sem crédito, a chave não funciona.',
+    },
+    keyModels: {
+      gemini:
+        'Grátis via AI Studio: os modelos Flash e Flash-Lite (gemini-flash-latest, gemini-3.8-flash, gemini-flash-lite-latest). Pagos: os modelos Pro (gemini-pro-latest); só funcionam com faturação.',
+      claude: 'Todos os modelos Claude são pagos; o Haiku é o mais barato e o Opus o mais caro.',
     },
     testConnection: 'Testar ligação',
     busy: 'Um momento…',
@@ -241,7 +246,7 @@ export const pt: Messages = {
     apiKey:
       'Um código secreto com que o The Point usa o serviço de IA em seu nome; os eventuais custos vão para a sua conta. A chave fica neste dispositivo e só é enviada para esse serviço.',
     model:
-      'O modelo de IA que cria o resumo. Mantenha o predefinido, a não ser que queira experimentar outro; «Testar ligação» verifica se existe.',
+      'O modelo de IA que cria o resumo. Mantenha o predefinido, a não ser que queira experimentar outro; «Testar ligação» verifica se existe. Com uma chave Gemini gratuita só funcionam os modelos Flash e Flash-Lite; o Pro exige faturação.',
     auto: 'Ligado: cada vídeo que abre é resumido de imediato; um vídeo novo custa uma chamada à IA. Desligado: só quando clica em «Resumir».',
     pause:
       'O vídeo espera até o resumo estar pronto, para ler primeiro do que se trata e depois decidir se o vê.',
