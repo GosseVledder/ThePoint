@@ -38,8 +38,6 @@ export const nl: Messages = {
     turnOff: 'The Point uitzetten',
     turnOn: 'The Point aanzetten',
     refresh: 'Opnieuw samenvatten',
-    expand: 'Uitklappen',
-    collapse: 'Inklappen',
     close: 'Sluiten',
     off: 'The Point staat uit: er worden geen samenvattingen gemaakt.',
     gatePaused: 'Video gepauzeerd tot de samenvatting klaar is.',

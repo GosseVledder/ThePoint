@@ -45,8 +45,6 @@ export interface Messages {
     turnOff: string;
     turnOn: string;
     refresh: string;
-    expand: string;
-    collapse: string;
     close: string;
     off: string;
     gatePaused: string;

@@ -38,8 +38,6 @@ export const de: Messages = {
     turnOff: 'The Point ausschalten',
     turnOn: 'The Point einschalten',
     refresh: 'Neu zusammenfassen',
-    expand: 'Ausklappen',
-    collapse: 'Einklappen',
     close: 'Schließen',
     off: 'The Point ist aus: Es werden keine Zusammenfassungen erstellt.',
     gatePaused: 'Video pausiert, bis die Zusammenfassung fertig ist.',

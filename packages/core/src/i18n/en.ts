@@ -38,8 +38,6 @@ export const en: Messages = {
     turnOff: 'Turn The Point off',
     turnOn: 'Turn The Point on',
     refresh: 'Summarize again',
-    expand: 'Expand',
-    collapse: 'Collapse',
     close: 'Close',
     off: 'The Point is off: no summaries are made.',
     gatePaused: 'Video paused until the summary is ready.',

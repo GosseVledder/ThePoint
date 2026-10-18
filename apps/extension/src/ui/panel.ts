@@ -186,10 +186,6 @@ export class WatchPanel {
       },
       onVoiceChange: (uri) => void this.speech.setVoice(uri),
       onOpenOptions: () => void sendRuntime({ type: 'openOptions' }),
-      onToggleCollapse: () => {
-        this.collapsed = !this.collapsed;
-        this.render();
-      },
       onWatchAnyway: () => {
         this.releaseGate();
         this.render();
@@ -365,7 +361,6 @@ export class WatchPanel {
       this.session.state,
       {
         ...this.handlers(),
-        onToggleCollapse: undefined,
         onClose: () => this.hideOverlay(),
       },
       {

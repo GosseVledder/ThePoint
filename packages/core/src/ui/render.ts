@@ -21,8 +21,7 @@ export interface ViewHandlers {
   onStart: () => void;
   onConfirm: () => void;
   onOpenOptions: () => void;
-  /** Header buttons; omitted handlers hide the button. */
-  onToggleCollapse?: () => void;
+  /** Header button; omitted handler hides the button. */
   onClose?: () => void;
   /** Autoplay gate ("Toch bekijken"). */
   onWatchAnyway?: () => void;
@@ -147,15 +146,6 @@ export function renderView(
   };
   const enabled = opts.enabled !== false;
   const headerButtons: Node[] = [];
-  if (handlers.onToggleCollapse) {
-    headerButtons.push(
-      iconButton(
-        opts.collapsed ? ICONS.chevronDown : ICONS.chevronUp,
-        opts.collapsed ? v.expand : v.collapse,
-        handlers.onToggleCollapse,
-      ),
-    );
-  }
   if (handlers.onToggleEnabled) {
     const toggle = handlers.onToggleEnabled;
     const label = enabled ? v.turnOff : v.turnOn;

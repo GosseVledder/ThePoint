@@ -38,8 +38,6 @@ export const it: Messages = {
     turnOff: 'Disattiva The Point',
     turnOn: 'Attiva The Point',
     refresh: 'Riassumi di nuovo',
-    expand: 'Espandi',
-    collapse: 'Comprimi',
     close: 'Chiudi',
     off: 'The Point è disattivato: non vengono creati riassunti.',
     gatePaused: 'Video in pausa finché il riassunto non è pronto.',
