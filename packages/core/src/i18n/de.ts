@@ -225,7 +225,7 @@ export const de: Messages = {
     cacheHeading: 'Cache',
     savedSummaries: 'Gespeicherte Zusammenfassungen',
     cacheText:
-      'Jedes Video wird einmal zusammengefasst; danach kommt die Zusammenfassung aus dem Cache. Mit „Neu zusammenfassen“ im Panel erstellst du eine neue.',
+      'Jedes Video wird einmal zusammengefasst; danach kommt die Zusammenfassung aus dem Cache.',
     clearCache: 'Cache leeren',
     clear: 'Löschen',
     cacheCount: (n) =>

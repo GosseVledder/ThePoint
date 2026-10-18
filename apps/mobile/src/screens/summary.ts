@@ -16,7 +16,12 @@ const VIEW_CSS = `
 .root { padding: 12px 16px 32px; }
 `;
 
-export function summaryScreen(app: App, videoId: string, start: number | null): Screen {
+export function summaryScreen(
+  app: App,
+  videoId: string,
+  start: number | null,
+  forceRefresh = false,
+): Screen {
   const t = app.t;
   const playerBox = h('div', { class: 'player', hidden: true });
   const host = h('div', { class: 'summary-host' });
@@ -32,6 +37,7 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
 
   let state: ViewState = { kind: 'loading', stap: 'cache' };
   let settings: Settings | null = null;
+  let refreshing = forceRefresh;
   let run = 0;
   let disposed = false;
 
@@ -202,9 +208,8 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
       state,
       {
         onSeek: seek,
-        onStart: () => void summarize(false),
-        onRefresh: () => void summarize(true),
-        onConfirm: () => void summarize(false, true),
+        onStart: () => void summarize(refreshing),
+        onConfirm: () => void summarize(refreshing, true),
         onOpenOptions: () => app.go('#/instellingen'),
         onSpeak: (from) => state.kind === 'done' && speak(state.summary, from),
         onStopSpeak: () => app.speaker.stop(),
@@ -244,9 +249,10 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
           deel: e.deel,
           delen: e.delen,
         };
-      else if (e.type === 'done')
+      else if (e.type === 'done') {
+        refreshing = false;
         state = { kind: 'done', summary: e.summary, fromCache: e.fromCache };
-      else if (e.type === 'error') state = { kind: 'error', error: e.error };
+      } else if (e.type === 'error') state = { kind: 'error', error: e.error };
       else state = { kind: 'confirm', minuten: e.minuten };
       render();
     };
@@ -269,7 +275,7 @@ export function summaryScreen(app: App, videoId: string, start: number | null): 
   }
 
   render();
-  void summarize(false);
+  void summarize(refreshing);
 
   return {
     title: t.app.summaryTitle,

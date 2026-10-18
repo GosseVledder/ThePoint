@@ -36,18 +36,24 @@ export interface Screen {
 
 export type Route =
   | { name: 'home' }
-  | { name: 'summary'; videoId: string; start: number | null }
+  | { name: 'summary'; videoId: string; start: number | null; refresh?: boolean }
   | { name: 'settings' };
 
 export function parseRoute(hash: string): Route {
-  const m = hash.match(/^#\/v\/([A-Za-z0-9_-]{11})(?:\/(\d+))?$/);
-  if (m?.[1]) return { name: 'summary', videoId: m[1], start: m[2] ? Number(m[2]) : null };
+  const m = hash.match(/^#\/v\/([A-Za-z0-9_-]{11})(?:\/(\d+))?(?:\?(refresh))?$/);
+  if (m?.[1])
+    return {
+      name: 'summary',
+      videoId: m[1],
+      start: m[2] ? Number(m[2]) : null,
+      ...(m[3] ? { refresh: true } : {}),
+    };
   if (hash === '#/instellingen') return { name: 'settings' };
   return { name: 'home' };
 }
 
-export function summaryHash(videoId: string, start?: number | null): string {
-  return `#/v/${videoId}${start ? `/${Math.floor(start)}` : ''}`;
+export function summaryHash(videoId: string, start?: number | null, refresh?: boolean): string {
+  return `#/v/${videoId}${start ? `/${Math.floor(start)}` : ''}${refresh ? '?refresh' : ''}`;
 }
 
 /**
@@ -70,6 +76,11 @@ export class NavStack {
     const i = this.stack.indexOf(hash);
     if (i >= 0) this.stack.length = i + 1;
     else this.stack.push(hash);
+  }
+
+  /** Replace the current entry without adding a back step (e.g. after consuming ?refresh). */
+  replace(hash: string): void {
+    this.stack[Math.max(0, this.stack.length - 1)] = hash;
   }
 
   /** A share opens the video with home underneath. */

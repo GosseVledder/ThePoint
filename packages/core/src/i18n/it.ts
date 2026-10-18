@@ -217,8 +217,7 @@ export const it: Messages = {
     minutes: 'minuti',
     cacheHeading: 'Cache',
     savedSummaries: 'Riassunti salvati',
-    cacheText:
-      'Ogni video viene riassunto una sola volta; poi il riassunto arriva dalla cache. «Riassumi di nuovo» nel pannello ne crea uno nuovo.',
+    cacheText: 'Ogni video viene riassunto una sola volta; poi il riassunto arriva dalla cache.',
     clearCache: 'Svuota cache',
     clear: 'Cancella',
     cacheCount: (n) => (n === 1 ? '1 riassunto salvato' : `${n} riassunti salvati`),

@@ -152,15 +152,29 @@ select {
   padding: 8px;
   color: var(--text-2);
 }
+.recent li {
+  display: flex;
+  align-items: center;
+}
 .recent .item {
   display: flex;
+  flex: 1;
   gap: 12px;
-  width: 100%;
+  min-width: 0;
   padding: 8px;
   border: 0;
   border-radius: 8px;
   background: none;
   text-align: left;
+}
+.recent .refresh {
+  flex: none;
+  color: var(--text-2);
+}
+.recent .refresh:hover,
+.recent .refresh:active {
+  background: var(--card);
+  color: var(--text);
 }
 .recent img {
   flex: none;

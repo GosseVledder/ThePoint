@@ -62,12 +62,15 @@ const app: App = {
 
 /** Show the screen on top of the stack; the hash only mirrors it (no browser history). */
 function show() {
+  const r = parseRoute(nav.current);
+  if (r.name === 'summary' && r.refresh) {
+    nav.replace(summaryHash(r.videoId, r.start));
+  }
   history.replaceState(null, '', nav.current);
   current?.dispose?.();
-  const r = parseRoute(nav.current);
   current =
     r.name === 'summary'
-      ? summaryScreen(app, r.videoId, r.start)
+      ? summaryScreen(app, r.videoId, r.start, r.refresh)
       : r.name === 'settings'
         ? settingsScreen(app)
         : homeScreen(app);

@@ -83,10 +83,6 @@ export class Popover {
       {
         onSeek: (sec) => location.assign(watchUrl(videoId, sec)),
         onStart: () => session.start(),
-        onRefresh: () => {
-          this.speech?.stop();
-          session.start({ forceRefresh: true });
-        },
         onConfirm: () => session.start({ confirmLong: true }),
         onOpenOptions: () => void sendRuntime({ type: 'openOptions' }),
         onClose: () => this.close(),

@@ -216,8 +216,7 @@ export const es: Messages = {
     minutes: 'minutos',
     cacheHeading: 'Caché',
     savedSummaries: 'Resúmenes guardados',
-    cacheText:
-      'Cada vídeo se resume una sola vez; después, el resumen sale de la caché. «Resumir de nuevo» en el panel crea uno nuevo.',
+    cacheText: 'Cada vídeo se resume una sola vez; después, el resumen sale de la caché.',
     clearCache: 'Vaciar caché',
     clear: 'Borrar',
     cacheCount: (n) => (n === 1 ? '1 resumen guardado' : `${n} resúmenes guardados`),

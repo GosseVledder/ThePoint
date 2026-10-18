@@ -213,8 +213,7 @@ export const en: Messages = {
     minutes: 'minutes',
     cacheHeading: 'Cache',
     savedSummaries: 'Saved summaries',
-    cacheText:
-      'Each video is summarized once; after that the summary comes from the cache. "Summarize again" in the panel makes a new one.',
+    cacheText: 'Each video is summarized once; after that the summary comes from the cache.',
     clearCache: 'Clear cache',
     clear: 'Clear',
     cacheCount: (n) => (n === 1 ? '1 summary saved' : `${n} summaries saved`),

@@ -39,7 +39,6 @@ export const settingsSchema = z.object({
   /** Read-aloud speed (1 = normal). */
   spreeksnelheid: z.number().min(0.5).max(2).catch(1),
   debugLog: z.boolean().catch(false),
-  paneelIngeklapt: z.boolean().catch(false),
 });
 
 export type Settings = z.infer<typeof settingsSchema>;

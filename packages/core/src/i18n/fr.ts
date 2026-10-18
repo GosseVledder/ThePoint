@@ -217,8 +217,7 @@ export const fr: Messages = {
     minutes: 'minutes',
     cacheHeading: 'Cache',
     savedSummaries: 'Résumés enregistrés',
-    cacheText:
-      'Chaque vidéo n’est résumée qu’une fois ; ensuite, le résumé vient du cache. « Résumer à nouveau » dans le panneau en crée un nouveau.',
+    cacheText: 'Chaque vidéo n’est résumée qu’une fois ; ensuite, le résumé vient du cache.',
     clearCache: 'Vider le cache',
     clear: 'Effacer',
     cacheCount: (n) => (n === 1 ? '1 résumé enregistré' : `${n} résumés enregistrés`),

@@ -19,7 +19,6 @@ export interface ViewHandlers {
    */
   onSeek: (seconds: number, id: SpeechId) => void;
   onStart: () => void;
-  onRefresh: () => void;
   onConfirm: () => void;
   onOpenOptions: () => void;
   /** Header buttons; omitted handlers hide the button. */
@@ -148,6 +147,15 @@ export function renderView(
   };
   const enabled = opts.enabled !== false;
   const headerButtons: Node[] = [];
+  if (handlers.onToggleCollapse) {
+    headerButtons.push(
+      iconButton(
+        opts.collapsed ? ICONS.chevronDown : ICONS.chevronUp,
+        opts.collapsed ? v.expand : v.collapse,
+        handlers.onToggleCollapse,
+      ),
+    );
+  }
   if (handlers.onToggleEnabled) {
     const toggle = handlers.onToggleEnabled;
     const label = enabled ? v.turnOff : v.turnOn;
@@ -163,17 +171,6 @@ export function renderView(
           onClick: () => toggle(!enabled),
         },
         h('span', { class: 'knob' }),
-      ),
-    );
-  }
-  if (enabled && state.kind === 'done')
-    headerButtons.push(iconButton(ICONS.refresh, v.refresh, handlers.onRefresh));
-  if (handlers.onToggleCollapse) {
-    headerButtons.push(
-      iconButton(
-        opts.collapsed ? ICONS.chevronDown : ICONS.chevronUp,
-        opts.collapsed ? v.expand : v.collapse,
-        handlers.onToggleCollapse,
       ),
     );
   }
@@ -270,7 +267,7 @@ export function renderView(
           h('button', { class: 'btn primary', onClick: handlers.onOpenOptions }, v.openSettings),
         );
       if (e.action === 'retry' || !e.action)
-        actions.append(h('button', { class: 'btn', onClick: handlers.onRefresh }, v.retry));
+        actions.append(h('button', { class: 'btn', onClick: handlers.onStart }, v.retry));
       const message = errorMessage(e, t);
       card.append(h('div', { class: 'error-msg', role: 'alert' }, message), actions);
       if (e.details)

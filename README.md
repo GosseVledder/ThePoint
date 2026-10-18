@@ -10,8 +10,8 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 
 | | Download | Installeren |
 |---|---|---|
-| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.3.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.3.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.6.2.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.2.zip)<br>222 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.4.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.4.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.6.3.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.3.zip)<br>222 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini, gratis) of Anthropic (Claude, betaald); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
@@ -41,11 +41,11 @@ Er zit geen server van The Point tussen: je apparaat praat rechtstreeks met YouT
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-0.6.3.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.3.apk) (ook in de map [`apk/`](apk/)) |
-| **Versie** | 0.6.3 (versionCode 9) |
+| **Bestand** | [`ThePoint-0.6.4.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.4.apk) (ook in de map [`apk/`](apk/)) |
+| **Versie** | 0.6.4 (versionCode 10) |
 | **Vereist** | Android 7.0 of nieuwer |
 | **Grootte** | 3 MB |
-| **SHA-256** | `34091be4b3e32ae2632d61090ffad03588717055bc01a5eed41c3ea46b20c93d` |
+| **SHA-256** | `34bc133aa0ba01163481fd03cf8fc9d0c007a9a2125104ac1d656a8892de3c2b` |
 
 De APK is een ondertekende release-build; hij staat niet in de Play Store.
 
@@ -58,7 +58,7 @@ De APK is een ondertekende release-build; hij staat niet in de Play Store.
 ### Zo gebruik je de app
 
 - **Delen › The Point** vanuit de YouTube-app of Chrome, of plak een link op het startscherm. Een tijd in de link (`?t=`) wordt meegenomen.
-- Je krijgt het kernpunt en de takeaways met tijdstempels en labels. Eerdere samenvattingen staan onder *Recent* op het startscherm.
+- Je krijgt het kernpunt en de takeaways met tijdstempels en labels. Eerdere samenvattingen staan onder *Recent* op het startscherm (tik op een regel om de samenvatting te laden, of op ↻ om haar opnieuw te maken).
 - **YouTube-player aan/uit** met de knop ▶ in de titelbalk (standaard uit). Staat de player uit, dan vraagt een tik op een tijdstempel wat je wilt: de player tonen en naar dat moment springen, de video op dat moment openen in de **YouTube-app**, of de onderbouwing **laten voorlezen** (de takeaway met het citaat uit het transcript).
 - **Gesplitst scherm**: staat The Point naast de YouTube-app en is de player uit, dan springt een tik op een tijdstempel direct naar dat moment in de YouTube-app ernaast.
 - **Voorlezen** met de stemmen van Android; de video pauzeert zolang er wordt voorgelezen.
@@ -84,15 +84,15 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.6.2.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.2.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.6.2 |
+| **Bestand** | [`ThePoint-extension-0.6.3.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.3.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.6.3 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
 | **Grootte** | 222 kB |
-| **SHA-256** | `dd3bb81739a09477637ab98e4411b346be644e25bb67943ab42d9d0028346348` |
+| **SHA-256** | `f3206d1195ea6c9a1f88600e7ae5b9d8e2fc0ef83a588b29fa01b76463e2e9d7` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.6.2.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.2.zip).
+1. **Download** [`ThePoint-extension-0.6.3.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.3.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).
@@ -101,14 +101,13 @@ De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen;
 
 ### Zo gebruik je de extensie
 
-- Open een video op youtube.com: rechts naast de video (bij een smal venster eronder) verschijnt het **paneel** met de samenvatting. Klik op een tijdstempel en de speler springt naar dat moment (een paar seconden ervoor).
-- **Aan/uit-schakelaar** in de kop van het paneel: uit betekent geen samenvattingen, ook niet via thumbnails.
+- **Open een video op youtube.com**: rechts naast de video (bij een smal venster eronder) verschijnt het **paneel** met de samenvatting. Klik op een tijdstempel en de speler springt naar dat moment (een paar seconden ervoor).
+- **Aan/uit-schakelaar** rechtsboven in het paneel (met ernaast de knop om in en uit te klappen; standaard uitgeklapt): uit betekent geen samenvattingen, ook niet via thumbnails.
 - **Korte lijst**: bij veel takeaways toont het paneel er standaard 5 en scroll je door de rest. Het aantal stel je in bij *Zichtbare takeaways*; bij *Lijst met takeaways* kies je eventueel de volledige lijst.
 - **Markeringen op de tijdbalk** van de speler voor elke takeaway (wit = kritiek punt).
 - **Knop in de spelerbalk** (het logo ▶.): in volledig scherm toont die de samenvatting als overlay.
 - **Knop "Samenvat" op thumbnails** (homepagina, zoekresultaten, aanbevelingen): toont de samenvatting zonder de video te openen. Thumbnails met een bewaarde samenvatting krijgen een geel ▶.-icoon.
 - **Voorlezen** (🔈) in het paneel; het punt dat wordt voorgelezen licht op en de video pauzeert. Edge heeft de meeste natuurlijke stemmen (bijvoorbeeld "Fenna" en "Maarten"); in Chrome is "Google Nederlands" beschikbaar.
-- **Opnieuw** (↻) maakt een nieuwe samenvatting van dezelfde video.
 
 ## API-sleutel instellen
 

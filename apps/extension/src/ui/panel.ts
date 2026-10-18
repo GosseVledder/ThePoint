@@ -52,7 +52,7 @@ export class WatchPanel {
   private session: SummarySession;
   private speech: SpeechControl;
   private gate: { release: () => void } | null = null;
-  private collapsed: boolean;
+  private collapsed = false;
   private observers: MutationObserver[] = [];
   private cleanups: (() => void)[] = [];
   private destroyed = false;
@@ -61,7 +61,6 @@ export class WatchPanel {
     readonly videoId: string,
     private settings: Settings,
   ) {
-    this.collapsed = settings.paneelIngeklapt;
     this.session = new SummarySession({
       videoId,
       onState: () => this.render(),
@@ -120,6 +119,7 @@ export class WatchPanel {
   /** Switched off: stop everything. Switched on: summarize this video. */
   private applyEnabled(): void {
     if (this.settings.actief) {
+      this.collapsed = false;
       this.session.start();
     } else {
       this.speech.stop();
@@ -173,10 +173,6 @@ export class WatchPanel {
         seekTo(sec);
       },
       onStart: () => this.session.start(),
-      onRefresh: () => {
-        this.speech.stop();
-        this.session.start({ forceRefresh: true });
-      },
       onConfirm: () => this.session.start({ confirmLong: true, paginaGeprobeerd: true }),
       onSpeak: (from) => {
         const summary = this.summary();
@@ -190,7 +186,6 @@ export class WatchPanel {
       onOpenOptions: () => void sendRuntime({ type: 'openOptions' }),
       onToggleCollapse: () => {
         this.collapsed = !this.collapsed;
-        void saveSettings({ paneelIngeklapt: this.collapsed });
         this.render();
       },
       onWatchAnyway: () => {
@@ -335,7 +330,6 @@ export class WatchPanel {
     }
     if (this.collapsed) {
       this.collapsed = false;
-      void saveSettings({ paneelIngeklapt: false });
     }
     if (this.session.state.kind === 'idle') this.session.start();
     this.render();

@@ -214,8 +214,7 @@ export const pt: Messages = {
     minutes: 'minutos',
     cacheHeading: 'Cache',
     savedSummaries: 'Resumos guardados',
-    cacheText:
-      'Cada vídeo é resumido uma só vez; depois, o resumo vem da cache. «Resumir novamente» no painel cria um novo.',
+    cacheText: 'Cada vídeo é resumido uma só vez; depois, o resumo vem da cache.',
     clearCache: 'Limpar cache',
     clear: 'Apagar',
     cacheCount: (n) => (n === 1 ? '1 resumo guardado' : `${n} resumos guardados`),

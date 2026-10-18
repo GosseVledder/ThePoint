@@ -1,5 +1,6 @@
 // Start screen: paste a link, or open one of the recent summaries.
 import { h } from '@the-point/core/ui/render';
+import { ICONS } from '@the-point/core/ui/styles';
 import { summaryHash, type App, type Screen } from '../app';
 import { videoFromShare } from '../share';
 import type { RecentEntry } from '../storage/stores';
@@ -95,5 +96,12 @@ function recentItem(app: App, e: RecentEntry): HTMLLIElement {
       }),
       h('span', { class: 'text' }, h('b', {}, e.titel || e.videoId), h('small', {}, when)),
     ),
+    h('button', {
+      class: 'icon refresh',
+      title: app.t.view.refresh,
+      'aria-label': app.t.view.refresh,
+      html: ICONS.refresh,
+      onClick: () => app.go(summaryHash(e.videoId, null, true)),
+    }),
   );
 }

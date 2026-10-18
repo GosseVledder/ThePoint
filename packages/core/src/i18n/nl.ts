@@ -217,8 +217,7 @@ export const nl: Messages = {
     minutes: 'minuten',
     cacheHeading: 'Cache',
     savedSummaries: 'Opgeslagen samenvattingen',
-    cacheText:
-      'Elke video wordt één keer samengevat; daarna komt de samenvatting uit de cache. Met "Opnieuw" in het paneel maak je een nieuwe.',
+    cacheText: 'Elke video wordt één keer samengevat; daarna komt de samenvatting uit de cache.',
     clearCache: 'Cache wissen',
     clear: 'Wissen',
     cacheCount: (n) => (n === 1 ? '1 samenvatting opgeslagen' : `${n} samenvattingen opgeslagen`),
