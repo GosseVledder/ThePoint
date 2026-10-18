@@ -11,7 +11,7 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 | | Download | Installeren |
 |---|---|---|
 | 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.4.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.4.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.6.3.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.3.zip)<br>222 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.6.4.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.4.zip)<br>222 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini, gratis) of Anthropic (Claude, betaald); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
@@ -84,15 +84,15 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.6.3.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.3.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.6.3 |
+| **Bestand** | [`ThePoint-extension-0.6.4.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.4.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.6.4 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
 | **Grootte** | 222 kB |
-| **SHA-256** | `f3206d1195ea6c9a1f88600e7ae5b9d8e2fc0ef83a588b29fa01b76463e2e9d7` |
+| **SHA-256** | `e0dd8a937e7a11a4e1447cdac4671f9c20ab004d8e210aeb2342c162a90540ff` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.6.3.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.3.zip).
+1. **Download** [`ThePoint-extension-0.6.4.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.4.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).
@@ -102,7 +102,7 @@ De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen;
 ### Zo gebruik je de extensie
 
 - **Open een video op youtube.com**: rechts naast de video (bij een smal venster eronder) verschijnt het **paneel** met de samenvatting. Klik op een tijdstempel en de speler springt naar dat moment (een paar seconden ervoor).
-- **Aan/uit-schakelaar** rechtsboven in het paneel (met ernaast de knop om in en uit te klappen; standaard uitgeklapt): uit betekent geen samenvattingen, ook niet via thumbnails.
+- **Aan/uit-schakelaar** rechtsboven in het paneel (met ernaast de knop om in en uit te klappen; standaard uit en ingeklapt): uit betekent geen samenvattingen, ook niet via thumbnails.
 - **Korte lijst**: bij veel takeaways toont het paneel er standaard 5 en scroll je door de rest. Het aantal stel je in bij *Zichtbare takeaways*; bij *Lijst met takeaways* kies je eventueel de volledige lijst.
 - **Markeringen op de tijdbalk** van de speler voor elke takeaway (wit = kritiek punt).
 - **Knop in de spelerbalk** (het logo ▶.): in volledig scherm toont die de samenvatting als overlay.

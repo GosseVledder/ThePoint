@@ -52,7 +52,7 @@ export class WatchPanel {
   private session: SummarySession;
   private speech: SpeechControl;
   private gate: { release: () => void } | null = null;
-  private collapsed = false;
+  private collapsed = true;
   private observers: MutationObserver[] = [];
   private cleanups: (() => void)[] = [];
   private destroyed = false;
@@ -61,6 +61,7 @@ export class WatchPanel {
     readonly videoId: string,
     private settings: Settings,
   ) {
+    this.collapsed = !settings.actief;
     this.session = new SummarySession({
       videoId,
       onState: () => this.render(),
@@ -122,6 +123,7 @@ export class WatchPanel {
       this.collapsed = false;
       this.session.start();
     } else {
+      this.collapsed = true;
       this.speech.stop();
       this.releaseGate();
       this.hideOverlay();

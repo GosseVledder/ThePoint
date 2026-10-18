@@ -6,7 +6,7 @@ import { UI_LANGUAGES } from './i18n/messages';
 
 export const settingsSchema = z.object({
   /** Extension: the on/off switch in the panel header. Off = no summaries are made. */
-  actief: z.boolean().catch(true),
+  actief: z.boolean().catch(false),
   provider: z.enum(['claude', 'gemini']).catch('gemini'),
   models: z
     .object({
