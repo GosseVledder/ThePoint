@@ -150,8 +150,8 @@ export const de: Messages = {
       gemini: [
         'Öffne {site} und melde dich mit deinem Google-Konto an.',
         'Akzeptiere die Bedingungen (nur beim ersten Mal).',
-        'Klicke auf „Create API key“; wähle bei Bedarf ein Projekt oder lass eines anlegen.',
-        'Kopiere den Schlüssel (beginnt mit AIza) und füge ihn oben unter API-Schlüssel ein.',
+        'Steht noch kein Schlüssel in der Liste, klicke auf „Create API key“; wähle bei Bedarf ein Projekt oder lass eines anlegen.',
+        'Kopiere den Schlüssel und füge ihn oben unter API-Schlüssel ein.',
         'Klicke auf „Verbindung testen“.',
       ],
       claude: [
@@ -338,8 +338,8 @@ export const de: Messages = {
       'The Point nutzt Google Gemini. Ein Schlüssel ist kostenlos und dauert etwa eine Minute.',
     getKey: 'Kostenlosen Schlüssel erstellen',
     steps1: [
-      'Melde dich mit deinem Google-Konto an.',
-      'Klicke auf "Create API key" und folge den Schritten auf dem Bildschirm.',
+      'Melde dich mit deinem Google-Konto an und akzeptiere die Bedingungen.',
+      'Steht dort schon ein Schlüssel? Dann ist das deiner. Wenn nicht, klicke auf "Create API key".',
       'Kopiere den Schlüssel und komm zu dieser Seite zurück.',
     ],
     reassurance: [
@@ -357,7 +357,7 @@ export const de: Messages = {
     pasteFallback:
       'Automatisches Einfügen hat nicht geklappt; klicke in das Feld und drücke Strg+V.',
     formatWarning:
-      'Das sieht nicht nach einem Gemini-Schlüssel aus. Ein Gemini-Schlüssel beginnt mit AIza. Prüfe, ob du ihn vollständig kopiert hast.',
+      'Das sieht nicht nach einem Gemini-Schlüssel aus. Prüfe, ob du ihn vollständig kopiert hast.',
     checkSave: 'Prüfen und speichern',
     checking: 'Schlüssel wird geprüft…',
     check: {

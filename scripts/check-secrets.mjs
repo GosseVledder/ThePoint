@@ -6,6 +6,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 const PATTERNS = [
   ['Anthropic API key', /sk-ant-[A-Za-z0-9_-]{20,}/],
   ['Google API key', /AIza[0-9A-Za-z_-]{35}/],
+  ['Google auth key', /\bAQ\.[0-9A-Za-z_-]{30,}/], // AI Studio auth keys since 2026-05-28
   ['GitHub token', /\b(?:ghp|gho|ghu|ghs|github_pat)_[A-Za-z0-9_]{20,}/],
   ['Private key', /-----BEGIN [A-Z ]*PRIVATE KEY-----/],
 ];

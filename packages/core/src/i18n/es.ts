@@ -145,8 +145,8 @@ export const es: Messages = {
       gemini: [
         'Abre {site} e inicia sesión con tu cuenta de Google.',
         'Acepta las condiciones (solo la primera vez).',
-        'Haz clic en «Create API key»; si te lo pide, elige un proyecto o deja que se cree uno.',
-        'Copia la clave (empieza por AIza) y pégala arriba en Clave API.',
+        'Si aún no hay ninguna clave en la lista, haz clic en «Create API key»; si te lo pide, elige un proyecto o deja que se cree uno.',
+        'Copia la clave y pégala arriba en Clave API.',
         'Haz clic en «Probar conexión».',
       ],
       claude: [
@@ -328,8 +328,8 @@ export const es: Messages = {
       'The Point usa Google Gemini. Una clave es gratuita y lleva un minuto aproximadamente.',
     getKey: 'Conseguir mi clave gratuita',
     steps1: [
-      'Inicia sesión con tu cuenta de Google.',
-      'Haz clic en "Create API key" y sigue los pasos en pantalla.',
+      'Inicia sesión con tu cuenta de Google y acepta las condiciones.',
+      '¿Ya aparece una clave? Es la tuya. Si no, haz clic en "Create API key".',
       'Copia la clave y vuelve a esta página.',
     ],
     reassurance: [
@@ -346,7 +346,7 @@ export const es: Messages = {
     paste: 'Pegar',
     pasteFallback: 'No se pudo pegar automáticamente; haz clic en el campo y pulsa Ctrl+V.',
     formatWarning:
-      'No parece una clave de Gemini. Una clave de Gemini empieza por AIza. Comprueba que la has copiado entera.',
+      'No parece una clave de Gemini. Comprueba que la has copiado entera.',
     checkSave: 'Comprobar y guardar',
     checking: 'Comprobando la clave…',
     check: {

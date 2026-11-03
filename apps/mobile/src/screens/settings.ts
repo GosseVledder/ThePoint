@@ -41,7 +41,7 @@ const PROVIDER_INFO: Record<
   gemini: {
     name: 'Gemini',
     vendor: 'Google',
-    placeholder: 'AIza…',
+    placeholder: '',
     url: KEY_URLS.gemini,
   },
 };

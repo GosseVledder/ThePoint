@@ -145,8 +145,8 @@ export const nl: Messages = {
       gemini: [
         'Open {site} en log in met je Google-account.',
         'Accepteer de voorwaarden (alleen de eerste keer).',
-        'Klik op "Create API key"; kies zo nodig een project of laat er een aanmaken.',
-        'Kopieer de sleutel (begint met AIza) en plak hem hierboven bij API-sleutel.',
+        'Staat er nog geen sleutel in de lijst, klik dan op "Create API key"; kies zo nodig een project of laat er een aanmaken.',
+        'Kopieer de sleutel en plak hem hierboven bij API-sleutel.',
         'Klik op "Test verbinding".',
       ],
       claude: [
@@ -329,8 +329,8 @@ export const nl: Messages = {
       'The Point gebruikt Google Gemini. Een sleutel is gratis en kost ongeveer een minuut.',
     getKey: 'Mijn gratis sleutel maken',
     steps1: [
-      'Log in met je Google-account.',
-      'Klik op "Create API key" en volg de stappen op het scherm.',
+      'Log in met je Google-account en accepteer de voorwaarden.',
+      'Staat er al een sleutel? Dan is dat de jouwe. Zo niet, klik op "Create API key".',
       'Kopieer de sleutel en kom terug naar deze pagina.',
     ],
     reassurance: [
@@ -347,7 +347,7 @@ export const nl: Messages = {
     paste: 'Plakken',
     pasteFallback: 'Automatisch plakken lukte niet; klik in het veld en druk op Ctrl+V.',
     formatWarning:
-      'Dit lijkt geen Gemini-sleutel. Een Gemini-sleutel begint met AIza. Kijk of je hem helemaal hebt gekopieerd.',
+      'Dit lijkt geen Gemini-sleutel. Kijk of je hem helemaal hebt gekopieerd.',
     checkSave: 'Controleren en opslaan',
     checking: 'Sleutel controleren…',
     check: {

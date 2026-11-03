@@ -143,8 +143,8 @@ export const en: Messages = {
       gemini: [
         'Open {site} and sign in with your Google account.',
         'Accept the terms (first time only).',
-        'Click "Create API key"; if asked, choose a project or let one be created.',
-        'Copy the key (it starts with AIza) and paste it above under API key.',
+        'If the list has no key yet, click "Create API key"; if asked, choose a project or let one be created.',
+        'Copy the key and paste it above under API key.',
         'Click "Test connection".',
       ],
       claude: [
@@ -323,8 +323,8 @@ export const en: Messages = {
     step1Text: 'The Point uses Google Gemini. A key is free and takes about one minute.',
     getKey: 'Get my free key',
     steps1: [
-      'Sign in with your Google account.',
-      'Click "Create API key" and follow the steps on screen.',
+      'Sign in with your Google account and accept the terms.',
+      'Is a key already listed? That one is yours. If not, click "Create API key".',
       'Copy the key and come back to this page.',
     ],
     reassurance: [
@@ -341,7 +341,7 @@ export const en: Messages = {
     paste: 'Paste',
     pasteFallback: "Pasting automatically didn't work; click the field and press Ctrl+V.",
     formatWarning:
-      "This doesn't look like a Gemini key. A Gemini key starts with AIza. Check that you copied all of it.",
+      "This doesn't look like a Gemini key. Check that you copied all of it.",
     checkSave: 'Check and save',
     checking: 'Checking key…',
     check: {

@@ -144,8 +144,8 @@ export const it: Messages = {
       gemini: [
         'Apri {site} e accedi con il tuo account Google.',
         'Accetta i termini (solo la prima volta).',
-        'Fai clic su «Create API key»; se richiesto, scegli un progetto o lascialo creare.',
-        'Copia la chiave (inizia con AIza) e incollala sopra in Chiave API.',
+        'Se nell’elenco non c’è ancora una chiave, fai clic su «Create API key»; se richiesto, scegli un progetto o lascialo creare.',
+        'Copia la chiave e incollala sopra in Chiave API.',
         'Fai clic su «Prova connessione».',
       ],
       claude: [
@@ -328,8 +328,8 @@ export const it: Messages = {
     step1Text: 'The Point usa Google Gemini. Una chiave è gratuita e richiede circa un minuto.',
     getKey: 'Ottieni la mia chiave gratuita',
     steps1: [
-      'Accedi con il tuo account Google.',
-      'Fai clic su "Create API key" e segui i passaggi sullo schermo.',
+      'Accedi con il tuo account Google e accetta i termini.',
+      'C’è già una chiave? È la tua. Altrimenti fai clic su "Create API key".',
       'Copia la chiave e torna a questa pagina.',
     ],
     reassurance: [
@@ -346,7 +346,7 @@ export const it: Messages = {
     paste: 'Incolla',
     pasteFallback: 'Incolla automatico non riuscito; fai clic nel campo e premi Ctrl+V.',
     formatWarning:
-      'Non sembra una chiave Gemini. Una chiave Gemini inizia con AIza. Controlla di averla copiata per intero.',
+      'Non sembra una chiave Gemini. Controlla di averla copiata per intero.',
     checkSave: 'Verifica e salva',
     checking: 'Verifica della chiave…',
     check: {
