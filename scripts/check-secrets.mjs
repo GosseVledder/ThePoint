@@ -15,9 +15,18 @@ const git = (...args) => execFileSync('git', args, { encoding: 'utf8' });
 
 if (process.argv.includes('--install')) {
   const hook = git('rev-parse', '--git-path', 'hooks/pre-commit').trim();
-  writeFileSync(hook, ['#!/bin/sh', 'exec npm run --silent secrets', ''].join('\n'), {
-    mode: 0o755,
-  });
+  // Runs this script from the main checkout, so the hook also works in worktrees without
+  // package.json (the gh-pages worktree of publish-public.mjs); it scans the worktree it runs in.
+  writeFileSync(
+    hook,
+    [
+      '#!/bin/sh',
+      'root="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"',
+      'exec node "$root/scripts/check-secrets.mjs"',
+      '',
+    ].join('\n'),
+    { mode: 0o755 },
+  );
   console.log(`Pre-commit-hook geïnstalleerd: ${hook}`);
   process.exit(0);
 }
