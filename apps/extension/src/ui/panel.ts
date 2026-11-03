@@ -186,6 +186,7 @@ export class WatchPanel {
       },
       onVoiceChange: (uri) => void this.speech.setVoice(uri),
       onOpenOptions: () => void sendRuntime({ type: 'openOptions' }),
+      onSetup: () => void sendRuntime({ type: 'openOnboarding' }),
       onWatchAnyway: () => {
         this.releaseGate();
         this.render();

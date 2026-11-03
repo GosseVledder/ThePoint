@@ -85,6 +85,7 @@ export class Popover {
         onStart: () => session.start(),
         onConfirm: () => session.start({ confirmLong: true }),
         onOpenOptions: () => void sendRuntime({ type: 'openOptions' }),
+        onSetup: () => void sendRuntime({ type: 'openOnboarding' }),
         onClose: () => this.close(),
         onSpeak: (from) => {
           if (session.state.kind === 'done') this.speech?.play(session.state.summary, from);

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>The Point</title>
+    <link rel="icon" href="/icon/32.png">
+    <script type="module" crossorigin src="/chunks/onboarding-BGV30rb6.js"></script>
+    <link rel="modulepreload" crossorigin href="/chunks/settings-D7-z7_MF.js">
+    <link rel="stylesheet" crossorigin href="/assets/settings-Bpz35yS2.css">
+    <link rel="stylesheet" crossorigin href="/assets/onboarding-DZxwMqsG.css">
+  </head>
+  <body>
+    <!-- Setup guide, opened on first install (background: runtime.onInstalled) and from the
+         "no key yet" card in the panel. Texts: `onboarding` in @the-point/core/i18n. -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <img class="brand" src="/icon/128.png" alt="" width="36" height="36">
+        <div class="brand-text">
+          <h1>The Point</h1>
+          <p id="subtitle"></p>
+        </div>
+        <label class="lang">
+          <span class="visually-hidden" data-i18n="language"></span>
+          <select id="interfaceTaal"></select>
+        </label>
+      </div>
+    </header>
+
+    <main class="wizard">
+      <section class="hero">
+        <h2 class="hero-title" data-i18n="welcome"></h2>
+        <p data-i18n="intro"></p>
+      </section>
+
+      <nav class="progress" aria-labelledby="progress-label">
+        <p class="progress-label" id="progress-label"></p>
+        <div class="progress-bar" role="progressbar" aria-valuemin="1" aria-valuemax="3" aria-labelledby="progress-label">
+          <span></span>
+        </div>
+        <ol class="progress-steps">
+          <li data-for="1"><span data-i18n="stepNames.0"></span></li>
+          <li data-for="2"><span data-i18n="stepNames.1"></span></li>
+          <li data-for="3"><span data-i18n="stepNames.2"></span></li>
+        </ol>
+      </nav>
+
+      <section class="card step" data-step="1" aria-labelledby="h-step1">
+        <h2 class="step-title" id="h-step1" data-i18n="step1Title"></h2>
+        <p class="step-text" data-i18n="step1Text"></p>
+        <div class="step-cta">
+          <a class="btn primary big" id="get-key" href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer" data-i18n="getKey"></a>
+        </div>
+        <ol class="howto" id="steps1"></ol>
+        <ul class="reassure" id="reassurance"></ul>
+        <div class="step-actions">
+          <span></span>
+          <button type="button" class="btn" id="to-step2" data-i18n="haveKey"></button>
+        </div>
+      </section>
+
+      <section class="card step" data-step="2" aria-labelledby="h-step2" hidden>
+        <h2 class="step-title" id="h-step2" data-i18n="step2Title"></h2>
+        <p class="step-text" data-i18n="step2Text"></p>
+        <div class="key-field">
+          <label class="row-title" for="key" data-i18n="keyLabel"></label>
+          <div class="key-input">
+            <div class="input-group">
+              <input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="AIza…">
+              <button type="button" id="toggle-key"></button>
+            </div>
+            <button type="button" class="btn" id="paste" data-i18n="paste"></button>
+          </div>
+          <p class="hint warn" id="format-warning" data-i18n="formatWarning" hidden></p>
+          <p class="hint" id="paste-fallback" data-i18n="pasteFallback" hidden></p>
+          <p class="check-result" id="check-result" aria-live="polite"></p>
+        </div>
+        <div class="step-actions">
+          <button type="button" class="btn quiet" data-back="1" data-i18n="back"></button>
+          <button type="button" class="btn primary" id="check-save" data-i18n="checkSave"></button>
+        </div>
+      </section>
+
+      <section class="card step" data-step="3" aria-labelledby="h-step3" hidden>
+        <div class="done-mark" aria-hidden="true">✓</div>
+        <h2 class="step-title" id="h-step3" data-i18n="step3Title"></h2>
+        <p class="step-text" data-i18n="step3Text"></p>
+        <label class="row enable-row">
+          <span class="row-text">
+            <span class="row-title" data-i18n="enable"></span>
+            <span class="row-hint" data-i18n="enableHint"></span>
+          </span>
+          <input type="checkbox" class="switch" role="switch" id="actief">
+        </label>
+        <div class="step-actions">
+          <button type="button" class="btn quiet" id="open-settings" data-i18n="openSettings"></button>
+          <a class="btn primary big" id="try-video" target="_blank" rel="noreferrer" data-i18n="tryVideo"></a>
+        </div>
+      </section>
+      <p class="more-help">
+        <a id="more-help" target="_blank" rel="noreferrer" data-i18n="moreHelp"></a>
+      </p>
+    </main>
+  </body>
+</html>

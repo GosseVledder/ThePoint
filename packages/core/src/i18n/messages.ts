@@ -82,6 +82,10 @@ export interface Messages {
     /** Added to the time button's tooltip: how much earlier the jump starts. */
     leadIn: (seconds: number) => string;
     openAt: string;
+    /** No API key yet: a friendly card instead of an error, with a button to the setup guide. */
+    noKeyTitle: string;
+    noKeyText: string;
+    noKeyButton: string;
   };
 
   errors: Record<ErrorCode, string> & { noTranscriptGemini: string };
@@ -179,6 +183,11 @@ export interface Messages {
     summaryCount: (n: number) => string;
     confirmClear: string;
     advanced: string;
+    /** Tag on the Claude choice: for advanced users, paid. */
+    advancedPaid: string;
+    /** Link to the setup guide (extension onboarding page). */
+    setupGuide: string;
+    setupGuideHint: string;
     debugHeading: string;
     debugCheck: string;
     showLog: string;
@@ -241,6 +250,45 @@ export interface Messages {
     thumbTitleCached: string;
     badge: string;
     openVideoAt: string;
+  };
+
+  /** Extension setup guide (onboarding page), opened on first install. */
+  onboarding: {
+    title: string;
+    welcome: string;
+    intro: string;
+    language: string;
+    progress: (step: number, total: number) => string;
+    stepNames: [string, string, string];
+    step1Title: string;
+    step1Text: string;
+    getKey: string;
+    /** Short steps on the AI Studio page. */
+    steps1: string[];
+    /** Why it is safe to add the key. */
+    reassurance: string[];
+    haveKey: string;
+    step2Title: string;
+    step2Text: string;
+    keyLabel: string;
+    show: string;
+    hide: string;
+    paste: string;
+    pasteFallback: string;
+    formatWarning: string;
+    checkSave: string;
+    checking: string;
+    /** Outcome of the key test (other errors use errorMessage). */
+    check: { ok: string; invalid: string; limit: string; offline: string };
+    back: string;
+    step3Title: string;
+    step3Text: string;
+    enable: string;
+    enableHint: string;
+    tryVideo: string;
+    openSettings: string;
+    /** Footer link to the public landing page. */
+    moreHelp: string;
   };
 
   app: {

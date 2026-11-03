@@ -105,13 +105,16 @@ ul.takeaways li:hover .speak-btn, .speak-btn:focus-visible, .speak-btn.active { 
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) { .spinner, .bar { animation: none; } }
 
+.setup { margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: var(--yt-accent-bg); color: var(--yt-text); }
+.setup p { margin: 0; font-size: 13px; line-height: 18px; }
+.setup .setup-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
 .error-msg { margin-top: 10px; color: var(--yt-text); }
 .error-msg::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--yt-error); margin-right: 8px; vertical-align: 1px; }
 details { margin-top: 8px; font-size: 12px; color: var(--yt-text-2); }
 details pre { white-space: pre-wrap; overflow-wrap: anywhere; margin: 6px 0 0; font: 12px/16px "Roboto Mono", "Consolas", monospace; max-height: 160px; overflow: auto; }
 a.link { color: var(--yt-accent); text-decoration: none; cursor: pointer; }
 a.link:hover { text-decoration: underline; }
-.collapsed .body, .collapsed .loading, .collapsed .actions, .collapsed .error-msg, .collapsed details, .collapsed .notice { display: none; }
+.collapsed .body, .collapsed .loading, .collapsed .actions, .collapsed .error-msg, .collapsed .setup, .collapsed details, .collapsed .notice { display: none; }
 .collapsed .peek { display: block; }
 .peek { display: none; margin-top: 6px; color: var(--yt-text-2); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .gate { margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; background: var(--yt-accent-bg); font-size: 13px; }

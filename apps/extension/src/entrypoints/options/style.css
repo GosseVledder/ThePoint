@@ -782,3 +782,17 @@ input.switch:checked::before {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   }
 }
+
+/* Link to the setup guide (onboarding page) in the AI service card */
+.setup-guide {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+}
+.setup-guide a {
+  font-weight: 600;
+}
+.setup-guide a::before {
+  content: '→ ';
+}

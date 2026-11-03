@@ -4,14 +4,22 @@
 
 **Weet waar een video over gaat voordat je hem kijkt.** The Point maakt met AI een samenvatting van een YouTube-video: het kernpunt en de belangrijkste takeaways, elk met een tijdstempel waarmee je direct naar de onderbouwing in de video springt. Het logo zegt het al: ▶. — de video, en dan *the point*.
 
+## Snel aan de slag
+
+1. **Installeer de extensie** voor Chrome of Edge ([downloaden](#downloaden), [uitleg](#extensie-installeren-in-chrome-of-edge)). Er opent vanzelf een welkomstgids.
+2. **Maak een gratis Gemini-sleutel** in [Google AI Studio](https://aistudio.google.com/apikey): log in, klik op *Create API key* en kopieer de sleutel.
+3. **Plak de sleutel** in de welkomstgids, klik op *Controleren en opslaan* en open een YouTube-video.
+
+Stap voor stap, met veelgestelde vragen: **[gossevledder.github.io/ThePoint](https://gossevledder.github.io/ThePoint/)**.
+
 ## Downloaden
 
 Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 
 | | Download | Installeren |
 |---|---|---|
-| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.4.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.4.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.6.5.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.5.zip)<br>221 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.5.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.5.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.7.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.0.zip)<br>243 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini, gratis) of Anthropic (Claude, betaald); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
@@ -41,11 +49,11 @@ Er zit geen server van The Point tussen: je apparaat praat rechtstreeks met YouT
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-0.6.4.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.4.apk) (ook in de map [`apk/`](apk/)) |
-| **Versie** | 0.6.4 (versionCode 10) |
+| **Bestand** | [`ThePoint-0.6.5.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.5.apk) (ook in de map [`apk/`](apk/)) |
+| **Versie** | 0.6.5 (versionCode 11) |
 | **Vereist** | Android 7.0 of nieuwer |
 | **Grootte** | 3 MB |
-| **SHA-256** | `34bc133aa0ba01163481fd03cf8fc9d0c007a9a2125104ac1d656a8892de3c2b` |
+| **SHA-256** | `f7c4b276a1e01f5d761051a1a0e65c391d2061571bc5eb33c1b1ff3ec12b54e2` |
 
 De APK is een ondertekende release-build; hij staat niet in de Play Store.
 
@@ -84,20 +92,20 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.6.5.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.5.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.6.5 |
+| **Bestand** | [`ThePoint-extension-0.7.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.7.0 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
-| **Grootte** | 221 kB |
-| **SHA-256** | `092d100d41e5b272c2c8e8606bcca81cd2c2544d33d3fb9dfc607fa78d053405` |
+| **Grootte** | 243 kB |
+| **SHA-256** | `6b0b358aa8566857c5e0bd395b176e0811ec3055e6099217f2309c6d42715b03` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.6.5.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.6.5.zip).
+1. **Download** [`ThePoint-extension-0.7.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.0.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).
 5. Klik **Uitgepakte extensie laden** en kies de uitgepakte map (die met `manifest.json`).
-6. Klik op het puzzelstukje in de werkbalk en zet **The Point** vast (Edge: *Weergeven op werkbalk*). Klik op het icoon om de instellingen te openen en vul je [API-sleutel](#api-sleutel-instellen) in.
+6. Klik op het puzzelstukje in de werkbalk en zet **The Point** vast (Edge: *Weergeven op werkbalk*). Bij de eerste installatie opent vanzelf de **welkomstgids**: die helpt je in drie stappen aan een gratis Gemini-sleutel, controleert hem en zet The Point aan. Later vind je de gids terug via het icoon (instellingen) › **Installatiehulp**.
 
 ### Zo gebruik je de extensie
 
@@ -144,7 +152,7 @@ Google publiceert geen vaste getallen en kan de limieten wijzigen; je eigen limi
 4. Kopieer de sleutel (begint met `sk-ant-`) meteen: je ziet hem maar één keer.
 5. Open de instellingen van The Point, kies **Claude**, plak de sleutel bij *API-sleutel* en klik op **Test verbinding**.
 
-De instellingen openen: in de extensie klik je op het icoon in de werkbalk, in de app op het tandwiel. Daar staat hetzelfde stappenplan onder **Hoe kom ik aan een sleutel?**. **Test verbinding** kost niets. Wil je ook video's zonder transcript laten samenvatten, vul dan ook een Gemini-sleutel in, ook als je Claude gebruikt. Bij elke instelling legt een ⓘ uit wat die doet.
+De instellingen openen: in de extensie klik je op het icoon in de werkbalk, in de app op het tandwiel. Daar staat hetzelfde stappenplan onder **Hoe kom ik aan een sleutel?**; in de extensie leidt **Installatiehulp** je er stap voor stap doorheen. **Test verbinding** kost niets. Wil je ook video's zonder transcript laten samenvatten, vul dan ook een Gemini-sleutel in, ook als je Claude gebruikt. Bij elke instelling legt een ⓘ uit wat die doet.
 
 ## Bijwerken
 

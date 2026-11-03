@@ -6,6 +6,7 @@ import { getTranscriptById } from '@the-point/core/youtube/transcript';
 import { isVideoId } from '@the-point/core/youtube/videoId';
 import {
   isAllowedRequest,
+  ONBOARDING_PAGE,
   REOPEN_OPTIONS_KEY,
   SUMMARIZE_PORT,
   type PortEvent,
@@ -46,8 +47,12 @@ export default defineBackground(() => {
   );
   rulesReadyPromise = rulesReady;
   void migrateLegacyKeys().catch((e) => console.warn('[the-point] sleutels migreren', e));
-  // A reload (also the one from the options page) starts the worker with this event.
-  browser.runtime.onInstalled.addListener(() => void reopenOptionsAfterReload());
+  browser.runtime.onInstalled.addListener(({ reason }) => {
+    // First install: the setup guide. Updates and reloads never open it.
+    if (reason === 'install') void openOnboarding();
+    // A reload (also the one from the options page) starts the worker with this event.
+    else void reopenOptionsAfterReload();
+  });
 
   browser.runtime.onConnect.addListener((port) => {
     if (port.name !== SUMMARIZE_PORT || port.sender?.id !== browser.runtime.id) return;
@@ -101,6 +106,9 @@ async function handleRuntime(msg: RuntimeRequest): Promise<unknown> {
     case 'openOptions':
       await browser.runtime.openOptionsPage();
       return true;
+    case 'openOnboarding':
+      await openOnboarding();
+      return true;
     case 'testConnection':
       return testConnection(msg.provider, msg.apiKey, msg.model);
     case 'cacheStats':
@@ -128,6 +136,21 @@ async function checkUpdate(): Promise<UpdateCheckResult> {
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : String(e) };
   }
+}
+
+/** Open the setup guide, or bring an already open one to the front. */
+async function openOnboarding(): Promise<void> {
+  const url = browser.runtime.getURL(ONBOARDING_PAGE);
+  // getContexts finds our own pages without the "tabs" permission (Chrome/Edge 116+).
+  const [open] = await browser.runtime
+    .getContexts({ contextTypes: ['TAB' as Browser.runtime.ContextType], documentUrls: [url] })
+    .catch(() => []);
+  if (open && open.tabId >= 0) {
+    await browser.tabs.update(open.tabId, { active: true });
+    if (open.windowId >= 0) await browser.windows.update(open.windowId, { focused: true });
+    return;
+  }
+  await browser.tabs.create({ url });
 }
 
 /**

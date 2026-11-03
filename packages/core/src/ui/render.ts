@@ -21,6 +21,8 @@ export interface ViewHandlers {
   onStart: () => void;
   onConfirm: () => void;
   onOpenOptions: () => void;
+  /** No API key yet: opens the setup guide; without it the button opens the settings. */
+  onSetup?: () => void;
   /** Header button; omitted handler hides the button. */
   onClose?: () => void;
   /** Autoplay gate ("Toch bekijken"). */
@@ -251,6 +253,28 @@ export function renderView(
 
     case 'error': {
       const e = state.error;
+      // No key yet is a step still to take, not an error: a friendly card with one button.
+      if (e.code === 'no_key') {
+        card.append(
+          h(
+            'div',
+            { class: 'setup' },
+            h('p', { class: 'setup-title' }, v.noKeyTitle),
+            h('p', {}, v.noKeyText),
+          ),
+          h(
+            'div',
+            { class: 'actions' },
+            h(
+              'button',
+              { class: 'btn primary', onClick: handlers.onSetup ?? handlers.onOpenOptions },
+              v.noKeyButton,
+            ),
+          ),
+          h('div', { class: 'peek' }, v.noKeyTitle),
+        );
+        break;
+      }
       const actions = h('div', { class: 'actions' });
       if (e.action === 'options')
         actions.append(

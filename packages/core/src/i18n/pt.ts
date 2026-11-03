@@ -77,6 +77,10 @@ export const pt: Messages = {
     seekTo: 'Ir para',
     leadIn: (s) => `${s} s antes`,
     openAt: 'Abrir em',
+    noKeyTitle: 'Falta um passo: adicione a sua chave Gemini gratuita',
+    noKeyText:
+      'Com uma chave gratuita da Google, o The Point cria resumos. A configuração demora cerca de um minuto.',
+    noKeyButton: 'Configurar chave',
   },
 
   errors: {
@@ -219,6 +223,9 @@ export const pt: Messages = {
     summaryCount: (n) => (n === 1 ? '1 resumo' : `${n} resumos`),
     confirmClear: 'Apagar todos os resumos guardados?',
     advanced: 'Avançado',
+    advancedPaid: 'Avançado · pago',
+    setupGuide: 'Guia de configuração',
+    setupGuideHint: 'Obtenha uma chave Gemini gratuita, passo a passo.',
     debugHeading: 'Registo de depuração',
     debugCheck: 'Registar por chamada o fornecedor, o modelo, o tamanho, a duração e os tokens',
     showLog: 'Mostrar registo',
@@ -305,6 +312,56 @@ export const pt: Messages = {
     thumbTitleCached: 'Ver o resumo com IA',
     badge: 'Resumo disponível',
     openVideoAt: 'Abrir o vídeo em',
+  },
+
+  onboarding: {
+    title: 'The Point – começar',
+    welcome: 'Bem-vindo ao The Point',
+    intro: 'Só mais uma coisa e verá logo do que trata cada vídeo do YouTube.',
+    language: 'Idioma',
+    progress: (step, total) => `Passo ${step} de ${total}`,
+    stepNames: ['Criar chave', 'Colar chave', 'Concluído'],
+    step1Title: 'Obtenha a sua chave gratuita',
+    step1Text: 'O The Point usa o Google Gemini. Uma chave é gratuita e demora cerca de um minuto.',
+    getKey: 'Obter a minha chave gratuita',
+    steps1: [
+      'Inicie sessão com a sua conta Google (e aceite os termos da primeira vez).',
+      'Clique em "Create API key"; escolha um projeto se for pedido ou deixe criar um.',
+      'Copie a chave (começa por AIza) e volte a esta página.',
+    ],
+    reassurance: [
+      'Gratuito: desde que não associe faturação ao projeto Google.',
+      'A sua chave fica neste dispositivo, neste navegador.',
+      'Só é enviada para a Google, para mais lado nenhum.',
+    ],
+    haveKey: 'Já tenho a minha chave',
+    step2Title: 'Cole a sua chave',
+    step2Text: 'Cole a chave que acabou de copiar no AI Studio.',
+    keyLabel: 'Chave da API Gemini',
+    show: 'Mostrar',
+    hide: 'Ocultar',
+    paste: 'Colar',
+    pasteFallback: 'Não foi possível colar automaticamente; clique no campo e prima Ctrl+V.',
+    formatWarning:
+      'Isto não parece uma chave Gemini: começa por AIza e tem 39 caracteres. Verifique se a copiou toda.',
+    checkSave: 'Verificar e guardar',
+    checking: 'A verificar a chave…',
+    check: {
+      ok: 'A chave funciona, está tudo pronto.',
+      invalid: 'Esta chave parece não funcionar. Verifique se a copiou toda.',
+      limit: 'Atingiu o limite gratuito por agora. Tente mais tarde.',
+      offline: 'Não foi possível ligar. Verifique a sua ligação à Internet.',
+    },
+    back: 'Voltar',
+    step3Title: 'Está tudo pronto!',
+    step3Text:
+      'A sua chave está guardada. Abra um vídeo do YouTube: o painel com o resumo fica à direita do vídeo (por baixo numa janela estreita).',
+    enable: 'Ativar o The Point',
+    enableHint:
+      'Pode sempre desativá-lo e ativá-lo com o interruptor no canto superior direito do painel.',
+    tryVideo: 'Experimente num vídeo do YouTube',
+    openSettings: 'Ir para as definições',
+    moreHelp: 'Mais ajuda e perguntas frequentes',
   },
 
   app: {

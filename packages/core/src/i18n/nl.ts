@@ -78,6 +78,10 @@ export const nl: Messages = {
     seekTo: 'Spring naar',
     leadIn: (s) => `${s} s eerder`,
     openAt: 'Open op',
+    noKeyTitle: 'Nog één stap: voeg je gratis Gemini-sleutel toe',
+    noKeyText:
+      'Met een gratis sleutel van Google maakt The Point samenvattingen. Instellen kost ongeveer een minuut.',
+    noKeyButton: 'Sleutel instellen',
   },
 
   errors: {
@@ -222,6 +226,9 @@ export const nl: Messages = {
     summaryCount: (n) => (n === 1 ? '1 samenvatting' : `${n} samenvattingen`),
     confirmClear: 'Alle opgeslagen samenvattingen wissen?',
     advanced: 'Geavanceerd',
+    advancedPaid: 'Geavanceerd · betaald',
+    setupGuide: 'Installatiehulp',
+    setupGuideHint: 'Stap voor stap aan een gratis Gemini-sleutel komen.',
     debugHeading: 'Debuglog',
     debugCheck: 'Per aanroep provider, model, invoerlengte, duur en tokens bijhouden',
     showLog: 'Log tonen',
@@ -308,6 +315,56 @@ export const nl: Messages = {
     thumbTitleCached: 'Bekijk de AI-samenvatting',
     badge: 'Samenvatting beschikbaar',
     openVideoAt: 'Open de video op',
+  },
+
+  onboarding: {
+    title: 'The Point – aan de slag',
+    welcome: 'Welkom bij The Point',
+    intro: 'Nog één ding en je ziet bij elke YouTube-video meteen waar hij over gaat.',
+    language: 'Taal',
+    progress: (step, total) => `Stap ${step} van ${total}`,
+    stepNames: ['Sleutel maken', 'Sleutel plakken', 'Klaar'],
+    step1Title: 'Maak je gratis sleutel',
+    step1Text:
+      'The Point gebruikt Google Gemini. Een sleutel is gratis en kost ongeveer een minuut.',
+    getKey: 'Mijn gratis sleutel maken',
+    steps1: [
+      'Log in met je Google-account (en accepteer de eerste keer de voorwaarden).',
+      'Klik op "Create API key"; kies zo nodig een project of laat er een aanmaken.',
+      'Kopieer de sleutel (begint met AIza) en kom terug naar deze pagina.',
+    ],
+    reassurance: [
+      'Gratis: zolang je geen facturering aan het Google-project koppelt.',
+      'Je sleutel blijft op dit apparaat, in deze browser.',
+      'Hij wordt alleen naar Google gestuurd, nergens anders heen.',
+    ],
+    haveKey: 'Ik heb mijn sleutel',
+    step2Title: 'Plak je sleutel',
+    step2Text: 'Plak de sleutel die je net in AI Studio hebt gekopieerd.',
+    keyLabel: 'Gemini-API-sleutel',
+    show: 'Tonen',
+    hide: 'Verbergen',
+    paste: 'Plakken',
+    pasteFallback: 'Automatisch plakken lukte niet; klik in het veld en druk op Ctrl+V.',
+    formatWarning:
+      'Dit lijkt geen Gemini-sleutel: die begint met AIza en is 39 tekens lang. Controleer of je hem helemaal hebt gekopieerd.',
+    checkSave: 'Controleren en opslaan',
+    checking: 'Sleutel controleren…',
+    check: {
+      ok: 'De sleutel werkt, je bent er klaar voor.',
+      invalid: 'Deze sleutel lijkt niet te werken. Controleer of je hem helemaal hebt gekopieerd.',
+      limit: 'Je hebt de gratis limiet voorlopig bereikt. Probeer het later opnieuw.',
+      offline: 'Geen verbinding. Controleer je internetverbinding.',
+    },
+    back: 'Terug',
+    step3Title: 'Je bent er klaar voor!',
+    step3Text:
+      'Je sleutel is opgeslagen. Open een YouTube-video: rechts naast de video (in een smal venster eronder) staat het paneel met de samenvatting.',
+    enable: 'The Point aanzetten',
+    enableHint: 'Uit- en aanzetten kan altijd met de schakelaar rechtsboven in het paneel.',
+    tryVideo: 'Probeer het op een YouTube-video',
+    openSettings: 'Naar de instellingen',
+    moreHelp: 'Meer uitleg en veelgestelde vragen',
   },
 
   app: {

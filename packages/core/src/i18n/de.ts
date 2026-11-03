@@ -77,6 +77,10 @@ export const de: Messages = {
     seekTo: 'Springe zu',
     leadIn: (s) => `${s} s früher`,
     openAt: 'Öffnen bei',
+    noKeyTitle: 'Noch ein Schritt: Füge deinen kostenlosen Gemini-Schlüssel hinzu',
+    noKeyText:
+      'Mit einem kostenlosen Schlüssel von Google erstellt The Point Zusammenfassungen. Die Einrichtung dauert etwa eine Minute.',
+    noKeyButton: 'Schlüssel einrichten',
   },
 
   errors: {
@@ -231,6 +235,9 @@ export const de: Messages = {
     summaryCount: (n) => (n === 1 ? '1 Zusammenfassung' : `${n} Zusammenfassungen`),
     confirmClear: 'Alle gespeicherten Zusammenfassungen löschen?',
     advanced: 'Erweitert',
+    advancedPaid: 'Erweitert · kostenpflichtig',
+    setupGuide: 'Einrichtungshilfe',
+    setupGuideHint: 'Schritt für Schritt zu einem kostenlosen Gemini-Schlüssel.',
     debugHeading: 'Debug-Protokoll',
     debugCheck: 'Pro Aufruf Anbieter, Modell, Eingabelänge, Dauer und Tokens protokollieren',
     showLog: 'Protokoll anzeigen',
@@ -317,6 +324,59 @@ export const de: Messages = {
     thumbTitleCached: 'KI-Zusammenfassung ansehen',
     badge: 'Zusammenfassung verfügbar',
     openVideoAt: 'Video öffnen bei',
+  },
+
+  onboarding: {
+    title: 'The Point – los geht’s',
+    welcome: 'Willkommen bei The Point',
+    intro: 'Nur noch eine Sache, dann siehst du bei jedem YouTube-Video sofort, worum es geht.',
+    language: 'Sprache',
+    progress: (step, total) => `Schritt ${step} von ${total}`,
+    stepNames: ['Schlüssel erstellen', 'Schlüssel einfügen', 'Fertig'],
+    step1Title: 'Hol dir deinen kostenlosen Schlüssel',
+    step1Text:
+      'The Point nutzt Google Gemini. Ein Schlüssel ist kostenlos und dauert etwa eine Minute.',
+    getKey: 'Kostenlosen Schlüssel erstellen',
+    steps1: [
+      'Melde dich mit deinem Google-Konto an (und akzeptiere beim ersten Mal die Bedingungen).',
+      'Klicke auf "Create API key"; wähle bei Bedarf ein Projekt oder lass eines anlegen.',
+      'Kopiere den Schlüssel (beginnt mit AIza) und kehre zu dieser Seite zurück.',
+    ],
+    reassurance: [
+      'Kostenlos: solange du keine Abrechnung mit dem Google-Projekt verknüpfst.',
+      'Dein Schlüssel bleibt auf diesem Gerät, in diesem Browser.',
+      'Er wird nur an Google gesendet, nirgendwo sonst hin.',
+    ],
+    haveKey: 'Ich habe meinen Schlüssel',
+    step2Title: 'Füge deinen Schlüssel ein',
+    step2Text: 'Füge den Schlüssel ein, den du gerade in AI Studio kopiert hast.',
+    keyLabel: 'Gemini-API-Schlüssel',
+    show: 'Anzeigen',
+    hide: 'Verbergen',
+    paste: 'Einfügen',
+    pasteFallback:
+      'Automatisches Einfügen hat nicht geklappt; klicke in das Feld und drücke Strg+V.',
+    formatWarning:
+      'Das sieht nicht nach einem Gemini-Schlüssel aus: Er beginnt mit AIza und ist 39 Zeichen lang. Prüfe, ob du ihn vollständig kopiert hast.',
+    checkSave: 'Prüfen und speichern',
+    checking: 'Schlüssel wird geprüft…',
+    check: {
+      ok: 'Der Schlüssel funktioniert, du bist startklar.',
+      invalid:
+        'Dieser Schlüssel scheint nicht zu funktionieren. Prüfe, ob du ihn vollständig kopiert hast.',
+      limit: 'Du hast das kostenlose Limit vorerst erreicht. Versuch es später noch einmal.',
+      offline: 'Keine Verbindung. Prüfe deine Internetverbindung.',
+    },
+    back: 'Zurück',
+    step3Title: 'Alles bereit!',
+    step3Text:
+      'Dein Schlüssel ist gespeichert. Öffne ein YouTube-Video: Rechts neben dem Video (in einem schmalen Fenster darunter) steht das Panel mit der Zusammenfassung.',
+    enable: 'The Point einschalten',
+    enableHint:
+      'Mit dem Schalter oben rechts im Panel kannst du es jederzeit aus- und einschalten.',
+    tryVideo: 'Mit einem YouTube-Video ausprobieren',
+    openSettings: 'Zu den Einstellungen',
+    moreHelp: 'Mehr Hilfe und häufige Fragen',
   },
 
   app: {

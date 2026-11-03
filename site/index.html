@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>The Point – weet waar een video over gaat</title>
+    <meta
+      name="description"
+      content="The Point toont een AI-samenvatting van een YouTube-video voordat je hem kijkt. Extensie voor Chrome en Edge en een Android-app; werkt met een gratis Gemini-sleutel."
+    />
+    <link rel="icon" href="favicon.png" />
+    <style>
+      /* Public landing page (GitHub Pages, put on the gh-pages branch by scripts/publish-public.mjs).
+         Same brand blue and card style as the extension's options page. */
+      :root {
+        --bg: #f4f5f7;
+        --card: #ffffff;
+        --text: #15181e;
+        --text-2: #5d6470;
+        --border: #e3e6eb;
+        --accent: #1a56db;
+        --accent-soft: #ebf1fd;
+        --on-accent: #ffffff;
+        --ok: #137a3a;
+        --ok-soft: #e8f6ed;
+        --yellow: #ffcc00;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1114;
+          --card: #181b20;
+          --text: #e9ecf0;
+          --text-2: #9aa2ad;
+          --border: #272b32;
+          --accent: #6d9cff;
+          --accent-soft: #1c2a45;
+          --on-accent: #0b1220;
+          --ok: #4cc77a;
+          --ok-soft: #13291c;
+          color-scheme: dark;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html:not([lang='nl']) [data-lang='nl'],
+      html:not([lang='en']) [data-lang='en'] {
+        display: none !important;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.55 'Segoe UI Variable Text',
+          'Segoe UI',
+          system-ui,
+          -apple-system,
+          Roboto,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--accent);
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+      header.top {
+        border-bottom: 1px solid var(--border);
+      }
+      header.top .wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 60px;
+      }
+      header.top img {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+      }
+      header.top b {
+        flex: 1;
+        font-size: 17px;
+      }
+      .langs {
+        display: flex;
+        gap: 4px;
+      }
+      .langs button {
+        padding: 4px 10px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text-2);
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .langs button[aria-pressed='true'] {
+        border-color: var(--accent);
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .hero {
+        padding: 56px 0 40px;
+      }
+      .hero h1 {
+        margin: 0 0 12px;
+        font-size: clamp(30px, 5vw, 46px);
+        line-height: 1.12;
+        letter-spacing: -0.01em;
+      }
+      .hero h1 .dot {
+        color: var(--yellow);
+      }
+      .hero p.lead {
+        max-width: 640px;
+        margin: 0 0 28px;
+        color: var(--text-2);
+        font-size: 18px;
+      }
+      .downloads {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .btn {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 52px;
+        padding: 8px 20px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--card);
+        color: var(--text);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .btn small {
+        color: var(--text-2);
+        font-size: 12.5px;
+        font-weight: 400;
+      }
+      .btn.primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: var(--on-accent);
+      }
+      .btn.primary small {
+        color: inherit;
+        opacity: 0.85;
+      }
+      .btn:hover {
+        filter: brightness(1.05);
+      }
+      .note {
+        margin: 14px 0 0;
+        color: var(--text-2);
+        font-size: 14px;
+      }
+
+      section {
+        padding: 28px 0;
+      }
+      h2 {
+        margin: 0 0 16px;
+        font-size: 24px;
+        line-height: 1.25;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .card {
+        padding: 18px 20px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+      }
+      .card h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--text-2);
+        font-size: 15px;
+      }
+      ol.steps {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: s;
+      }
+      ol.steps > li {
+        position: relative;
+        padding: 16px 20px 16px 64px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+        counter-increment: s;
+      }
+      ol.steps > li + li {
+        margin-top: 10px;
+      }
+      ol.steps > li::before {
+        content: counter(s);
+        position: absolute;
+        left: 18px;
+        top: 16px;
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: var(--on-accent);
+        font-weight: 700;
+      }
+      ol.steps h3 {
+        margin: 2px 0 4px;
+        font-size: 17px;
+      }
+      ol.steps p,
+      ol.steps ul {
+        margin: 4px 0 0;
+        color: var(--text-2);
+        font-size: 15px;
+      }
+      ol.steps ul {
+        padding-left: 20px;
+      }
+      ol.steps .btn {
+        margin-top: 10px;
+      }
+      code {
+        padding: 1px 5px;
+        border-radius: 4px;
+        background: var(--accent-soft);
+        font-size: 0.92em;
+      }
+      .reassure {
+        margin-top: 12px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        background: var(--ok-soft);
+        color: var(--text);
+        font-size: 15px;
+      }
+      details {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+      }
+      details + details {
+        margin-top: 10px;
+      }
+      summary {
+        padding: 14px 20px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      details > div {
+        padding: 0 20px 16px;
+        color: var(--text-2);
+      }
+      details > div p {
+        margin: 0 0 8px;
+      }
+      @media (max-width: 600px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      footer {
+        padding: 32px 0 48px;
+        border-top: 1px solid var(--border);
+        color: var(--text-2);
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <img src="logo.png" alt="" />
+        <b>The Point</b>
+        <div class="langs" role="group" aria-label="Taal / Language">
+          <button type="button" data-set-lang="nl" aria-pressed="true">NL</button>
+          <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+        <h1>
+          <span data-lang="nl"
+            >Weet waar een video over gaat voordat je hem kijkt<span class="dot">.</span></span
+          >
+          <span data-lang="en"
+            >Know what a video is about before you watch it<span class="dot">.</span></span
+          >
+        </h1>
+        <p class="lead" data-lang="nl">
+          The Point maakt met AI een samenvatting van een YouTube-video: het kernpunt en de
+          belangrijkste takeaways, elk met een tijdstempel waarmee je direct naar de onderbouwing in
+          de video springt.
+        </p>
+        <p class="lead" data-lang="en">
+          The Point uses AI to summarize a YouTube video: the key point and the main takeaways, each
+          with a timestamp that jumps straight to the evidence in the video.
+        </p>
+        <div class="downloads">
+          <a
+            class="btn primary"
+            id="dl-extension"
+            href="https://github.com/GosseVledder/ThePoint/releases/latest"
+          >
+            <span data-lang="nl">Extensie voor Chrome en Edge</span>
+            <span data-lang="en">Extension for Chrome and Edge</span>
+            <small class="dl-meta"></small>
+          </a>
+          <a
+            class="btn"
+            id="dl-app"
+            href="https://github.com/GosseVledder/ThePoint/releases/latest"
+          >
+            <span data-lang="nl">Android-app</span>
+            <span data-lang="en">Android app</span>
+            <small class="dl-meta"></small>
+          </a>
+        </div>
+        <p class="note" data-lang="nl">
+          Gratis en open source. Je hebt een eigen sleutel van Google Gemini nodig; die is ook
+          gratis en kost ongeveer een minuut (zie hieronder).
+        </p>
+        <p class="note" data-lang="en">
+          Free and open source. You need your own Google Gemini key; that is free too and takes
+          about a minute (see below).
+        </p>
+      </section>
+
+      <section aria-labelledby="h-what">
+        <h2 id="h-what">
+          <span data-lang="nl">Wat het doet</span><span data-lang="en">What it does</span>
+        </h2>
+        <div class="grid">
+          <div class="card">
+            <h3>
+              <span data-lang="nl">Kernpunt en takeaways</span
+              ><span data-lang="en">Key point and takeaways</span>
+            </h3>
+            <p data-lang="nl">
+              De hoofdboodschap in één zin en de belangrijkste punten, elk met een tijdstempel.
+            </p>
+            <p data-lang="en">
+              The main message in one sentence and the key points, each with a timestamp.
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              <span data-lang="nl">Direct naar de onderbouwing</span
+              ><span data-lang="en">Straight to the evidence</span>
+            </h3>
+            <p data-lang="nl">
+              Klik op een tijd en de video springt naar dat moment, net iets ervoor.
+            </p>
+            <p data-lang="en">Click a time and the video jumps to that moment, just before it.</p>
+          </div>
+          <div class="card">
+            <h3>
+              <span data-lang="nl">Eerlijke labels</span><span data-lang="en">Honest labels</span>
+            </h3>
+            <p data-lang="nl">
+              Bewering, mening of gerucht als iets geen feit is, en ⚠ als een citaat niet letterlijk
+              in het transcript staat.
+            </p>
+            <p data-lang="en">
+              Claim, opinion or rumour when something isn't a fact, and ⚠ when a quote isn't
+              literally in the transcript.
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              <span data-lang="nl">Geen server ertussen</span
+              ><span data-lang="en">No server in between</span>
+            </h3>
+            <p data-lang="nl">
+              Je apparaat praat rechtstreeks met YouTube en met Google. Elke video wordt maar één
+              keer samengevat.
+            </p>
+            <p data-lang="en">
+              Your device talks directly to YouTube and to Google. Each video is summarized only
+              once.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="h-start" id="aan-de-slag">
+        <h2 id="h-start">
+          <span data-lang="nl">Aan de slag in drie stappen</span
+          ><span data-lang="en">Get started in three steps</span>
+        </h2>
+        <ol class="steps">
+          <li>
+            <h3>
+              <span data-lang="nl">Installeer de extensie</span
+              ><span data-lang="en">Install the extension</span>
+            </h3>
+            <ul data-lang="nl">
+              <li>
+                Download de zip hierboven en pak hem uit naar een vaste map (laat die map staan).
+              </li>
+              <li>
+                Open <code>chrome://extensions</code> of <code>edge://extensions</code> en zet
+                <b>Ontwikkelaarsmodus</b> aan.
+              </li>
+              <li>
+                Klik <b>Uitgepakte extensie laden</b> en kies de uitgepakte map (die met
+                <code>manifest.json</code>).
+              </li>
+            </ul>
+            <ul data-lang="en">
+              <li>
+                Download the zip above and extract it to a permanent folder (keep that folder).
+              </li>
+              <li>
+                Open <code>chrome://extensions</code> or <code>edge://extensions</code> and turn on
+                <b>Developer mode</b>.
+              </li>
+              <li>
+                Click <b>Load unpacked</b> and choose the extracted folder (the one with
+                <code>manifest.json</code>).
+              </li>
+            </ul>
+            <p data-lang="nl">
+              Er opent vanzelf een welkomstgids die je door de volgende twee stappen leidt.
+            </p>
+            <p data-lang="en">
+              A welcome guide opens by itself and walks you through the next two steps.
+            </p>
+          </li>
+          <li id="sleutel">
+            <h3>
+              <span data-lang="nl">Maak je gratis Gemini-sleutel</span
+              ><span data-lang="en">Get your free Gemini key</span>
+            </h3>
+            <ul data-lang="nl">
+              <li>
+                Open Google AI Studio en log in met je Google-account (accepteer de eerste keer de
+                voorwaarden).
+              </li>
+              <li>
+                Klik op <b>Create API key</b>; kies zo nodig een project of laat er een aanmaken.
+              </li>
+              <li>Kopieer de sleutel; hij begint met <code>AIza</code>.</li>
+            </ul>
+            <ul data-lang="en">
+              <li>
+                Open Google AI Studio and sign in with your Google account (accept the terms the
+                first time).
+              </li>
+              <li>Click <b>Create API key</b>; pick a project if asked, or let one be created.</li>
+              <li>Copy the key; it starts with <code>AIza</code>.</li>
+            </ul>
+            <a
+              class="btn primary"
+              href="https://aistudio.google.com/apikey"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span data-lang="nl">Naar Google AI Studio</span
+              ><span data-lang="en">Open Google AI Studio</span>
+            </a>
+            <div class="reassure" data-lang="nl">
+              ✓ Gratis zolang je geen facturering aan het Google-project koppelt · ✓ de sleutel
+              blijft op je apparaat · ✓ hij gaat alleen naar Google
+            </div>
+            <div class="reassure" data-lang="en">
+              ✓ Free as long as you don't link billing to the Google project · ✓ the key stays on
+              your device · ✓ it is only sent to Google
+            </div>
+          </li>
+          <li>
+            <h3>
+              <span data-lang="nl">Plak de sleutel en kijk een video</span
+              ><span data-lang="en">Paste the key and watch a video</span>
+            </h3>
+            <p data-lang="nl">
+              Plak de sleutel in de welkomstgids en klik op <b>Controleren en opslaan</b>. Open
+              daarna een YouTube-video: het paneel met de samenvatting staat rechts naast de video.
+              De gids kwijt? Klik op het icoon van The Point en kies <b>Installatiehulp</b>.
+            </p>
+            <p data-lang="en">
+              Paste the key in the welcome guide and click <b>Check and save</b>. Then open a
+              YouTube video: the panel with the summary sits to the right of the video. Lost the
+              guide? Click The Point's icon and choose <b>Setup guide</b>.
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="h-faq" id="faq">
+        <h2 id="h-faq">
+          <span data-lang="nl">Veelgestelde vragen</span><span data-lang="en">FAQ</span>
+        </h2>
+        <details>
+          <summary>
+            <span data-lang="nl">Is het gratis?</span><span data-lang="en">Is it free?</span>
+          </summary>
+          <div data-lang="nl">
+            <p>
+              The Point zelf is gratis en open source (MIT). Een Gemini-sleutel uit AI Studio is
+              gratis zolang je geen facturering (billing) aan het Google-project koppelt. Gratis
+              zijn de Flash- en Flash-Lite-modellen; de Pro-modellen werken alleen met facturering.
+            </p>
+            <p>
+              Wie liever Claude van Anthropic gebruikt, kan dat in de instellingen kiezen; dat is
+              betaald, van vooraf gekocht tegoed.
+            </p>
+          </div>
+          <div data-lang="en">
+            <p>
+              The Point itself is free and open source (MIT). A Gemini key from AI Studio is free as
+              long as you don't link billing to the Google project. The Flash and Flash-Lite models
+              are free; the Pro models only work with billing.
+            </p>
+            <p>
+              If you prefer Anthropic's Claude, you can choose it in the settings; that is paid,
+              from prepaid credit.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>
+            <span data-lang="nl">Is mijn sleutel veilig?</span
+            ><span data-lang="en">Is my key safe?</span>
+          </summary>
+          <div data-lang="nl">
+            <p>
+              De sleutel staat alleen in je browser, in de eigen opslag van de extensie;
+              YouTube-pagina's kunnen hem niet lezen. In de Android-app staat hij in de beveiligde
+              opslag van Android.
+            </p>
+            <p>
+              Er is geen server van The Point: de sleutel gaat alleen naar Google (of Anthropic, als
+              je Claude kiest), in een header en niet in de URL.
+            </p>
+          </div>
+          <div data-lang="en">
+            <p>
+              The key is stored only in your browser, in the extension's own storage; YouTube pages
+              can't read it. In the Android app it sits in Android's secure storage.
+            </p>
+            <p>
+              There is no The Point server: the key is only sent to Google (or Anthropic, if you
+              choose Claude), in a header and not in the URL.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>
+            <span data-lang="nl">Wat zijn de limieten van de gratis versie?</span
+            ><span data-lang="en">What are the limits of the free tier?</span>
+          </summary>
+          <div data-lang="nl">
+            <p>
+              Reken op ongeveer 10 samenvattingen per minuut en 200 per dag. Google publiceert geen
+              vaste getallen en kan ze wijzigen; je eigen limiet zie je in AI Studio.
+            </p>
+            <p>
+              Elke nieuwe video kost één aanroep; een video die al eerder is samengevat kost niets.
+              Met <i>Automatisch samenvatten</i> aan telt elke geopende video mee.
+            </p>
+          </div>
+          <div data-lang="en">
+            <p>
+              Expect about 10 summaries per minute and 200 per day. Google doesn't publish fixed
+              numbers and may change them; AI Studio shows your own limit.
+            </p>
+            <p>
+              Each new video costs one call; a video summarized before costs nothing. With
+              <i>Summarize automatically when a video opens</i> on, every video you open counts.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>
+            <span data-lang="nl">Mijn sleutel werkt niet meer. Wat nu?</span
+            ><span data-lang="en">What if my key stops working?</span>
+          </summary>
+          <div data-lang="nl">
+            <p>
+              <b>Limiet bereikt</b>: The Point meldt dat; wacht even en probeer het later opnieuw.
+            </p>
+            <p>
+              <b>Sleutel ongeldig</b>: controleer in AI Studio of de sleutel nog bestaat. Maak zo
+              nodig een nieuwe en plak die via <b>Installatiehulp</b> of in de instellingen; met
+              <b>Test verbinding</b> controleer je hem gratis.
+            </p>
+          </div>
+          <div data-lang="en">
+            <p><b>Limit reached</b>: The Point tells you; wait a while and try again later.</p>
+            <p>
+              <b>Invalid key</b>: check in AI Studio that the key still exists. If needed, create a
+              new one and paste it via <b>Setup guide</b> or in the settings;
+              <b>Test connection</b> checks it for free.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>
+            <span data-lang="nl">Welke browsers en apparaten?</span
+            ><span data-lang="en">Which browsers and devices?</span>
+          </summary>
+          <div data-lang="nl">
+            <p>
+              De extensie werkt in Google Chrome en Microsoft Edge (Windows, macOS, Linux). De app
+              werkt op Android 7 of nieuwer. Firefox, Safari en iPhone/iPad worden (nog) niet
+              ondersteund.
+            </p>
+          </div>
+          <div data-lang="en">
+            <p>
+              The extension works in Google Chrome and Microsoft Edge (Windows, macOS, Linux). The
+              app runs on Android 7 or newer. Firefox, Safari and iPhone/iPad are not supported
+              (yet).
+            </p>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span data-lang="nl">Broncode, alle versies en de volledige handleiding:</span>
+        <span data-lang="en">Source code, all versions and the full manual (in Dutch):</span>
+        <a href="https://github.com/GosseVledder/ThePoint">github.com/GosseVledder/ThePoint</a>
+      </div>
+    </footer>
+
+    <script>
+      // Language: saved choice, else the browser language (Dutch or English).
+      const LANGS = ['nl', 'en'];
+      function setLang(lang) {
+        document.documentElement.lang = lang;
+        document
+          .querySelectorAll('[data-set-lang]')
+          .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setLang === lang)));
+        document.title =
+          lang === 'nl'
+            ? 'The Point – weet waar een video over gaat'
+            : 'The Point – know what a video is about';
+      }
+      let saved = null;
+      try {
+        saved = localStorage.getItem('lang');
+      } catch {}
+      setLang(
+        LANGS.includes(saved)
+          ? saved
+          : navigator.language.toLowerCase().startsWith('nl')
+            ? 'nl'
+            : 'en',
+      );
+      document.querySelectorAll('[data-set-lang]').forEach((b) =>
+        b.addEventListener('click', () => {
+          setLang(b.dataset.setLang);
+          try {
+            localStorage.setItem('lang', b.dataset.setLang);
+          } catch {}
+        }),
+      );
+
+      // Download buttons point at the files of the latest release; without an answer they
+      // keep pointing at the releases page.
+      fetch('https://api.github.com/repos/GosseVledder/ThePoint/releases/latest')
+        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then((release) => {
+          const link = (id, pattern) => {
+            const asset = (release.assets || []).find((a) => pattern.test(a.name));
+            if (!asset) return;
+            const a = document.getElementById(id);
+            a.href = asset.browser_download_url;
+            const version = asset.name.match(/(\d+\.\d+\.\d+)/)?.[1] ?? '';
+            const size =
+              asset.size >= 1e6
+                ? `${(asset.size / 1e6).toFixed(1)} MB`
+                : `${Math.round(asset.size / 1e3)} kB`;
+            a.querySelector('.dl-meta').textContent = `${version} · ${size}`;
+          };
+          link('dl-extension', /^ThePoint-extension-[\d.]+\.zip$/);
+          link('dl-app', /^ThePoint-[\d.]+\.apk$/);
+        })
+        .catch(() => {});
+    </script>
+  </body>
+</html>

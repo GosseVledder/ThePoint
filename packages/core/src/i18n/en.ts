@@ -76,6 +76,10 @@ export const en: Messages = {
     seekTo: 'Jump to',
     leadIn: (s) => `${s} s earlier`,
     openAt: 'Open at',
+    noKeyTitle: 'One step left: add your free Gemini key',
+    noKeyText:
+      'With a free key from Google, The Point makes summaries. Setting it up takes about a minute.',
+    noKeyButton: 'Set up key',
   },
 
   errors: {
@@ -218,6 +222,9 @@ export const en: Messages = {
     summaryCount: (n) => (n === 1 ? '1 summary' : `${n} summaries`),
     confirmClear: 'Delete all saved summaries?',
     advanced: 'Advanced',
+    advancedPaid: 'Advanced · paid',
+    setupGuide: 'Setup guide',
+    setupGuideHint: 'Get a free Gemini key, step by step.',
     debugHeading: 'Debug log',
     debugCheck: 'Record provider, model, input length, duration and tokens per call',
     showLog: 'Show log',
@@ -303,6 +310,56 @@ export const en: Messages = {
     thumbTitleCached: 'View the AI summary',
     badge: 'Summary available',
     openVideoAt: 'Open the video at',
+  },
+
+  onboarding: {
+    title: 'The Point – get started',
+    welcome: 'Welcome to The Point',
+    intro: "One more thing and you'll see what every YouTube video is about, straight away.",
+    language: 'Language',
+    progress: (step, total) => `Step ${step} of ${total}`,
+    stepNames: ['Create key', 'Paste key', 'Done'],
+    step1Title: 'Get your free key',
+    step1Text: 'The Point uses Google Gemini. A key is free and takes about one minute.',
+    getKey: 'Get my free key',
+    steps1: [
+      'Sign in with your Google account (and accept the terms the first time).',
+      'Click "Create API key"; pick a project if asked, or let one be created.',
+      'Copy the key (it starts with AIza) and come back to this page.',
+    ],
+    reassurance: [
+      "Free: as long as you don't link billing to the Google project.",
+      'Your key stays on this device, in this browser.',
+      'It is only sent to Google, nowhere else.',
+    ],
+    haveKey: 'I have my key',
+    step2Title: 'Paste your key',
+    step2Text: 'Paste the key you just copied in AI Studio.',
+    keyLabel: 'Gemini API key',
+    show: 'Show',
+    hide: 'Hide',
+    paste: 'Paste',
+    pasteFallback: "Pasting automatically didn't work; click the field and press Ctrl+V.",
+    formatWarning:
+      "This doesn't look like a Gemini key: those start with AIza and are 39 characters long. Check that you copied all of it.",
+    checkSave: 'Check and save',
+    checking: 'Checking key…',
+    check: {
+      ok: "Key works, you're ready.",
+      invalid: "This key doesn't seem to work. Check that you copied all of it.",
+      limit: "You've reached the free limit for now. Try again later.",
+      offline: "Couldn't connect. Check your internet connection.",
+    },
+    back: 'Back',
+    step3Title: "You're all set!",
+    step3Text:
+      'Your key is saved. Open a YouTube video: the panel with the summary sits to the right of the video (below it in a narrow window).',
+    enable: 'Turn The Point on',
+    enableHint:
+      'You can always switch it off and on with the switch at the top right of the panel.',
+    tryVideo: 'Try it on a YouTube video',
+    openSettings: 'Go to settings',
+    moreHelp: 'More help and frequently asked questions',
   },
 
   app: {

@@ -7,6 +7,8 @@ import { isVideoId } from '@the-point/core/youtube/videoId';
 export const SUMMARIZE_PORT = 'the-point-summarize';
 /** storage.local flag: the options page reloads the extension and wants to be reopened. */
 export const REOPEN_OPTIONS_KEY = 'reopenOptions';
+/** The setup guide, opened on first install and from the "no key yet" card. */
+export const ONBOARDING_PAGE = '/onboarding.html';
 
 export type { ErrorCode, ErrorInfo, SummaryStep } from '@the-point/core/job';
 
@@ -21,6 +23,7 @@ export type RuntimeRequest =
   | { type: 'getCached'; videoId: string }
   | { type: 'cachedIds' }
   | { type: 'openOptions' }
+  | { type: 'openOnboarding' }
   | { type: 'testConnection'; provider: ProviderId; apiKey: string; model: string }
   | { type: 'cacheStats' }
   | { type: 'clearCache' }
@@ -38,6 +41,7 @@ const CONTENT_ALLOWED: ReadonlySet<RuntimeRequest['type']> = new Set([
   'getCached',
   'cachedIds',
   'openOptions',
+  'openOnboarding',
 ]);
 
 /**
