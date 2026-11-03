@@ -19,7 +19,7 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 | | Download | Installeren |
 |---|---|---|
 | 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.5.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.5.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.7.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.0.zip)<br>243 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.7.1.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.1.zip)<br>243 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini, gratis) of Anthropic (Claude, betaald); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
@@ -92,15 +92,15 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.7.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.7.0 |
+| **Bestand** | [`ThePoint-extension-0.7.1.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.1.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.7.1 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
 | **Grootte** | 243 kB |
-| **SHA-256** | `6b0b358aa8566857c5e0bd395b176e0811ec3055e6099217f2309c6d42715b03` |
+| **SHA-256** | `3f1fccc69f1e733b8ec8dfdfed2fe6ccdddf18850cdd340d54cd99cc439024a4` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.7.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.0.zip).
+1. **Download** [`ThePoint-extension-0.7.1.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.1.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).

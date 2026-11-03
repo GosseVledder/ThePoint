@@ -329,26 +329,26 @@ export const fr: Messages = {
     step1Text: 'The Point utilise Google Gemini. Une clé est gratuite et prend environ une minute.',
     getKey: 'Obtenir ma clé gratuite',
     steps1: [
-      'Connectez-vous avec votre compte Google (et acceptez les conditions la première fois).',
-      'Cliquez sur "Create API key" ; choisissez un projet si nécessaire ou laissez-en créer un.',
-      'Copiez la clé (elle commence par AIza) et revenez sur cette page.',
+      'Connectez-vous avec votre compte Google.',
+      'Cliquez sur "Create API key" et suivez les étapes à l’écran.',
+      'Copiez la clé et revenez sur cette page.',
     ],
     reassurance: [
-      'Gratuit : tant que vous ne liez pas de facturation au projet Google.',
-      'Votre clé reste sur cet appareil, dans ce navigateur.',
+      'Gratuit : de la façon dont The Point utilise la clé, cela ne coûte rien. Vous n’avez pas à donner de moyen de paiement à Google.',
+      'Votre clé reste sur votre propre ordinateur.',
       'Elle n’est envoyée qu’à Google, nulle part ailleurs.',
     ],
     haveKey: 'J’ai ma clé',
     step2Title: 'Collez votre clé',
-    step2Text: 'Collez la clé que vous venez de copier dans AI Studio.',
-    keyLabel: 'Clé API Gemini',
+    step2Text: 'Collez ici la clé que vous venez de copier.',
+    keyLabel: 'Votre clé Gemini',
     show: 'Afficher',
     hide: 'Masquer',
     paste: 'Coller',
     pasteFallback:
       'Le collage automatique n’a pas fonctionné ; cliquez dans le champ et appuyez sur Ctrl+V.',
     formatWarning:
-      'Cela ne ressemble pas à une clé Gemini : elle commence par AIza et compte 39 caractères. Vérifiez que vous l’avez copiée en entier.',
+      'Cela ne ressemble pas à une clé Gemini. Une clé Gemini commence par AIza. Vérifiez que vous l’avez copiée en entier.',
     checkSave: 'Vérifier et enregistrer',
     checking: 'Vérification de la clé…',
     check: {
@@ -360,10 +360,10 @@ export const fr: Messages = {
     back: 'Retour',
     step3Title: 'Tout est prêt !',
     step3Text:
-      'Votre clé est enregistrée. Ouvrez une vidéo YouTube : le panneau avec le résumé se trouve à droite de la vidéo (en dessous dans une fenêtre étroite).',
+      'Votre clé est enregistrée. Ouvrez une vidéo YouTube : le résumé apparaît à côté de la vidéo.',
     enable: 'Activer The Point',
     enableHint:
-      'Vous pouvez toujours le désactiver et le réactiver avec l’interrupteur en haut à droite du panneau.',
+      'Vous pouvez toujours désactiver et réactiver The Point avec l’interrupteur en haut à droite du résumé.',
     tryVideo: 'Essayer sur une vidéo YouTube',
     openSettings: 'Aller aux paramètres',
     moreHelp: 'Plus d’aide et questions fréquentes',

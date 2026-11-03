@@ -338,26 +338,26 @@ export const de: Messages = {
       'The Point nutzt Google Gemini. Ein Schlüssel ist kostenlos und dauert etwa eine Minute.',
     getKey: 'Kostenlosen Schlüssel erstellen',
     steps1: [
-      'Melde dich mit deinem Google-Konto an (und akzeptiere beim ersten Mal die Bedingungen).',
-      'Klicke auf "Create API key"; wähle bei Bedarf ein Projekt oder lass eines anlegen.',
-      'Kopiere den Schlüssel (beginnt mit AIza) und kehre zu dieser Seite zurück.',
+      'Melde dich mit deinem Google-Konto an.',
+      'Klicke auf "Create API key" und folge den Schritten auf dem Bildschirm.',
+      'Kopiere den Schlüssel und komm zu dieser Seite zurück.',
     ],
     reassurance: [
-      'Kostenlos: solange du keine Abrechnung mit dem Google-Projekt verknüpfst.',
-      'Dein Schlüssel bleibt auf diesem Gerät, in diesem Browser.',
-      'Er wird nur an Google gesendet, nirgendwo sonst hin.',
+      'Kostenlos: So wie The Point den Schlüssel nutzt, kostet es nichts. Du musst bei Google keine Zahlungsdaten angeben.',
+      'Dein Schlüssel bleibt auf deinem eigenen Computer.',
+      'Er geht nur an Google, nirgendwo sonst hin.',
     ],
     haveKey: 'Ich habe meinen Schlüssel',
     step2Title: 'Füge deinen Schlüssel ein',
-    step2Text: 'Füge den Schlüssel ein, den du gerade in AI Studio kopiert hast.',
-    keyLabel: 'Gemini-API-Schlüssel',
+    step2Text: 'Füge hier den Schlüssel ein, den du gerade kopiert hast.',
+    keyLabel: 'Dein Gemini-Schlüssel',
     show: 'Anzeigen',
     hide: 'Verbergen',
     paste: 'Einfügen',
     pasteFallback:
       'Automatisches Einfügen hat nicht geklappt; klicke in das Feld und drücke Strg+V.',
     formatWarning:
-      'Das sieht nicht nach einem Gemini-Schlüssel aus: Er beginnt mit AIza und ist 39 Zeichen lang. Prüfe, ob du ihn vollständig kopiert hast.',
+      'Das sieht nicht nach einem Gemini-Schlüssel aus. Ein Gemini-Schlüssel beginnt mit AIza. Prüfe, ob du ihn vollständig kopiert hast.',
     checkSave: 'Prüfen und speichern',
     checking: 'Schlüssel wird geprüft…',
     check: {
@@ -370,10 +370,10 @@ export const de: Messages = {
     back: 'Zurück',
     step3Title: 'Alles bereit!',
     step3Text:
-      'Dein Schlüssel ist gespeichert. Öffne ein YouTube-Video: Rechts neben dem Video (in einem schmalen Fenster darunter) steht das Panel mit der Zusammenfassung.',
+      'Dein Schlüssel ist gespeichert. Öffne ein YouTube-Video: Neben dem Video erscheint die Zusammenfassung.',
     enable: 'The Point einschalten',
     enableHint:
-      'Mit dem Schalter oben rechts im Panel kannst du es jederzeit aus- und einschalten.',
+      'Du kannst The Point jederzeit mit dem Schalter oben rechts in der Zusammenfassung aus- und einschalten.',
     tryVideo: 'Mit einem YouTube-Video ausprobieren',
     openSettings: 'Zu den Einstellungen',
     moreHelp: 'Mehr Hilfe und häufige Fragen',
