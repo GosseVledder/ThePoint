@@ -4,6 +4,7 @@ import { runSummaryJob, toErrorInfo, type JobDeps } from '@the-point/core/job';
 import { checkForUpdate } from '@the-point/core/update';
 import { getTranscriptById } from '@the-point/core/youtube/transcript';
 import { isVideoId } from '@the-point/core/youtube/videoId';
+import { STORE_BUILD } from '../flavor';
 import {
   isAllowedRequest,
   ONBOARDING_PAGE,
@@ -19,7 +20,9 @@ import {
   cachedVideoIds,
   clearCache,
   cachedSummaryKeys,
+  deleteCachedSummary,
   getCachedSummary,
+  listHistory,
   setCachedSummary,
 } from '../storage/cache';
 import { appendDebugLog, clearDebugLog, getDebugLog } from '../storage/debuglog';
@@ -115,6 +118,11 @@ async function handleRuntime(msg: RuntimeRequest): Promise<unknown> {
       return { aantal: (await cachedSummaryKeys()).length };
     case 'clearCache':
       return { verwijderd: await clearCache() };
+    case 'listHistory':
+      return listHistory();
+    case 'deleteCached':
+      await deleteCachedSummary(msg.videoId, msg.taal);
+      return true;
     case 'getDebugLog':
       return getDebugLog();
     case 'clearDebugLog':
@@ -124,7 +132,8 @@ async function handleRuntime(msg: RuntimeRequest): Promise<unknown> {
       await rulesReadyPromise;
       return getTranscriptById(msg.videoId);
     case 'checkUpdate':
-      return checkUpdate();
+      // The store updates its own builds.
+      return STORE_BUILD ? { ok: false, error: 'store build' } : checkUpdate();
   }
 }
 

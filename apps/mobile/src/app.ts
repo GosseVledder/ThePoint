@@ -8,7 +8,7 @@ export interface App {
   keys: KeyStore;
   cache: SummaryCache;
   speaker: Speaker;
-  /** Navigate to a hash route ("#/", "#/v/<id>", "#/instellingen"). */
+  /** Navigate to a hash route ("#/", "#/v/<id>", "#/instellingen", "#/welkom"). */
   go(hash: string): void;
   /** One screen back (header arrow and Android back); leaves the app on home. */
   back(): void;
@@ -37,7 +37,9 @@ export interface Screen {
 export type Route =
   | { name: 'home' }
   | { name: 'summary'; videoId: string; start: number | null; refresh?: boolean }
-  | { name: 'settings' };
+  | { name: 'settings' }
+  /** Setup guide; with a video ID it returns to that video once the key works. */
+  | { name: 'welcome'; videoId?: string };
 
 export function parseRoute(hash: string): Route {
   const m = hash.match(/^#\/v\/([A-Za-z0-9_-]{11})(?:\/(\d+))?(?:\?(refresh))?$/);
@@ -49,8 +51,12 @@ export function parseRoute(hash: string): Route {
       ...(m[3] ? { refresh: true } : {}),
     };
   if (hash === '#/instellingen') return { name: 'settings' };
+  const w = hash.match(/^#\/welkom(?:\/([A-Za-z0-9_-]{11}))?$/);
+  if (w) return w[1] ? { name: 'welcome', videoId: w[1] } : { name: 'welcome' };
   return { name: 'home' };
 }
+
+export const welcomeHash = (videoId?: string) => `#/welkom${videoId ? `/${videoId}` : ''}`;
 
 export function summaryHash(videoId: string, start?: number | null, refresh?: boolean): string {
   return `#/v/${videoId}${start ? `/${Math.floor(start)}` : ''}${refresh ? '?refresh' : ''}`;

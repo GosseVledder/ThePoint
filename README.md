@@ -18,14 +18,17 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 
 | | Download | Installeren |
 |---|---|---|
-| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.6.6.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.6.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.7.2.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.2.zip)<br>243 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.7.0.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.7.0.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.8.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.8.0.zip)<br>253 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini, gratis) of Anthropic (Claude, betaald); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
 ## Waarom The Point?
 
 Veel video's duren twintig minuten of langer, terwijl de kern in een paar zinnen past. Een titel of thumbnail vertelt je niet of de video waarmaakt wat hij belooft. The Point laat je binnen enkele seconden zien wát een video beweert en wáár in de video dat gebeurt. Zo beslis je zelf: helemaal kijken, direct naar het stuk dat je interesseert, of overslaan.
+
+- **Het is gratis.** Geen abonnement, geen advertenties. Je gebruikt een gratis sleutel van Google; zoals The Point die gebruikt, kost het niets.
+- **Het geeft je je tijd terug.** YouTube is gemaakt om je zo lang mogelijk te laten kijken, met automatisch afspelen, aanbevelingen en lange inleidingen. The Point werkt andersom: je ziet in een paar seconden waar een video over gaat, springt naar het stuk dat ertoe doet en gaat verder met je dag.
 
 ## Wat het doet
 
@@ -35,6 +38,8 @@ Veel video's duren twintig minuten of langer, terwijl de kern in een paar zinnen
 - **Voorlezen** met de gratis stemmen van je browser, Windows of Android.
 - **Zeven talen**: de interface en de samenvatting stel je los van elkaar in (Nederlands, Engels, Duits, Frans, Spaans, Italiaans, Portugees).
 - **Eén keer samenvatten per video**: elke samenvatting wordt bewaard; opnieuw openen kost geen nieuwe AI-aanroep.
+- **Kopiëren**: de samenvatting als tekst op het klembord, met de link naar de video.
+- **Geschiedenis**: alle samenvattingen terugzien, zonder limiet (extensie: *Instellingen › Geschiedenis*; app: *Recent* op het startscherm).
 
 ## Hoe het werkt
 
@@ -49,11 +54,11 @@ Er zit geen server van The Point tussen: je apparaat praat rechtstreeks met YouT
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-0.6.6.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.6.6.apk) (ook in de map [`apk/`](apk/)) |
-| **Versie** | 0.6.6 (versionCode 12) |
+| **Bestand** | [`ThePoint-0.7.0.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.7.0.apk) (ook in de map [`apk/`](apk/)) |
+| **Versie** | 0.7.0 (versionCode 13) |
 | **Vereist** | Android 7.0 of nieuwer |
 | **Grootte** | 3 MB |
-| **SHA-256** | `74627e003496d9fd38b049187281a8580470b5dd2063752c20b9b764a00ae1f7` |
+| **SHA-256** | `ba26beb5cd73260d29fb5fea0dd85766413ce2075778dab06966ed685a2e1159` |
 
 De APK is een ondertekende release-build; hij staat niet in de Play Store.
 
@@ -61,7 +66,7 @@ De APK is een ondertekende release-build; hij staat niet in de Play Store.
 2. **Open** het gedownloade bestand (melding of *Bestanden › Downloads*).
 3. Android vraagt toestemming om apps uit deze bron te installeren: kies **Instellingen › Toestaan van deze bron** en ga terug.
 4. Tik op **Installeren**. Play Protect kan waarschuwen voor een onbekende ontwikkelaar; kies *Toch installeren*.
-5. Open **The Point**, tik op het **tandwiel** en vul je [API-sleutel](#api-sleutel-instellen) in; met *Test verbinding* controleer je hem.
+5. Open **The Point**. Bij de eerste start opent de **welkomstgids**: die helpt je aan een gratis Gemini-sleutel, controleert hem en slaat hem op. Later vind je de gids terug via het **tandwiel** › **Installatiehulp**.
 
 ### Zo gebruik je de app
 
@@ -70,6 +75,7 @@ De APK is een ondertekende release-build; hij staat niet in de Play Store.
 - **YouTube-player aan/uit** met de knop ▶ in de titelbalk (standaard uit). Staat de player uit, dan vraagt een tik op een tijdstempel wat je wilt: de player tonen en naar dat moment springen, de video op dat moment openen in de **YouTube-app**, of de onderbouwing **laten voorlezen** (de takeaway met het citaat uit het transcript).
 - **Gesplitst scherm**: staat The Point naast de YouTube-app en is de player uit, dan springt een tik op een tijdstempel direct naar dat moment in de YouTube-app ernaast.
 - **Voorlezen** met de stemmen van Android; de video pauzeert zolang er wordt voorgelezen.
+- **Kopiëren** onder elke samenvatting zet de tekst op het klembord.
 - Licht en donker thema volgen het systeem.
 
 <details>
@@ -92,15 +98,15 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.7.2.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.2.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.7.2 |
+| **Bestand** | [`ThePoint-extension-0.8.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.8.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.8.0 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
-| **Grootte** | 243 kB |
-| **SHA-256** | `798965a8e0c8d20b8e3c94c808d7591ef03ab09da1667dfc06554eb1c3b0f17c` |
+| **Grootte** | 253 kB |
+| **SHA-256** | `bb45c0e2c9c351a1f888e87cf44090334ae7c686eac68fd244795eed2783911e` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.7.2.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.7.2.zip).
+1. **Download** [`ThePoint-extension-0.8.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.8.0.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).
@@ -115,6 +121,8 @@ De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen;
 - **Markeringen op de tijdbalk** van de speler voor elke takeaway (wit = kritiek punt).
 - **Knop in de spelerbalk** (het logo ▶.): in volledig scherm toont die de samenvatting als overlay.
 - **Knop "Samenvat" op thumbnails** (homepagina, zoekresultaten, aanbevelingen): toont de samenvatting zonder de video te openen. Thumbnails met een bewaarde samenvatting krijgen een geel ▶.-icoon.
+- **Kopiëren** onder de samenvatting zet de tekst, met de link naar de video, op het klembord.
+- **Geschiedenis**: *Instellingen › Geschiedenis* toont alle samenvattingen, de nieuwste bovenaan; klik op een titel om de video te openen, of verwijder er een.
 - **Voorlezen** (🔈) in het paneel; het punt dat wordt voorgelezen licht op en de video pauzeert. Edge heeft de meeste natuurlijke stemmen (bijvoorbeeld "Fenna" en "Maarten"); in Chrome is "Google Nederlands" beschikbaar.
 
 ## API-sleutel instellen
@@ -173,13 +181,15 @@ Controleren of een bestand ongewijzigd is (optioneel), op Windows: `certutil -ha
 - **App**: sleutels staan in de beveiligde opslag van Android (Keystore); back-ups van de app staan uit.
 - De sleutel gaat alleen naar `api.anthropic.com` of `generativelanguage.googleapis.com`, in een header (niet in de URL), en staat nooit in de code of de repository.
 - *Controleren op updates* vraagt alleen de nieuwste release op bij `api.github.com`; er gaan geen sleutels of andere gegevens mee.
+- Samenvattingen staan alleen op je eigen apparaat (extensie: de opslag van de browser; app: de privé-opslag van de app).
+- Wat er naar Google of Anthropic gaat (titel, kanaal, lengte en ondertitels van de video) en wat Google bij gratis gebruik met die gegevens mag doen, staat in de [privacyverklaring](https://gossevledder.github.io/ThePoint/privacy.html).
 
 ## Bekende beperkingen
 
 - Transcripts komen via een niet-officiële route van YouTube; als YouTube die afsluit, valt de extensie terug op het transcriptpaneel en daarna op Gemini.
 - Shorts, privé- en leeftijdsbeperkte video's worden niet ondersteund.
 - In de app speelt een video alleen in een zichtbare player (regels van YouTube); zonder player hoor je de onderbouwing als voorgelezen citaat, niet als geluid uit de video.
-- De API-sleutel staat op je eigen apparaat; deel de extensie of de app niet met anderen zonder eigen backend.
+- De API-sleutel staat op je eigen apparaat en is van jou: deel hem niet. Wie The Point ook wil gebruiken, maakt een eigen gratis sleutel.
 
 ## Broncode en zelf bouwen
 

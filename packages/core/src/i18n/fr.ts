@@ -82,6 +82,10 @@ export const fr: Messages = {
     noKeyText:
       'Avec une clé gratuite de Google, The Point crée des résumés. La configuration prend environ une minute.',
     noKeyButton: 'Configurer la clé',
+    copy: 'Copier',
+    copied: 'Copié',
+    copyFailed: 'Copie impossible',
+    keyPoint: 'Point essentiel',
   },
 
   errors: {
@@ -125,6 +129,7 @@ export const fr: Messages = {
     title: 'Paramètres',
     loading: 'Chargement…',
     autoSaved: 'Les paramètres sont enregistrés immédiatement.',
+    privacy: 'Confidentialité',
     saved: 'Enregistré',
     languageHeading: 'Langue',
     interfaceLanguage: 'Langue de l’interface',
@@ -229,6 +234,8 @@ export const fr: Messages = {
     advancedPaid: 'Avancé · payant',
     setupGuide: 'Guide de configuration',
     setupGuideHint: 'Obtenir une clé Gemini gratuite, étape par étape.',
+    historyLink: 'Historique',
+    historyHint: 'Revoir ou supprimer tous vos résumés.',
     debugHeading: 'Journal de débogage',
     debugCheck:
       'Enregistrer par appel le fournisseur, le modèle, la taille, la durée et les jetons',
@@ -307,6 +314,17 @@ export const fr: Messages = {
     checksumFailed: 'Le fichier téléchargé ne correspond pas (SHA-256). Réessayez.',
     downloadFailed: (e) => `Échec du téléchargement : ${e}`,
   },
+  history: {
+    title: 'Historique',
+    intro:
+      'Tous les résumés enregistrés sur cet ordinateur, du plus récent au plus ancien. Cliquez sur un titre pour ouvrir la vidéo ; le résumé s’affiche aussitôt.',
+    empty: 'Pas encore de résumés. Ouvrez une vidéo YouTube pendant que The Point est activé.',
+    count: (n) => (n === 1 ? '1 résumé' : `${n} résumés`),
+    takeawayCount: (n) => (n === 1 ? '1 point clé' : `${n} points clés`),
+    delete: 'Supprimer',
+    deleted: 'Supprimé',
+  },
+
   extension: {
     actionTitle: 'The Point – paramètres',
     playerButton: 'The Point : résumé',
@@ -367,6 +385,26 @@ export const fr: Messages = {
     tryVideo: 'Essayer sur une vidéo YouTube',
     openSettings: 'Aller aux paramètres',
     moreHelp: 'Plus d’aide et questions fréquentes',
+    app: {
+      steps1: [
+        'Connectez-vous avec votre compte Google et acceptez les conditions.',
+        'Une clé est déjà affichée ? C’est la vôtre. Sinon, touchez "Create API key".',
+        'Copiez la clé et revenez dans The Point.',
+      ],
+      reassurance: [
+        'Gratuit : de la façon dont The Point utilise la clé, cela ne coûte rien. Vous n’avez pas à donner de moyen de paiement à Google.',
+        'Votre clé reste sur votre propre téléphone.',
+        'Elle n’est envoyée qu’à Google, nulle part ailleurs.',
+      ],
+      pasteFallback:
+        'Le collage n’a pas fonctionné. Appuyez longuement dans le champ et choisissez Coller.',
+      step3Text:
+        'Votre clé est enregistrée. Vous regardez une vidéo dans l’app YouTube ? Touchez Partager et choisissez The Point. Vous pouvez aussi coller un lien sur l’écran d’accueil.',
+      tryVideo: 'Essayer avec une vidéo d’exemple',
+      backToVideo: 'Retour à votre vidéo',
+      toHome: 'Aller à l’écran d’accueil',
+      later: 'Plus tard',
+    },
   },
 
   app: {

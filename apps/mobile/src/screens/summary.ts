@@ -1,5 +1,6 @@
 // Summary screen: the YouTube player on top (optional, off by default), the shared
 // summary view below.
+import { Clipboard } from '@capacitor/clipboard';
 import type { Summary } from '@the-point/core/engine/types';
 import { runSummaryJob, toErrorInfo, type JobEvent } from '@the-point/core/job';
 import { renderView, h, type ViewState } from '@the-point/core/ui/render';
@@ -7,7 +8,7 @@ import { buildEvidenceSpeech, type SpeechId, type SpeechItem } from '@the-point/
 import { BASE_CSS } from '@the-point/core/ui/styles';
 import type { Settings } from '@the-point/core/settings';
 import { getTranscriptById } from '@the-point/core/youtube/transcript';
-import { isDark, type App, type Screen } from '../app';
+import { isDark, welcomeHash, type App, type Screen } from '../app';
 import { nativeFetch } from '../nativeFetch';
 import { createPlayer, type EmbeddedPlayer } from '../player';
 import { inSplitScreen, openInYouTubeApp } from '../youtubeApp';
@@ -211,6 +212,11 @@ export function summaryScreen(
         onStart: () => void summarize(refreshing),
         onConfirm: () => void summarize(refreshing, true),
         onOpenOptions: () => app.go('#/instellingen'),
+        // No key yet: the setup guide for Gemini (back to this video after it), Claude in the settings.
+        onSetup: () =>
+          app.go(settings?.provider === 'claude' ? '#/instellingen' : welcomeHash(videoId)),
+        // Native clipboard: the web Clipboard API is not reliable in the Android WebView.
+        onCopy: (text) => Clipboard.write({ string: text }),
         onSpeak: (from) => state.kind === 'done' && speak(state.summary, from),
         onStopSpeak: () => app.speaker.stop(),
         onVoiceChange: async (voiceUri) => {

@@ -1,7 +1,7 @@
 // Start screen: paste a link, or open one of the recent summaries.
 import { h } from '@the-point/core/ui/render';
 import { ICONS } from '@the-point/core/ui/styles';
-import { summaryHash, type App, type Screen } from '../app';
+import { summaryHash, welcomeHash, type App, type Screen } from '../app';
 import { videoFromShare } from '../share';
 import type { RecentEntry } from '../storage/stores';
 
@@ -65,10 +65,18 @@ export function homeScreen(app: App): Screen {
       app.cache.recent(),
     ]);
     if (!keys[settings.provider]) {
+      // Gemini: the setup guide; a Claude key is entered in the settings.
+      const gemini = settings.provider === 'gemini';
       keyNotice.hidden = false;
       keyNotice.replaceChildren(
-        h('span', {}, t.settings.fillKeyFirst),
-        h('button', { onClick: () => app.go('#/instellingen') }, t.app.settings),
+        h('span', {}, gemini ? t.view.noKeyTitle : t.settings.fillKeyFirst),
+        gemini
+          ? h(
+              'button',
+              { class: 'primary', onClick: () => app.go(welcomeHash()) },
+              t.view.noKeyButton,
+            )
+          : h('button', { onClick: () => app.go('#/instellingen') }, t.app.settings),
       );
     }
     list.replaceChildren(

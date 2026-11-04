@@ -86,6 +86,12 @@ export interface Messages {
     noKeyTitle: string;
     noKeyText: string;
     noKeyButton: string;
+    /** Copy the summary as plain text; button label, confirmation and failure. */
+    copy: string;
+    copied: string;
+    copyFailed: string;
+    /** Label of the key point in copied text. */
+    keyPoint: string;
   };
 
   errors: Record<ErrorCode, string> & { noTranscriptGemini: string };
@@ -107,6 +113,8 @@ export interface Messages {
     title: string;
     loading: string;
     autoSaved: string;
+    /** Footer link to the privacy statement. */
+    privacy: string;
     saved: string;
     languageHeading: string;
     interfaceLanguage: string;
@@ -188,6 +196,9 @@ export interface Messages {
     /** Link to the setup guide (extension onboarding page). */
     setupGuide: string;
     setupGuideHint: string;
+    /** Link to the history page (extension). */
+    historyLink: string;
+    historyHint: string;
     debugHeading: string;
     debugCheck: string;
     showLog: string;
@@ -241,6 +252,17 @@ export interface Messages {
     downloadFailed: (error: string) => string;
   };
 
+  /** History page of the extension: every cached summary. */
+  history: {
+    title: string;
+    intro: string;
+    empty: string;
+    count: (n: number) => string;
+    takeawayCount: (n: number) => string;
+    delete: string;
+    deleted: string;
+  };
+
   extension: {
     actionTitle: string;
     playerButton: string;
@@ -289,6 +311,19 @@ export interface Messages {
     openSettings: string;
     /** Footer link to the public landing page. */
     moreHelp: string;
+    /** The app's own guide: only what differs from the extension (a phone, sharing). */
+    app: {
+      steps1: string[];
+      reassurance: string[];
+      pasteFallback: string;
+      step3Text: string;
+      tryVideo: string;
+      /** Step 3 when the guide was opened from a shared video without a key. */
+      backToVideo: string;
+      toHome: string;
+      /** Skip the guide for now. */
+      later: string;
+    };
   };
 
   app: {

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>The Point</title>
+    <link rel="icon" href="/icon/32.png">
+    <script type="module" crossorigin src="/chunks/history-D7yIg6-y.js"></script>
+    <link rel="modulepreload" crossorigin href="/chunks/settings-DjcKFeYU.js">
+    <link rel="stylesheet" crossorigin href="/assets/settings-Bpz35yS2.css">
+    <link rel="stylesheet" crossorigin href="/assets/history-Bc5A4B-l.css">
+  </head>
+  <body>
+    <!-- History: every cached summary, newest first. Opened from the settings (link
+         "Geschiedenis"). Texts: `history` in @the-point/core/i18n. -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <img class="brand" src="/icon/128.png" alt="" width="36" height="36">
+        <div class="brand-text">
+          <h1>The Point</h1>
+          <p id="subtitle"></p>
+        </div>
+        <span id="status" class="saved" role="status" aria-live="polite"></span>
+      </div>
+    </header>
+
+    <main>
+      <section class="group" aria-labelledby="h-history">
+        <h2 id="h-history"></h2>
+        <p class="history-intro" id="intro"></p>
+        <p class="history-count" id="count"></p>
+        <div class="card">
+          <ul class="history" id="list"></ul>
+          <p class="history-empty" id="empty" hidden></p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

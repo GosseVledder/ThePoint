@@ -43,6 +43,42 @@ export async function cachedVideoIds(taal: string): Promise<string[]> {
     .map((k) => k.slice(PREFIX.length, -suffix.length));
 }
 
+/** What the history page shows per summary: no takeaway texts, only what the list needs. */
+export interface HistoryItem {
+  videoId: string;
+  taal: string;
+  titel: string;
+  aangemaaktOp: string;
+  takeaways: number;
+  provider: Summary['provider'];
+}
+
+/** Every cached summary, newest first. */
+export async function listHistory(): Promise<HistoryItem[]> {
+  const keys = await cachedSummaryKeys();
+  if (keys.length === 0) return [];
+  const stored = await browser.storage.local.get(keys);
+  const items: HistoryItem[] = [];
+  for (const key of keys) {
+    const parsed = summarySchema.safeParse(stored[key]);
+    if (!parsed.success) continue;
+    const s = parsed.data;
+    items.push({
+      videoId: s.videoId,
+      taal: s.taal,
+      titel: s.titel,
+      aangemaaktOp: s.aangemaaktOp,
+      takeaways: s.takeaways.length,
+      provider: s.provider,
+    });
+  }
+  return items.sort((a, b) => b.aangemaaktOp.localeCompare(a.aangemaaktOp));
+}
+
+export async function deleteCachedSummary(videoId: string, taal: string): Promise<void> {
+  await browser.storage.local.remove(cacheKey(videoId, taal));
+}
+
 export async function clearCache(): Promise<number> {
   const keys = await cachedSummaryKeys();
   if (keys.length) await browser.storage.local.remove(keys);

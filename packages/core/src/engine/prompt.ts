@@ -37,6 +37,7 @@ Twijfel je of iets een takeaway is, stel dan deze vraag: "Weet de gebruiker na h
 
 - Het aantal volgt uit de inhoud, niet uit de lengte van de video. Vul nooit aan om een aantal te halen.
 - Een uitleg- of opinievideo van 15 tot 30 minuten levert meestal 3 tot 7 takeaways op.
+- Dekking: elk inhoudelijk hoofdonderwerp van de video, van begin tot eind, komt in minstens één takeaway terug. Ook wat pas in het laatste deel wordt behandeld, telt mee. Een lange video met veel onderwerpen (zoals een podcast of interview van meerdere uren) levert daardoor meer takeaways op: ruwweg één per hoofdonderwerp. Is de video langer dan een uur, loop het transcript dan na in blokken van ongeveer een half uur: elk blok met inhoud levert minstens één takeaway op.
 - Een nieuwsoverzicht (bijvoorbeeld "het AI-nieuws van deze week") levert één takeaway per afzonderlijk nieuwsitem op, ook als dat er meer dan 10 zijn. Voeg geen items samen die over verschillende zaken gaan.
 - Bevat de video vrijwel geen inhoud, geef dan 0 of 1 takeaway en zeg dat in "inhoudsoordeel".
 - Combineer uitspraken die over hetzelfde punt gaan tot één takeaway. Twee takeaways mogen niet hetzelfde zeggen.
@@ -109,7 +110,7 @@ Schrijf de zinnen in het {taal}, ongeacht de taal van de video. Citaten blijven 
 # Werkwijze
 
 Werk in deze volgorde, en geef alleen het eindresultaat:
-1. Lees de titel en het hele transcript. Bepaal het videotype, de hoofdlijn en of de titel een vraag stelt of een antwoord belooft.
+1. Lees de titel en het hele transcript. Bepaal het videotype, de hoofdlijn, de inhoudelijke hoofdonderwerpen van begin tot eind en of de titel een vraag stelt of een antwoord belooft.
 2. Markeer de delen die je weglaat (inleiding, sponsor, herhaling, afsluiting).
 3. Verzamel uit de overige delen alle kandidaat-takeaways met hun getallen, citaten en tijdmarkeringen.
 4. Voeg kandidaten samen die hetzelfde punt maken. Schrap kandidaten die de toets "weet de gebruiker nu iets nieuws of kan hij er iets mee?" niet doorstaan.
@@ -121,6 +122,7 @@ Werk in deze volgorde, en geef alleen het eindresultaat:
    - Komt elk citaat letterlijk in het transcript voor?
    - Bestaat elke tijdmarkering in het transcript?
    - Is elke takeaway één zin, zelfstandig te begrijpen, zonder overlap met een andere takeaway?
+   - Komt elk inhoudelijk hoofdonderwerp, ook uit het laatste deel van de video, terug in minstens één takeaway?
    - Staan er geen inleiding, sponsor, oproepen of herhalingen in de lijst?
    Herstel wat niet klopt.
 

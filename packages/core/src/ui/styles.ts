@@ -59,6 +59,11 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px soli
 .btn.primary { background: var(--yt-text); color: var(--yt-bg); }
 .btn.primary:hover { opacity: .85; }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.tools { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.btn.small { height: 28px; padding: 0 12px; font-size: 12px; }
+.btn.small svg { width: 16px; height: 16px; fill: currentColor; }
+.btn.copy.done { color: var(--yt-text); }
+.collapsed .tools { display: none; }
 
 .body { margin-top: 10px; }
 .kritiek { font-size: 15px; line-height: 22px; font-weight: 500; margin: 0 0 4px; }
@@ -132,6 +137,7 @@ export const ICONS = {
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.65 6.35A7.96 7.96 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>',
   close:
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>',
   warn: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
   settings:
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94a7.3 7.3 0 0 0 0-1.88l2.03-1.58-1.92-3.32-2.39.96a7 7 0 0 0-1.63-.94L14.87 3.6h-3.84l-.36 2.58c-.59.24-1.13.56-1.63.94l-2.39-.96-1.92 3.32 2.03 1.58a7.3 7.3 0 0 0 0 1.88l-2.03 1.58 1.92 3.32 2.39-.96c.5.38 1.04.7 1.63.94l.36 2.58h3.84l.36-2.58c.59-.24 1.13-.56 1.63-.94l2.39.96 1.92-3.32-2.03-1.58zM12.95 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>',

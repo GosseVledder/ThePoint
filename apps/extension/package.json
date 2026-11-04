@@ -2,7 +2,7 @@
   "name": "@the-point/extension",
   "description": "Chromium extension: AI summary panel on YouTube",
   "private": true,
-  "version": "0.7.2",
+  "version": "0.8.0",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
     "dev:edge": "wxt -b edge",
     "build": "wxt build",
     "zip": "wxt zip",
+    "zip:store": "wxt zip --mode store",
     "typecheck": "wxt prepare && tsc --noEmit",
     "postinstall": "wxt prepare",
     "icons": "tsx scripts/make-icons.ts"

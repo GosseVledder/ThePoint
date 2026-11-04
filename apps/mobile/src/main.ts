@@ -3,16 +3,22 @@ import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import { App as CapApp } from '@capacitor/app';
 import { messages } from '@the-point/core/i18n/messages';
 import { ICONS } from '@the-point/core/ui/styles';
-import { NavStack, parseRoute, summaryHash, type App, type Screen } from './app';
+import { NavStack, parseRoute, summaryHash, welcomeHash, type App, type Screen } from './app';
 import './app.css';
 import { homeScreen } from './screens/home';
+import { welcomeScreen } from './screens/onboarding';
 import { settingsScreen } from './screens/settings';
 import { summaryScreen } from './screens/summary';
 import { videoFromShare } from './share';
 import { onShare } from './shareIntent';
 import { Speaker } from './speech';
-import { preferencesKV, secureKV } from './storage/native';
-import { createKeyStore, createSettingsStore, createSummaryCache } from './storage/stores';
+import { filesKV, preferencesKV, secureKV } from './storage/native';
+import {
+  createKeyStore,
+  createSettingsStore,
+  createSummaryCache,
+  moveSummaries,
+} from './storage/stores';
 
 const $ = (id: string) => document.getElementById(id)!;
 const screenEl = $('screen');
@@ -29,7 +35,7 @@ let toastTimer: number | undefined;
 const app: App = {
   settings: createSettingsStore(preferencesKV),
   keys: createKeyStore(secureKV),
-  cache: createSummaryCache(preferencesKV),
+  cache: createSummaryCache(filesKV),
   speaker: new Speaker(TextToSpeech, () => current?.refresh?.()),
   go(hash) {
     nav.push(hash);
@@ -73,7 +79,9 @@ function show() {
       ? summaryScreen(app, r.videoId, r.start, r.refresh)
       : r.name === 'settings'
         ? settingsScreen(app)
-        : homeScreen(app);
+        : r.name === 'welcome'
+          ? welcomeScreen(app, r.videoId)
+          : homeScreen(app);
   titleEl.textContent = current.title;
   backBtn.hidden = r.name === 'home';
   settingsBtn.hidden = r.name === 'settings';
@@ -118,12 +126,29 @@ onShare((e) => {
   } else app.toast(app.t.app.shareNoVideo);
 });
 void app.speaker.loadVoices().then(() => current?.refresh?.());
-void app.settings
-  .get()
-  .then((s) => (app.t = messages(s.interfaceTaal)))
-  .catch(() => undefined)
-  .finally(() => {
+/** Set once the guide opened by itself, so it does so only on the first start. */
+const WELCOME_SHOWN = 'welcomeShown';
+
+/** First start without a key (and not opened by a share): the setup guide, home below it. */
+async function firstStart(): Promise<string | null> {
+  // Summaries from before 0.7.0 lived in Preferences; move them to files once.
+  await moveSummaries(preferencesKV, filesKV).catch(() => 0);
+  const [s, keys, shown] = await Promise.all([
+    app.settings.get(),
+    app.keys.get(),
+    preferencesKV.get(WELCOME_SHOWN),
+  ]);
+  app.t = messages(s.interfaceTaal);
+  if (shown || keys[s.provider]) return null;
+  await preferencesKV.set(WELCOME_SHOWN, '1');
+  return welcomeHash();
+}
+
+void firstStart()
+  .catch(() => null)
+  .then((welcome) => {
     applyChrome();
-    nav.reset(location.hash || '#/');
+    const start = location.hash || '#/';
+    nav.reset(welcome && parseRoute(start).name === 'home' ? welcome : start);
     show();
   });

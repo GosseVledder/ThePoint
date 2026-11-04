@@ -81,6 +81,10 @@ export const de: Messages = {
     noKeyText:
       'Mit einem kostenlosen Schlüssel von Google erstellt The Point Zusammenfassungen. Die Einrichtung dauert etwa eine Minute.',
     noKeyButton: 'Schlüssel einrichten',
+    copy: 'Kopieren',
+    copied: 'Kopiert',
+    copyFailed: 'Kopieren fehlgeschlagen',
+    keyPoint: 'Kernpunkt',
   },
 
   errors: {
@@ -124,6 +128,7 @@ export const de: Messages = {
     title: 'Einstellungen',
     loading: 'Wird geladen…',
     autoSaved: 'Einstellungen werden sofort gespeichert.',
+    privacy: 'Datenschutz',
     saved: 'Gespeichert',
     languageHeading: 'Sprache',
     interfaceLanguage: 'Sprache der Oberfläche',
@@ -238,6 +243,8 @@ export const de: Messages = {
     advancedPaid: 'Erweitert · kostenpflichtig',
     setupGuide: 'Einrichtungshilfe',
     setupGuideHint: 'Schritt für Schritt zu einem kostenlosen Gemini-Schlüssel.',
+    historyLink: 'Verlauf',
+    historyHint: 'Alle erstellten Zusammenfassungen ansehen oder löschen.',
     debugHeading: 'Debug-Protokoll',
     debugCheck: 'Pro Aufruf Anbieter, Modell, Eingabelänge, Dauer und Tokens protokollieren',
     showLog: 'Protokoll anzeigen',
@@ -315,6 +322,18 @@ export const de: Messages = {
     checksumFailed: 'Die heruntergeladene Datei stimmt nicht (SHA-256). Bitte versuche es erneut.',
     downloadFailed: (e) => `Herunterladen fehlgeschlagen: ${e}`,
   },
+  history: {
+    title: 'Verlauf',
+    intro:
+      'Alle auf diesem Computer gespeicherten Zusammenfassungen, die neueste zuerst. Klicke auf einen Titel, um das Video zu öffnen; die Zusammenfassung erscheint sofort.',
+    empty:
+      'Noch keine Zusammenfassungen. Öffne ein YouTube-Video, während The Point eingeschaltet ist.',
+    count: (n) => (n === 1 ? '1 Zusammenfassung' : `${n} Zusammenfassungen`),
+    takeawayCount: (n) => (n === 1 ? '1 Kernaussage' : `${n} Kernaussagen`),
+    delete: 'Löschen',
+    deleted: 'Gelöscht',
+  },
+
   extension: {
     actionTitle: 'The Point – Einstellungen',
     playerButton: 'The Point: Zusammenfassung',
@@ -377,6 +396,26 @@ export const de: Messages = {
     tryVideo: 'Mit einem YouTube-Video ausprobieren',
     openSettings: 'Zu den Einstellungen',
     moreHelp: 'Mehr Hilfe und häufige Fragen',
+    app: {
+      steps1: [
+        'Melde dich mit deinem Google-Konto an und akzeptiere die Bedingungen.',
+        'Steht dort schon ein Schlüssel? Dann ist das deiner. Wenn nicht, tippe auf "Create API key".',
+        'Kopiere den Schlüssel und geh zurück zu The Point.',
+      ],
+      reassurance: [
+        'Kostenlos: So wie The Point den Schlüssel nutzt, kostet es nichts. Du musst bei Google keine Zahlungsdaten angeben.',
+        'Dein Schlüssel bleibt auf deinem eigenen Handy.',
+        'Er geht nur an Google, nirgendwo sonst hin.',
+      ],
+      pasteFallback:
+        'Einfügen hat nicht geklappt. Halte den Finger auf das Feld und wähle Einfügen.',
+      step3Text:
+        'Dein Schlüssel ist gespeichert. Schaust du ein Video in der YouTube-App? Tippe auf Teilen und wähle The Point. Du kannst auch einen Link auf dem Startbildschirm einfügen.',
+      tryVideo: 'Mit einem Beispielvideo ausprobieren',
+      backToVideo: 'Zurück zu deinem Video',
+      toHome: 'Zum Startbildschirm',
+      later: 'Später',
+    },
   },
 
   app: {

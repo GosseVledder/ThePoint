@@ -82,6 +82,10 @@ export const es: Messages = {
     noKeyText:
       'Con una clave gratuita de Google, The Point crea resúmenes. Configurarla lleva un minuto aproximadamente.',
     noKeyButton: 'Configurar clave',
+    copy: 'Copiar',
+    copied: 'Copiado',
+    copyFailed: 'No se pudo copiar',
+    keyPoint: 'Idea principal',
   },
 
   errors: {
@@ -125,6 +129,7 @@ export const es: Messages = {
     title: 'Ajustes',
     loading: 'Cargando…',
     autoSaved: 'Los ajustes se guardan al instante.',
+    privacy: 'Privacidad',
     saved: 'Guardado',
     languageHeading: 'Idioma',
     interfaceLanguage: 'Idioma de la interfaz',
@@ -228,6 +233,8 @@ export const es: Messages = {
     advancedPaid: 'Avanzado · de pago',
     setupGuide: 'Guía de configuración',
     setupGuideHint: 'Consigue una clave gratuita de Gemini, paso a paso.',
+    historyLink: 'Historial',
+    historyHint: 'Consulta o elimina todos tus resúmenes.',
     debugHeading: 'Registro de depuración',
     debugCheck:
       'Registrar por llamada el proveedor, el modelo, la longitud, la duración y los tokens',
@@ -305,6 +312,17 @@ export const es: Messages = {
     checksumFailed: 'El archivo descargado no coincide (SHA-256). Inténtalo de nuevo.',
     downloadFailed: (e) => `No se pudo descargar: ${e}`,
   },
+  history: {
+    title: 'Historial',
+    intro:
+      'Todos los resúmenes guardados en este ordenador, del más reciente al más antiguo. Haz clic en un título para abrir el vídeo; el resumen aparece al instante.',
+    empty: 'Todavía no hay resúmenes. Abre un vídeo de YouTube con The Point activado.',
+    count: (n) => (n === 1 ? '1 resumen' : `${n} resúmenes`),
+    takeawayCount: (n) => (n === 1 ? '1 idea clave' : `${n} ideas clave`),
+    delete: 'Eliminar',
+    deleted: 'Eliminado',
+  },
+
   extension: {
     actionTitle: 'The Point – ajustes',
     playerButton: 'The Point: resumen',
@@ -345,8 +363,7 @@ export const es: Messages = {
     hide: 'Ocultar',
     paste: 'Pegar',
     pasteFallback: 'No se pudo pegar automáticamente; haz clic en el campo y pulsa Ctrl+V.',
-    formatWarning:
-      'No parece una clave de Gemini. Comprueba que la has copiado entera.',
+    formatWarning: 'No parece una clave de Gemini. Comprueba que la has copiado entera.',
     checkSave: 'Comprobar y guardar',
     checking: 'Comprobando la clave…',
     check: {
@@ -365,6 +382,25 @@ export const es: Messages = {
     tryVideo: 'Pruébalo con un vídeo de YouTube',
     openSettings: 'Ir a los ajustes',
     moreHelp: 'Más ayuda y preguntas frecuentes',
+    app: {
+      steps1: [
+        'Inicia sesión con tu cuenta de Google y acepta las condiciones.',
+        '¿Ya aparece una clave? Es la tuya. Si no, toca "Create API key".',
+        'Copia la clave y vuelve a The Point.',
+      ],
+      reassurance: [
+        'Gratis: tal como The Point usa la clave, no cuesta nada. No tienes que dar a Google ningún dato de pago.',
+        'Tu clave se queda en tu propio teléfono.',
+        'Solo se envía a Google, a ningún otro sitio.',
+      ],
+      pasteFallback: 'No se pudo pegar. Mantén pulsado el campo y elige Pegar.',
+      step3Text:
+        'Tu clave está guardada. ¿Ves un vídeo en la app de YouTube? Toca Compartir y elige The Point. También puedes pegar un enlace en la pantalla de inicio.',
+      tryVideo: 'Probar con un vídeo de ejemplo',
+      backToVideo: 'Volver a tu vídeo',
+      toHome: 'Ir a la pantalla de inicio',
+      later: 'Más tarde',
+    },
   },
 
   app: {

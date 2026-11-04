@@ -1,5 +1,6 @@
 import { watchUrl } from '@the-point/core/youtube/videoId';
 import { createShadowUi, isolateEvents, type ShadowUi } from './host';
+import { copyText } from '@the-point/core/ui/clipboard';
 import { renderView } from '@the-point/core/ui/render';
 import { sendRuntime, SummarySession } from './session';
 import { SpeechControl } from './speech';
@@ -86,6 +87,7 @@ export class Popover {
         onConfirm: () => session.start({ confirmLong: true }),
         onOpenOptions: () => void sendRuntime({ type: 'openOptions' }),
         onSetup: () => void sendRuntime({ type: 'openOnboarding' }),
+        onCopy: copyText,
         onClose: () => this.close(),
         onSpeak: (from) => {
           if (session.state.kind === 'done') this.speech?.play(session.state.summary, from);

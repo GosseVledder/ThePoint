@@ -23,7 +23,7 @@ import { FIXED_MARGINS } from '@the-point/core/seek';
 import { keySteps, KEY_URLS } from '@the-point/core/ui/keySteps';
 import { ICONS } from '@the-point/core/ui/styles';
 import { tooltips } from '@the-point/core/ui/tooltip';
-import type { App, Screen } from '../app';
+import { welcomeHash, type App, type Screen } from '../app';
 import { checkAppUpdate, downloadAndInstall, installedVersion, UpdateError } from '../appUpdate';
 import { nativeFetch } from '../nativeFetch';
 
@@ -582,6 +582,25 @@ function providerBlock(
       h('h3', {}, info.name),
       p === 'gemini' ? h('span', { class: 'tag' }, T.alsoForFallback) : null,
     ),
+    p === 'gemini'
+      ? h(
+          'p',
+          { class: 'card-intro setup-link' },
+          h(
+            'a',
+            {
+              href: welcomeHash(),
+              onClick: (e: Event) => {
+                e.preventDefault();
+                app.go(welcomeHash());
+              },
+            },
+            T.setupGuide,
+          ),
+          ' · ',
+          T.setupGuideHint,
+        )
+      : null,
     field(
       T.apiKey,
       h('span', { class: 'input-group' }, keyInput, toggle),

@@ -16,6 +16,7 @@
     "build": "npm run build -w @the-point/extension",
     "zip": "npm run zip -w @the-point/extension",
     "package:extension": "node scripts/package-extension.mjs",
+    "package:store": "npm run zip:store -w @the-point/extension",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
     "format": "prettier --write .",

@@ -4,6 +4,7 @@ import { errorMessage, messages, type Messages } from '../i18n/messages';
 import { groupVoices, voiceLabel, type SpeechId, type VoiceLike } from './speechText';
 import { leadSeconds, type SeekMargin } from '../seek';
 import { ICONS } from './styles';
+import { summaryToText } from './summaryText';
 
 export type ViewState =
   | { kind: 'idle' }
@@ -33,6 +34,8 @@ export interface ViewHandlers {
   onVoiceChange?: (voiceUri: string) => void;
   /** On/off switch in the header; omitted handler hides the switch. */
   onToggleEnabled?: (on: boolean) => void;
+  /** Copy button under a summary; gets the plain text. Omitted handler hides the button. */
+  onCopy?: (text: string) => Promise<void> | void;
 }
 
 export interface ViewOptions {
@@ -337,6 +340,8 @@ export function renderView(
           ` · ${s.inhoudsoordeel.toelichting}`,
         ),
       );
+      if (handlers.onCopy)
+        body.append(h('div', { class: 'tools' }, copyButton(s, handlers.onCopy, t)));
       if (s.isInterview) body.append(h('div', { class: 'meta' }, v.interview));
       if (s.bron === 'gemini_video') {
         body.append(h('div', { class: 'notice' }, v.madeWithoutTranscript));
@@ -376,6 +381,40 @@ export function renderView(
     }
   }
   lastSpeaking.set(root, opts.speech?.speakingId ?? null);
+}
+
+/** Copies the summary as plain text; the label says "Gekopieerd" for a moment. */
+function copyButton(
+  s: Summary,
+  onCopy: NonNullable<ViewHandlers['onCopy']>,
+  t: Messages,
+): HTMLButtonElement {
+  const v = t.view;
+  const label = h('span', {}, v.copy);
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const button: HTMLButtonElement = h(
+    'button',
+    {
+      class: 'btn small copy',
+      html: ICONS.copy,
+      onClick: async () => {
+        clearTimeout(timer);
+        try {
+          await onCopy(summaryToText(s, t));
+          label.textContent = v.copied;
+          button.classList.add('done');
+        } catch {
+          label.textContent = v.copyFailed;
+        }
+        timer = setTimeout(() => {
+          label.textContent = v.copy;
+          button.classList.remove('done');
+        }, 2000);
+      },
+    },
+    label,
+  );
+  return button;
 }
 
 /** Limits the list to exactly `visible` items, also when the panel changes width. */

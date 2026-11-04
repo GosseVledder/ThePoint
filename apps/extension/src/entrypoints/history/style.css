@@ -1,0 +1,51 @@
+/* History page; builds on the options page styles (../options/style.css). */
+.history-intro {
+  color: var(--text-2);
+  margin: 0 0 6px;
+  max-width: 68ch;
+}
+.history-count {
+  color: var(--text-2);
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+.history {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.history li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--divider);
+}
+.history li:first-child {
+  border-top: 0;
+}
+.history .item-text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.history .item-title {
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.history .item-title:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.history .item-meta {
+  color: var(--text-2);
+  font-size: 13px;
+}
+.history-empty {
+  margin: 0;
+  padding: 16px;
+  color: var(--text-2);
+}

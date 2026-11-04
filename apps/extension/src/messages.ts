@@ -9,6 +9,8 @@ export const SUMMARIZE_PORT = 'the-point-summarize';
 export const REOPEN_OPTIONS_KEY = 'reopenOptions';
 /** The setup guide, opened on first install and from the "no key yet" card. */
 export const ONBOARDING_PAGE = '/onboarding.html';
+/** Every cached summary; linked from the settings. */
+export const HISTORY_PAGE = '/history.html';
 
 export type { ErrorCode, ErrorInfo, SummaryStep } from '@the-point/core/job';
 
@@ -27,6 +29,8 @@ export type RuntimeRequest =
   | { type: 'testConnection'; provider: ProviderId; apiKey: string; model: string }
   | { type: 'cacheStats' }
   | { type: 'clearCache' }
+  | { type: 'listHistory' }
+  | { type: 'deleteCached'; videoId: string; taal: string }
   | { type: 'getDebugLog' }
   | { type: 'clearDebugLog' }
   | { type: 'getTranscript'; videoId: string }

@@ -80,6 +80,10 @@ export const en: Messages = {
     noKeyText:
       'With a free key from Google, The Point makes summaries. Setting it up takes about a minute.',
     noKeyButton: 'Set up key',
+    copy: 'Copy',
+    copied: 'Copied',
+    copyFailed: 'Could not copy',
+    keyPoint: 'Key point',
   },
 
   errors: {
@@ -123,6 +127,7 @@ export const en: Messages = {
     title: 'Settings',
     loading: 'Loading…',
     autoSaved: 'Settings are saved immediately.',
+    privacy: 'Privacy',
     saved: 'Saved',
     languageHeading: 'Language',
     interfaceLanguage: 'Interface language',
@@ -225,6 +230,8 @@ export const en: Messages = {
     advancedPaid: 'Advanced · paid',
     setupGuide: 'Setup guide',
     setupGuideHint: 'Get a free Gemini key, step by step.',
+    historyLink: 'History',
+    historyHint: 'Look back at or delete every summary you have made.',
     debugHeading: 'Debug log',
     debugCheck: 'Record provider, model, input length, duration and tokens per call',
     showLog: 'Show log',
@@ -301,6 +308,17 @@ export const en: Messages = {
     checksumFailed: "The downloaded file doesn't match (SHA-256). Please try again.",
     downloadFailed: (e) => `Download failed: ${e}`,
   },
+  history: {
+    title: 'History',
+    intro:
+      'Every summary saved on this computer, newest first. Click a title to open the video; the summary appears straight away.',
+    empty: 'No summaries yet. Open a YouTube video while The Point is switched on.',
+    count: (n) => (n === 1 ? '1 summary' : `${n} summaries`),
+    takeawayCount: (n) => (n === 1 ? '1 takeaway' : `${n} takeaways`),
+    delete: 'Delete',
+    deleted: 'Deleted',
+  },
+
   extension: {
     actionTitle: 'The Point – settings',
     playerButton: 'The Point: summary',
@@ -340,8 +358,7 @@ export const en: Messages = {
     hide: 'Hide',
     paste: 'Paste',
     pasteFallback: "Pasting automatically didn't work; click the field and press Ctrl+V.",
-    formatWarning:
-      "This doesn't look like a Gemini key. Check that you copied all of it.",
+    formatWarning: "This doesn't look like a Gemini key. Check that you copied all of it.",
     checkSave: 'Check and save',
     checking: 'Checking key…',
     check: {
@@ -359,6 +376,25 @@ export const en: Messages = {
     tryVideo: 'Try it on a YouTube video',
     openSettings: 'Go to settings',
     moreHelp: 'More help and frequently asked questions',
+    app: {
+      steps1: [
+        'Sign in with your Google account and accept the terms.',
+        'Is a key already listed? That one is yours. If not, tap "Create API key".',
+        'Copy the key and go back to The Point.',
+      ],
+      reassurance: [
+        "Free: the way The Point uses the key, it costs nothing. You don't need to give Google any payment details.",
+        'Your key stays on your own phone.',
+        'It only goes to Google, nowhere else.',
+      ],
+      pasteFallback: "Pasting didn't work. Press and hold in the field and choose Paste.",
+      step3Text:
+        'Your key is saved. Watching a video in the YouTube app? Tap Share and choose The Point. You can also paste a link on the home screen.',
+      tryVideo: 'Try it with a sample video',
+      backToVideo: 'Back to your video',
+      toHome: 'Go to the home screen',
+      later: 'Later',
+    },
   },
 
   app: {

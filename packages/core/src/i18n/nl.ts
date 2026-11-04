@@ -82,6 +82,10 @@ export const nl: Messages = {
     noKeyText:
       'Met een gratis sleutel van Google maakt The Point samenvattingen. Instellen kost ongeveer een minuut.',
     noKeyButton: 'Sleutel instellen',
+    copy: 'Kopiëren',
+    copied: 'Gekopieerd',
+    copyFailed: 'Kopiëren lukte niet',
+    keyPoint: 'Kernpunt',
   },
 
   errors: {
@@ -125,6 +129,7 @@ export const nl: Messages = {
     title: 'Instellingen',
     loading: 'Laden…',
     autoSaved: 'Instellingen worden direct opgeslagen.',
+    privacy: 'Privacy',
     saved: 'Opgeslagen',
     languageHeading: 'Taal',
     interfaceLanguage: 'Taal van de interface',
@@ -229,6 +234,8 @@ export const nl: Messages = {
     advancedPaid: 'Geavanceerd · betaald',
     setupGuide: 'Installatiehulp',
     setupGuideHint: 'Stap voor stap aan een gratis Gemini-sleutel komen.',
+    historyLink: 'Geschiedenis',
+    historyHint: 'Alle samenvattingen die je hebt gemaakt terugzien of verwijderen.',
     debugHeading: 'Debuglog',
     debugCheck: 'Per aanroep provider, model, invoerlengte, duur en tokens bijhouden',
     showLog: 'Log tonen',
@@ -306,6 +313,17 @@ export const nl: Messages = {
     checksumFailed: 'Het gedownloade bestand klopt niet (SHA-256). Probeer het opnieuw.',
     downloadFailed: (e) => `Downloaden mislukt: ${e}`,
   },
+  history: {
+    title: 'Geschiedenis',
+    intro:
+      'Alle samenvattingen die op deze computer zijn bewaard, de nieuwste bovenaan. Klik op een titel om de video te openen; de samenvatting staat er dan meteen.',
+    empty: 'Nog geen samenvattingen. Open een YouTube-video terwijl The Point aan staat.',
+    count: (n) => (n === 1 ? '1 samenvatting' : `${n} samenvattingen`),
+    takeawayCount: (n) => (n === 1 ? '1 takeaway' : `${n} takeaways`),
+    delete: 'Verwijderen',
+    deleted: 'Verwijderd',
+  },
+
   extension: {
     actionTitle: 'The Point – instellingen',
     playerButton: 'The Point: samenvatting',
@@ -346,8 +364,7 @@ export const nl: Messages = {
     hide: 'Verbergen',
     paste: 'Plakken',
     pasteFallback: 'Automatisch plakken lukte niet; klik in het veld en druk op Ctrl+V.',
-    formatWarning:
-      'Dit lijkt geen Gemini-sleutel. Kijk of je hem helemaal hebt gekopieerd.',
+    formatWarning: 'Dit lijkt geen Gemini-sleutel. Kijk of je hem helemaal hebt gekopieerd.',
     checkSave: 'Controleren en opslaan',
     checking: 'Sleutel controleren…',
     check: {
@@ -366,6 +383,25 @@ export const nl: Messages = {
     tryVideo: 'Probeer het op een YouTube-video',
     openSettings: 'Naar de instellingen',
     moreHelp: 'Meer uitleg en veelgestelde vragen',
+    app: {
+      steps1: [
+        'Log in met je Google-account en accepteer de voorwaarden.',
+        'Staat er al een sleutel? Dan is dat de jouwe. Zo niet, tik op "Create API key".',
+        'Kopieer de sleutel en ga terug naar The Point.',
+      ],
+      reassurance: [
+        'Gratis: zoals The Point de sleutel gebruikt, kost het niets. Je hoeft bij Google geen betaalgegevens in te vullen.',
+        'Je sleutel blijft op je eigen telefoon.',
+        'Hij gaat alleen naar Google, nergens anders heen.',
+      ],
+      pasteFallback: 'Plakken lukte niet. Houd je vinger in het veld en kies Plakken.',
+      step3Text:
+        'Je sleutel is opgeslagen. Kijk je een video in de YouTube-app? Tik op Delen en kies The Point. Je kunt ook een link plakken op het startscherm.',
+      tryVideo: 'Probeer het met een voorbeeldvideo',
+      backToVideo: 'Terug naar je video',
+      toHome: 'Naar het startscherm',
+      later: 'Later',
+    },
   },
 
   app: {

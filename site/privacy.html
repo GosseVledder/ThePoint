@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>The Point – privacy</title>
+    <meta name="description" content="Welke gegevens The Point gebruikt en waar ze naartoe gaan." />
+    <link rel="icon" href="favicon.png" />
+    <style>
+      /* Privacy page; same styles as the landing page (index.html).
+         Public landing page (GitHub Pages, put on the gh-pages branch by scripts/publish-public.mjs).
+         Same brand blue and card style as the extension's options page. */
+      :root {
+        --bg: #f4f5f7;
+        --card: #ffffff;
+        --text: #15181e;
+        --text-2: #5d6470;
+        --border: #e3e6eb;
+        --accent: #1a56db;
+        --accent-soft: #ebf1fd;
+        --on-accent: #ffffff;
+        --ok: #137a3a;
+        --ok-soft: #e8f6ed;
+        --yellow: #ffcc00;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1114;
+          --card: #181b20;
+          --text: #e9ecf0;
+          --text-2: #9aa2ad;
+          --border: #272b32;
+          --accent: #6d9cff;
+          --accent-soft: #1c2a45;
+          --on-accent: #0b1220;
+          --ok: #4cc77a;
+          --ok-soft: #13291c;
+          color-scheme: dark;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html:not([lang='nl']) [data-lang='nl'],
+      html:not([lang='en']) [data-lang='en'] {
+        display: none !important;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.55 'Segoe UI Variable Text',
+          'Segoe UI',
+          system-ui,
+          -apple-system,
+          Roboto,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--accent);
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+      header.top {
+        border-bottom: 1px solid var(--border);
+      }
+      header.top .wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 60px;
+      }
+      header.top img {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+      }
+      header.top b {
+        flex: 1;
+        font-size: 17px;
+      }
+      .langs {
+        display: flex;
+        gap: 4px;
+      }
+      .langs button {
+        padding: 4px 10px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text-2);
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .langs button[aria-pressed='true'] {
+        border-color: var(--accent);
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .hero {
+        padding: 56px 0 40px;
+      }
+      .hero h1 {
+        margin: 0 0 12px;
+        font-size: clamp(30px, 5vw, 46px);
+        line-height: 1.12;
+        letter-spacing: -0.01em;
+      }
+      .hero h1 .dot {
+        color: var(--yellow);
+      }
+      .hero p.lead {
+        max-width: 640px;
+        margin: 0 0 28px;
+        color: var(--text-2);
+        font-size: 18px;
+      }
+      .downloads {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .btn {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 52px;
+        padding: 8px 20px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--card);
+        color: var(--text);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .btn small {
+        color: var(--text-2);
+        font-size: 12.5px;
+        font-weight: 400;
+      }
+      .btn.primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: var(--on-accent);
+      }
+      .btn.primary small {
+        color: inherit;
+        opacity: 0.85;
+      }
+      .btn:hover {
+        filter: brightness(1.05);
+      }
+      .note {
+        margin: 14px 0 0;
+        color: var(--text-2);
+        font-size: 14px;
+      }
+
+      section {
+        padding: 28px 0;
+      }
+      h2 {
+        margin: 0 0 16px;
+        font-size: 24px;
+        line-height: 1.25;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .card {
+        padding: 18px 20px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+      }
+      .card h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--text-2);
+        font-size: 15px;
+      }
+      ol.steps {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: s;
+      }
+      ol.steps > li {
+        position: relative;
+        padding: 16px 20px 16px 64px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+        counter-increment: s;
+      }
+      ol.steps > li + li {
+        margin-top: 10px;
+      }
+      ol.steps > li::before {
+        content: counter(s);
+        position: absolute;
+        left: 18px;
+        top: 16px;
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: var(--on-accent);
+        font-weight: 700;
+      }
+      ol.steps h3 {
+        margin: 2px 0 4px;
+        font-size: 17px;
+      }
+      ol.steps p,
+      ol.steps ul {
+        margin: 4px 0 0;
+        color: var(--text-2);
+        font-size: 15px;
+      }
+      ol.steps ul {
+        padding-left: 20px;
+      }
+      ol.steps .btn {
+        margin-top: 10px;
+      }
+      code {
+        padding: 1px 5px;
+        border-radius: 4px;
+        background: var(--accent-soft);
+        font-size: 0.92em;
+      }
+      .reassure {
+        margin-top: 12px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        background: var(--ok-soft);
+        color: var(--text);
+        font-size: 15px;
+      }
+      details {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+      }
+      details + details {
+        margin-top: 10px;
+      }
+      summary {
+        padding: 14px 20px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      details > div {
+        padding: 0 20px 16px;
+        color: var(--text-2);
+      }
+      details > div p {
+        margin: 0 0 8px;
+      }
+      @media (max-width: 600px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      footer {
+        padding: 32px 0 48px;
+        border-top: 1px solid var(--border);
+        color: var(--text-2);
+        font-size: 14px;
+      }
+      .prose h2 {
+        margin: 32px 0 8px;
+        font-size: 20px;
+      }
+      .prose p {
+        max-width: 68ch;
+        margin: 0 0 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a href="./" aria-label="The Point"><img src="logo.png" alt="" /></a>
+        <b>The Point</b>
+        <div class="langs" role="group" aria-label="Taal / Language">
+          <button type="button" data-set-lang="nl" aria-pressed="true">NL</button>
+          <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+        <h1>
+          <span data-lang="nl">Privacy</span><span data-lang="en">Privacy</span
+          ><span class="dot">.</span>
+        </h1>
+        <p class="lead" data-lang="nl">
+          The Point houdt niets van je bij. Hieronder staat precies welke gegevens waar naartoe
+          gaan.
+        </p>
+        <p class="lead" data-lang="en">
+          The Point keeps no record of you. Below is exactly which data goes where.
+        </p>
+        <p class="note" data-lang="nl">Bijgewerkt op 4 november 2026.</p>
+        <p class="note" data-lang="en">Updated on 4 November 2026.</p>
+      </section>
+
+      <section class="prose">
+        <h2>
+          <span data-lang="nl">Wat The Point zelf verzamelt</span
+          ><span data-lang="en">What The Point itself collects</span>
+        </h2>
+        <p data-lang="nl">
+          Niets. The Point heeft geen eigen server, geen account en geen statistieken. De maker van
+          The Point ziet niet wie The Point gebruikt en niet welke video’s je bekijkt.
+        </p>
+        <p data-lang="en">
+          Nothing. The Point has no server of its own, no account and no statistics. The maker of
+          The Point cannot see who uses The Point or which videos you watch.
+        </p>
+        <h2><span data-lang="nl">Je sleutel</span><span data-lang="en">Your key</span></h2>
+        <p data-lang="nl">
+          Je sleutel van Google (of van Anthropic, als je Claude gebruikt) blijft op je eigen
+          computer of telefoon. In de extensie staat hij in de opslag van je browser, in de app in
+          de beveiligde opslag van Android. The Point stuurt hem alleen naar Google (of Anthropic),
+          om een samenvatting te maken.
+        </p>
+        <p data-lang="en">
+          Your key from Google (or from Anthropic, if you use Claude) stays on your own computer or
+          phone. In the extension it is kept in your browser’s storage, in the app in Android’s
+          secure storage. The Point only sends it to Google (or Anthropic), to make a summary.
+        </p>
+        <h2>
+          <span data-lang="nl">Wat er naar Google gaat</span
+          ><span data-lang="en">What goes to Google</span>
+        </h2>
+        <p data-lang="nl">
+          Voor een samenvatting stuurt The Point de titel, de kanaalnaam, de lengte en de
+          ondertitels van de video naar Google (of naar Anthropic, als je Claude gebruikt). Heeft
+          een video geen ondertitels en staat die keuze aan, dan stuurt The Point de link naar de
+          video, zodat Google de video zelf bekijkt. Er gaan geen gegevens over jou mee.
+        </p>
+        <p data-lang="en">
+          To make a summary, The Point sends the video’s title, channel name, length and subtitles
+          to Google (or to Anthropic, if you use Claude). If a video has no subtitles and that
+          option is switched on, The Point sends the link to the video so Google can watch the video
+          itself. No data about you is sent along.
+        </p>
+        <p data-lang="nl">
+          Wat Google met die gegevens doet, staat in de
+          <a href="https://ai.google.dev/gemini-api/terms">voorwaarden van de Gemini API</a>. Bij
+          gratis gebruik mag Google de ingestuurde tekst en de antwoorden gebruiken om zijn
+          producten te verbeteren, en kunnen medewerkers van Google ze lezen. The Point stuurt
+          alleen gegevens van de video mee, niets persoonlijks. Voor Claude geldt het
+          <a href="https://www.anthropic.com/legal/privacy">privacybeleid van Anthropic</a>.
+        </p>
+        <p data-lang="en">
+          What Google does with that data is set out in the
+          <a href="https://ai.google.dev/gemini-api/terms">Gemini API terms</a>. With free use,
+          Google may use the text sent in and the answers to improve its products, and Google staff
+          may read them. The Point only sends data about the video, nothing personal. For Claude,
+          <a href="https://www.anthropic.com/legal/privacy">Anthropic’s privacy policy</a> applies.
+        </p>
+        <h2>
+          <span data-lang="nl">Wat er op je apparaat blijft</span
+          ><span data-lang="en">What stays on your device</span>
+        </h2>
+        <p data-lang="nl">
+          De samenvattingen en je instellingen worden op je eigen computer of telefoon bewaard,
+          zodat een video maar één keer wordt samengevat. Ze gaan niet mee in de back-up van je
+          telefoon. Je verwijdert samenvattingen in de geschiedenis of met <b>Cache wissen</b> in de
+          instellingen. Verwijder je The Point, dan verdwijnt alles.
+        </p>
+        <p data-lang="en">
+          Summaries and your settings are kept on your own computer or phone, so a video is only
+          summarized once. They are not included in your phone’s backup. You delete summaries in the
+          history or with <b>Clear cache</b> in the settings. If you remove The Point, everything is
+          gone.
+        </p>
+        <h2><span data-lang="nl">YouTube</span><span data-lang="en">YouTube</span></h2>
+        <p data-lang="nl">
+          The Point haalt de ondertitels van een video op bij YouTube, net zoals YouTube dat doet
+          als je ze aanzet. Speel je in de app een video af, dan gebruik je de speler van YouTube en
+          gelden de regels van Google (<a href="https://policies.google.com/privacy"
+            >privacybeleid van Google</a
+          >).
+        </p>
+        <p data-lang="en">
+          The Point fetches a video’s subtitles from YouTube, just like YouTube does when you turn
+          them on. If you play a video in the app, you use YouTube’s player and Google’s rules apply
+          (<a href="https://policies.google.com/privacy">Google privacy policy</a>).
+        </p>
+        <h2><span data-lang="nl">Updates</span><span data-lang="en">Updates</span></h2>
+        <p data-lang="nl">
+          Klik je op <b>Controleren op updates</b>, dan vraagt The Point bij GitHub of er een nieuwe
+          versie is. GitHub ziet dan, zoals bij elke website, je internetadres.
+        </p>
+        <p data-lang="en">
+          If you click <b>Check for updates</b>, The Point asks GitHub whether there is a new
+          version. Like any website, GitHub then sees your internet address.
+        </p>
+        <h2>
+          <span data-lang="nl">Vragen en wijzigingen</span
+          ><span data-lang="en">Questions and changes</span>
+        </h2>
+        <p data-lang="nl">
+          Heb je een vraag over je privacy? Stel hem via
+          <a href="https://github.com/GosseVledder/ThePoint/issues">GitHub</a>. Verandert er iets
+          aan wat The Point met gegevens doet, dan passen we deze pagina eerst aan.
+        </p>
+        <p data-lang="en">
+          Do you have a question about your privacy? Ask it via
+          <a href="https://github.com/GosseVledder/ThePoint/issues">GitHub</a>. If anything changes
+          in what The Point does with data, we update this page first.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <a href="./"
+          ><span data-lang="nl">Terug naar The Point</span
+          ><span data-lang="en">Back to The Point</span></a
+        >
+      </div>
+    </footer>
+
+    <script>
+      const LANGS = ['nl', 'en'];
+      function setLang(lang) {
+        document.documentElement.lang = lang;
+        document
+          .querySelectorAll('[data-set-lang]')
+          .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setLang === lang)));
+        document.title = 'The Point – privacy';
+      }
+      let saved = null;
+      try {
+        saved = localStorage.getItem('lang');
+      } catch {}
+      setLang(
+        LANGS.includes(saved)
+          ? saved
+          : navigator.language.toLowerCase().startsWith('nl')
+            ? 'nl'
+            : 'en',
+      );
+      document.querySelectorAll('[data-set-lang]').forEach((b) =>
+        b.addEventListener('click', () => {
+          setLang(b.dataset.setLang);
+          try {
+            localStorage.setItem('lang', b.dataset.setLang);
+          } catch {}
+        }),
+      );
+    </script>
+  </body>
+</html>

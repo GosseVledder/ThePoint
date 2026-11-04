@@ -1,4 +1,6 @@
 import { MODEL_SUGGESTIONS } from '@the-point/core/engine/config';
+import { PRIVACY_PAGE } from '@the-point/core/onboarding';
+import { STORE_BUILD } from '../../flavor';
 import { LANGUAGES } from '@the-point/core/engine/prompt';
 import type { ProviderId } from '@the-point/core/engine/types';
 import {
@@ -340,7 +342,10 @@ async function init(): Promise<void> {
     logShown = false;
   });
 
-  initUpdate();
+  // Store builds are updated by the store; no GitHub check there.
+  if (STORE_BUILD) $('#update-section').hidden = true;
+  else initUpdate();
+  $<HTMLAnchorElement>('#privacy-link').href = PRIVACY_PAGE;
 
   // Read aloud
   await initSpeech(s);

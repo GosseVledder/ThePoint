@@ -4,6 +4,8 @@ import type { ErrorCode } from './job';
 
 /** Public landing page with the same guide and an FAQ (GitHub Pages, from site/). */
 export const LANDING_PAGE = 'https://gossevledder.github.io/ThePoint/';
+/** Privacy statement on the landing site; the store listings link to it too. */
+export const PRIVACY_PAGE = `${LANDING_PAGE}privacy.html`;
 
 /** Video the guide's last step opens to try The Point on (TED talk with manual captions). */
 export const SAMPLE_VIDEO_ID = '9Ff4S1FJdRM';

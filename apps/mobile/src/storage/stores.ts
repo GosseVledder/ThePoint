@@ -67,10 +67,11 @@ const INDEX_KEY = 'summaries';
 export const cacheKey = (videoId: string, taal: string) => `summary:${videoId}:${taal}`;
 
 /**
- * One entry per video and language, plus an index for the home screen. Beyond `limit`
- * the oldest summaries are removed, so SharedPreferences stays small.
+ * One entry per video and language, plus an index for the home screen. Without `limit`
+ * every summary is kept (Free promises a history without limit); with one, the oldest
+ * summaries beyond it are removed.
  */
-export function createSummaryCache(kv: KeyValue, limit = 100): SummaryCache {
+export function createSummaryCache(kv: KeyValue, limit = Infinity): SummaryCache {
   const readIndex = async (): Promise<RecentEntry[]> => {
     const raw = readJson(await kv.get(INDEX_KEY));
     return Array.isArray(raw)
@@ -110,4 +111,33 @@ export function createSummaryCache(kv: KeyValue, limit = 100): SummaryCache {
       return index.length;
     },
   };
+}
+
+/**
+ * Moves summaries and their index from one store to another, once: the app used to keep
+ * them in Preferences (at most 100), now in files. Entries already in `to` stay; the
+ * moved ones are added after them. Returns how many summaries were moved.
+ */
+export async function moveSummaries(from: KeyValue, to: KeyValue): Promise<number> {
+  const raw = readJson(await from.get(INDEX_KEY));
+  if (!Array.isArray(raw)) return 0;
+  const old = raw.filter(
+    (e): e is RecentEntry => !!e && typeof e.videoId === 'string' && typeof e.taal === 'string',
+  );
+  const current = readJson(await to.get(INDEX_KEY));
+  const index: RecentEntry[] = Array.isArray(current) ? (current as RecentEntry[]) : [];
+  let moved = 0;
+  for (const e of old) {
+    const key = cacheKey(e.videoId, e.taal);
+    const value = await from.get(key);
+    if (value !== null && !index.some((i) => i.videoId === e.videoId && i.taal === e.taal)) {
+      await to.set(key, value);
+      index.push(e);
+      moved++;
+    }
+    await from.remove(key);
+  }
+  await to.set(INDEX_KEY, JSON.stringify(index));
+  await from.remove(INDEX_KEY);
+  return moved;
 }

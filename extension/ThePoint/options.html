@@ -7,8 +7,9 @@
     <title>The Point – instellingen</title>
     <meta name="manifest.open_in_tab" content="true">
     <link rel="icon" href="/icon/32.png">
-    <script type="module" crossorigin src="/chunks/options-7NPTriZu.js"></script>
-    <link rel="modulepreload" crossorigin href="/chunks/settings-TcSDQelR.js">
+    <script type="module" crossorigin src="/chunks/options-C_R6rKiJ.js"></script>
+    <link rel="modulepreload" crossorigin href="/chunks/settings-DjcKFeYU.js">
+    <link rel="modulepreload" crossorigin href="/chunks/secrets-xAmYRNLx.js">
     <link rel="stylesheet" crossorigin href="/assets/settings-Bpz35yS2.css">
   </head>
   <body>
@@ -123,6 +124,10 @@
       <section class="group" aria-labelledby="h-summary">
         <h2 id="h-summary" data-i18n="summaryHeading"></h2>
         <div class="card">
+          <p class="card-intro setup-guide">
+            <a id="history-link" href="/history.html" target="_blank" data-i18n="historyLink"></a>
+            <span data-i18n="historyHint"></span>
+          </p>
           <label class="row">
             <span class="row-text">
               <span class="row-title" data-i18n="auto" data-tip="auto"></span>
@@ -234,7 +239,7 @@
         </div>
       </section>
 
-      <section class="group" aria-labelledby="h-update">
+      <section class="group" aria-labelledby="h-update" id="update-section">
         <h2 id="h-update" data-i18n="update:heading" data-tip="updates"></h2>
         <div class="card">
           <div class="row">
@@ -304,6 +309,7 @@
       <footer class="foot">
         <span id="version"></span>
         <span data-i18n="autoSaved"></span>
+        <a id="privacy-link" target="_blank" rel="noreferrer" data-i18n="privacy"></a>
       </footer>
     </main>
   </body>

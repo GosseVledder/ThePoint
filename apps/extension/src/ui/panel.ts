@@ -4,6 +4,7 @@ import { readPageMeta, readTranscriptPanel } from '../youtube/pageTranscript';
 import { holdPlayback, isFullscreen, pause, seekTo } from '../youtube/player';
 import { SEL } from '../youtube/selectors';
 import { createShadowUi, isolateEvents, waitForElement, type ShadowUi } from './host';
+import { copyText } from '@the-point/core/ui/clipboard';
 import { renderView, type SpeechView, type ViewHandlers } from '@the-point/core/ui/render';
 import { sendRuntime, SummarySession } from './session';
 import { SpeechControl } from './speech';
@@ -187,6 +188,7 @@ export class WatchPanel {
       onVoiceChange: (uri) => void this.speech.setVoice(uri),
       onOpenOptions: () => void sendRuntime({ type: 'openOptions' }),
       onSetup: () => void sendRuntime({ type: 'openOnboarding' }),
+      onCopy: copyText,
       onWatchAnyway: () => {
         this.releaseGate();
         this.render();
