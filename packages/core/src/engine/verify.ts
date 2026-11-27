@@ -1,4 +1,4 @@
-import type { ModelOutput } from './schema';
+import type { ModelOutput, RefinementOutput } from './schema';
 import { formatTime, parseTime, type TranscriptLine } from './prompt';
 import type { Moment, Summary, Takeaway } from './types';
 
@@ -270,18 +270,14 @@ export interface VerifyStats {
 
 type Verified = Pick<Summary, 'kritiekPunt' | 'takeaways'>;
 
-/** Checks from docs/PROMPT-TAKEAWAYS.md chapter 4, applied to a transcript-based answer. */
-export function verifyAgainstTranscript(
-  out: ModelOutput,
-  ctx: VerifyContext,
-): { result: Verified; stats: VerifyStats } {
-  const stats: VerifyStats = {
-    verwijderdTijd: 0,
-    verwijderdDuplicaat: 0,
-    onbevestigdCitaat: 0,
-    onbevestigdGetal: 0,
-    tijdGecorrigeerd: 0,
-  };
+type CheckInput = Pick<Takeaway, 'zin' | 'tijd' | 'zekerheid' | 'afgeleid' | 'citaat' | 'moment'>;
+
+/**
+ * Per-item checks against the transcript: the time must exist (or is taken from the
+ * quote), the quote and the numbers must be in the transcript. Returns null when the
+ * item has no usable time. Shared by the summary and by refinements.
+ */
+function transcriptChecker(ctx: VerifyContext, stats: VerifyStats) {
   const markers = new Map<string, number>();
   ctx.lines.forEach((l, i) => markers.set(normalizeMarker(l.marker), i));
   const seconds = ctx.lines.map((l) => l.seconden);
@@ -301,8 +297,7 @@ export function verifyAgainstTranscript(
     return idx;
   };
 
-  const takeaways: Takeaway[] = [];
-  for (const tk of out.takeaways) {
+  const check = (tk: CheckInput): Takeaway | null => {
     const quoteLine = findQuote(tk.citaat, words);
     let line = lineForTime(tk.tijd);
     const exactMarker = markers.has(normalizeMarker(tk.tijd));
@@ -314,18 +309,18 @@ export function verifyAgainstTranscript(
     }
     if (line < 0) {
       stats.verwijderdTijd++;
-      continue;
+      return null;
     }
     const sec = seconds[line] as number;
     if (sec > maxSec) {
       stats.verwijderdTijd++;
-      continue;
+      return null;
     }
     const quoteOk = quoteLine >= 0;
     const numbersOk = tk.afgeleid || numbersSupported(tk.zin, numbers);
     if (!quoteOk) stats.onbevestigdCitaat++;
     if (!numbersOk) stats.onbevestigdGetal++;
-    takeaways.push({
+    return {
       zin: tk.zin.trim(),
       tijd: formatTime(sec),
       seconden: sec,
@@ -334,7 +329,34 @@ export function verifyAgainstTranscript(
       citaat: tk.citaat.trim(),
       onbevestigd: !quoteOk || !numbersOk,
       ...withMoment(tk.moment),
-    });
+    };
+  };
+
+  return { check, lineForTime, seconds };
+}
+
+function emptyStats(): VerifyStats {
+  return {
+    verwijderdTijd: 0,
+    verwijderdDuplicaat: 0,
+    onbevestigdCitaat: 0,
+    onbevestigdGetal: 0,
+    tijdGecorrigeerd: 0,
+  };
+}
+
+/** Checks from docs/PROMPT-TAKEAWAYS.md chapter 4, applied to a transcript-based answer. */
+export function verifyAgainstTranscript(
+  out: ModelOutput,
+  ctx: VerifyContext,
+): { result: Verified; stats: VerifyStats } {
+  const stats = emptyStats();
+  const { check, lineForTime, seconds } = transcriptChecker(ctx, stats);
+
+  const takeaways: Takeaway[] = [];
+  for (const tk of out.takeaways) {
+    const checked = check(tk);
+    if (checked) takeaways.push(checked);
   }
 
   const deduped = dedupe(takeaways);
@@ -355,6 +377,66 @@ export function verifyAgainstTranscript(
     },
     stats,
   };
+}
+
+/**
+ * Checks a refinement answer. A reworked original point whose time or quote the model
+ * mangled falls back to the original point (already checked), so a refinement never
+ * loses a point the user saw; new points must pass the checks like any takeaway.
+ */
+export function verifyRefinement(
+  out: RefinementOutput,
+  original: Takeaway[],
+  ctx: VerifyContext | null,
+): Takeaway[] {
+  const stats = emptyStats();
+  const checker = ctx ? transcriptChecker(ctx, stats) : null;
+  const maxSec = ctx && ctx.duurSeconden > 0 ? ctx.duurSeconden : Number.POSITIVE_INFINITY;
+  const checkVideo = (p: CheckInput): Takeaway | null => {
+    const sec = parseTime(p.tijd);
+    if (sec === null || sec > maxSec) return null;
+    return {
+      zin: p.zin.trim(),
+      tijd: formatTime(sec),
+      seconden: sec,
+      zekerheid: p.zekerheid,
+      afgeleid: p.afgeleid,
+      citaat: p.citaat.trim(),
+      onbevestigd: false,
+      ...withMoment(p.moment),
+    };
+  };
+
+  const items: Takeaway[] = [];
+  const seen = new Set<number>();
+  for (const p of out.punten) {
+    const base =
+      p.nr !== null && p.nr >= 1 && p.nr <= original.length && !seen.has(p.nr)
+        ? (original[p.nr - 1] as Takeaway)
+        : null;
+    if (base) seen.add(p.nr as number);
+    let item = checker ? checker.check(p) : checkVideo(p);
+    // An original point keeps its checked time and quote when the model changed them badly.
+    if (base && (!item || item.onbevestigd)) {
+      item = {
+        ...base,
+        zin: item ? item.zin : base.zin,
+        onbevestigd: base.onbevestigd,
+      };
+      delete item.aanvulling;
+      delete item.nieuw;
+    }
+    if (!item) continue;
+    const aanvulling = p.aanvulling
+      .map((r) => r.replace(/^\s*(?:[-*•–]|\d+[.)])\s+/, '').trim())
+      .filter(Boolean);
+    items.push({
+      ...item,
+      ...(aanvulling.length ? { aanvulling } : {}),
+      ...(base ? {} : { nieuw: true }),
+    });
+  }
+  return items.sort((a, b) => a.seconden - b.seconden);
 }
 
 /** Video-based answer (no transcript): only times can be checked. */

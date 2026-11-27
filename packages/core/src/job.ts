@@ -1,5 +1,7 @@
 // One summary job: cache, transcript, AI call, Gemini video fallback. Platform-neutral:
 // storage, transcript fetching and logging are injected by the extension or the app.
+import { refineSummary } from './engine/refine';
+import { withRefinement } from './engine/refinements';
 import { summarizeTranscript, summarizeVideoUrl } from './engine/summarize';
 import {
   EngineError,
@@ -13,7 +15,14 @@ import {
 import type { TranscriptResult, VideoInfo } from './youtube/transcript';
 
 export type SummaryStep =
-  'cache' | 'transcript' | 'samenvatten' | 'deel' | 'samenvoegen' | 'herstel' | 'video';
+  | 'cache'
+  | 'transcript'
+  | 'samenvatten'
+  | 'deel'
+  | 'samenvoegen'
+  | 'herstel'
+  | 'video'
+  | 'verfijnen';
 
 export type ErrorCode = EngineErrorCode | 'internal' | 'extension_reloaded';
 
@@ -44,7 +53,13 @@ export interface JobRequest {
 
 export type JobEvent =
   | { type: 'progress'; stap: SummaryStep; provider?: ProviderId; deel?: number; delen?: number }
-  | { type: 'done'; summary: Summary; fromCache: boolean }
+  | {
+      type: 'done';
+      summary: Summary;
+      fromCache: boolean;
+      /** Set after a refinement: the id of the new refinement in `summary.verfijnd`. */
+      refinementId?: string;
+    }
   | { type: 'error'; error: ErrorInfo }
   | { type: 'confirm'; minuten: number };
 
@@ -172,6 +187,102 @@ export async function runSummaryJob(
     onCall: deps.onCall,
   });
   await finish(summary);
+}
+
+export interface RefineRequest {
+  videoId: string;
+  instructie: string;
+  /** Text of the chosen suggestion; derived from the instruction when omitted. */
+  label?: string;
+  /** Transcript read from YouTube's own transcript panel (watch page). */
+  pageTranscript?: Transcript;
+  /** Title, channel and duration read from the watch page (fallback metadata). */
+  pageMeta?: Partial<VideoMeta>;
+  /** The page transcript was tried already, or is not possible (app). */
+  paginaGeprobeerd?: boolean;
+}
+
+/**
+ * Refine the cached summary of a video with one instruction and store the result with
+ * the summary. Emits 'done' with the updated summary and the id of the new refinement.
+ */
+export async function runRefineJob(
+  req: RefineRequest,
+  deps: JobDeps,
+  emit: (e: JobEvent) => void,
+): Promise<void> {
+  const { settings, keys } = deps;
+  const summary = await deps.getCached(req.videoId, settings.taal);
+  if (!summary)
+    throw new EngineError('bad_request', 'Er is nog geen samenvatting om te verfijnen.');
+
+  // A summary Gemini made from the video itself is refined the same way.
+  const fromVideo = summary.bron === 'gemini_video';
+  const provider: ProviderId = fromVideo ? 'gemini' : settings.provider;
+  const apiKey = keys[provider];
+  if (!apiKey)
+    throw new EngineError('no_key', `Er is geen ${providerName(provider)}-API-sleutel ingesteld.`);
+
+  let info: VideoInfo | null = null;
+  let transcript: Transcript | null = null;
+  if (!fromVideo) {
+    transcript = req.pageTranscript ?? null;
+    if (!transcript) {
+      emit({ type: 'progress', stap: 'transcript' });
+      try {
+        const res = await withTimeout(
+          deps.getTranscript(req.videoId),
+          20_000,
+          'Transcript ophalen duurde te lang.',
+        );
+        info = res.info;
+        transcript = res.transcript;
+      } catch (e) {
+        console.warn('[the-point] transcript ophalen mislukt', e);
+      }
+    }
+    if (!transcript) {
+      emit({
+        type: 'error',
+        error: {
+          ...NO_TRANSCRIPT,
+          message: 'Geen transcript gevonden om te verfijnen.',
+          action: 'retry',
+          tryPageTranscript: !req.paginaGeprobeerd,
+        },
+      });
+      return;
+    }
+  }
+  const meta: VideoMeta = info?.meta ?? {
+    videoId: req.videoId,
+    titel: summary.titel,
+    kanaal: '',
+    duurSeconden: 0,
+    ...req.pageMeta,
+  };
+
+  const refinement = await refineSummary(
+    meta,
+    transcript,
+    summary,
+    { instructie: req.instructie, label: req.label },
+    {
+      provider,
+      apiKey,
+      model: settings.models[provider],
+      taal: settings.taal,
+      timeoutMs: fromVideo ? 300_000 : undefined,
+      fetch: deps.fetch,
+      onProgress: (stap) => emit({ type: 'progress', stap, provider }),
+      onCall: deps.onCall,
+    },
+  );
+  // Read again: another tab may have added a refinement meanwhile.
+  const latest = (await deps.getCached(req.videoId, settings.taal)) ?? summary;
+  const updated = withRefinement(latest, refinement);
+  await deps.setCached(updated);
+  emit({ type: 'done', summary: updated, fromCache: true, refinementId: refinement.id });
 }
 
 const NO_TRANSCRIPT: ErrorInfo = { code: 'no_transcript', message: 'Geen transcript gevonden.' };

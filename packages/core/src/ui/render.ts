@@ -1,4 +1,5 @@
-import type { Moment, Summary, Takeaway } from '../engine/types';
+import { applyRefinement, findRefinement } from '../engine/refinements';
+import type { Moment, RefinementSuggestion, Summary, Takeaway } from '../engine/types';
 import type { ErrorInfo, SummaryStep } from '../job';
 import { errorMessage, messages, type Messages } from '../i18n/messages';
 import { groupVoices, voiceLabel, type SpeechId, type VoiceLike } from './speechText';
@@ -9,7 +10,15 @@ import { summaryToText } from './summaryText';
 export type ViewState =
   | { kind: 'idle' }
   | { kind: 'loading'; stap: SummaryStep; provider?: string; deel?: number; delen?: number }
-  | { kind: 'done'; summary: Summary; fromCache: boolean }
+  | {
+      kind: 'done';
+      summary: Summary;
+      fromCache: boolean;
+      /** A refinement is running; the summary stays visible. */
+      refining?: { label: string };
+      /** The last refinement failed. */
+      refineError?: ErrorInfo;
+    }
   | { kind: 'error'; error: ErrorInfo }
   | { kind: 'confirm'; minuten: number };
 
@@ -36,6 +45,10 @@ export interface ViewHandlers {
   onToggleEnabled?: (on: boolean) => void;
   /** Copy button under a summary; gets the plain text. Omitted handler hides the button. */
   onCopy?: (text: string) => Promise<void> | void;
+  /** Refine the takeaways with an instruction; omitted handler hides the refine block. */
+  onRefine?: (instructie: string, label?: string) => void;
+  /** Switch between the original takeaways (null) and a refinement. */
+  onSelectRefinement?: (id: string | null) => void;
 }
 
 export interface ViewOptions {
@@ -52,6 +65,8 @@ export interface ViewOptions {
   speech?: SpeechView;
   /** False: The Point is switched off; only the header with the switch is shown. */
   enabled?: boolean;
+  /** Id of the refinement shown instead of the original takeaways. */
+  activeRefinement?: string | null;
 }
 
 export interface SpeechView {
@@ -297,6 +312,8 @@ export function renderView(
 
     case 'done': {
       const s = state.summary;
+      const active = handlers.onSelectRefinement ? findRefinement(s, opts.activeRefinement) : null;
+      const shown = applyRefinement(s, active?.id);
       const body = h('div', { class: 'body' });
       const speech = handlers.onSpeak ? opts.speech : undefined;
       if (speech) body.append(renderSpeechBar(speech, handlers, t));
@@ -321,11 +338,17 @@ export function renderView(
             : null,
         ),
       );
-      if (s.takeaways.length > 0) {
-        body.append(h('div', { class: 'section-label' }, v.takeaways(s.takeaways.length)));
-        const scroll = !!opts.scrollAfter && s.takeaways.length > opts.scrollAfter;
+      if (handlers.onSelectRefinement && s.verfijnd?.length)
+        body.append(renderTabs(s, active?.id ?? null, handlers.onSelectRefinement, v));
+      if (active) {
+        body.append(h('p', { class: 'instruction' }, v.instruction(active.instructie)));
+        if (active.toelichting) body.append(h('p', { class: 'instruction' }, active.toelichting));
+      }
+      if (shown.takeaways.length > 0) {
+        body.append(h('div', { class: 'section-label' }, v.takeaways(shown.takeaways.length)));
+        const scroll = !!opts.scrollAfter && shown.takeaways.length > opts.scrollAfter;
         const list = h('ul', { class: scroll ? 'takeaways scroll' : 'takeaways' });
-        s.takeaways.forEach((item, i) =>
+        shown.takeaways.forEach((item, i) =>
           list.append(renderTakeaway(item, i, handlers, seek, v, speech)),
         );
         body.append(list);
@@ -341,7 +364,8 @@ export function renderView(
         ),
       );
       if (handlers.onCopy)
-        body.append(h('div', { class: 'tools' }, copyButton(s, handlers.onCopy, t)));
+        body.append(h('div', { class: 'tools' }, copyButton(shown, handlers.onCopy, t)));
+      if (handlers.onRefine) body.append(renderRefine(state, handlers, t));
       if (s.isInterview) body.append(h('div', { class: 'meta' }, v.interview));
       if (s.bron === 'gemini_video') {
         body.append(h('div', { class: 'notice' }, v.madeWithoutTranscript));
@@ -369,7 +393,14 @@ export function renderView(
 
   // Re-rendering replaces the list; keep where the user had scrolled to.
   const scrollTop = root.querySelector('ul.takeaways.scroll')?.scrollTop ?? 0;
+  // ...and what the user was typing in the refine field.
+  const oldInput = root.querySelector<HTMLInputElement>('input.refine-input');
+  const typed = oldInput?.value ?? '';
+  const focused = !!oldInput && isFocused(root, oldInput);
   root.replaceChildren(card);
+  const newInput = root.querySelector<HTMLInputElement>('input.refine-input');
+  if (newInput && typed && !newInput.value) newInput.value = typed;
+  if (newInput && focused && !newInput.disabled) newInput.focus();
   const list = root.querySelector<HTMLElement>('ul.takeaways.scroll');
   if (list) {
     fitScrollList(list, opts.scrollAfter ?? 0);
@@ -499,6 +530,7 @@ function renderTakeaway(
   const zin = h('div', { class: 'zin', title: t.citaat ? v.quote(t.citaat) : undefined }, t.zin);
   if (t.zekerheid !== 'feit') zin.append(h('span', { class: 'label' }, v.zekerheid[t.zekerheid]));
   if (t.afgeleid) zin.append(h('span', { class: 'label', title: v.derivedTitle }, v.derived));
+  if (t.nieuw) zin.append(h('span', { class: 'label nieuw', title: v.newPointTitle }, v.newPoint));
   if (t.onbevestigd) {
     zin.append(
       h('span', {
@@ -510,6 +542,8 @@ function renderTakeaway(
       }),
     );
   }
+  if (t.aanvulling?.length)
+    zin.append(h('ul', { class: 'aanvulling' }, ...t.aanvulling.map((r) => h('li', {}, r))));
   const speaking = speech?.speakingId === index;
   const speak =
     speech?.available && handlers.onSpeak
@@ -532,4 +566,132 @@ function renderTakeaway(
     zin,
     speak,
   );
+}
+
+/** Is the element focused, in the page or inside the shadow root that holds it? */
+function isFocused(root: HTMLElement, el: HTMLElement): boolean {
+  const node = root.getRootNode() as Document | ShadowRoot;
+  return node.activeElement === el || document.activeElement === el;
+}
+
+/** "Oorspronkelijk" plus one tab per refinement. */
+function renderTabs(
+  s: Summary,
+  activeId: string | null,
+  onSelect: (id: string | null) => void,
+  v: Messages['view'],
+): HTMLElement {
+  const tab = (id: string | null, label: string, title?: string) =>
+    h(
+      'button',
+      {
+        class: 'refine-tab',
+        role: 'tab',
+        'aria-selected': String(activeId === id),
+        'data-refinement': id ?? '',
+        title: title ?? label,
+        onClick: () => onSelect(id),
+      },
+      label,
+    );
+  return h(
+    'div',
+    { class: 'refine-tabs', role: 'tablist', 'aria-label': v.tabsAria },
+    tab(null, v.original),
+    ...(s.verfijnd ?? []).map((r) => tab(r.id, r.label, r.instructie)),
+  );
+}
+
+/** The refine block under the list: suggestion buttons, a text field and the status. */
+function renderRefine(
+  state: Extract<ViewState, { kind: 'done' }>,
+  handlers: ViewHandlers,
+  t: Messages,
+): HTMLElement {
+  const v = t.view;
+  const s = state.summary;
+  const busy = !!state.refining;
+  const onRefine = handlers.onRefine!;
+  const done = new Map((s.verfijnd ?? []).map((r) => [r.instructie.toLowerCase(), r.id]));
+  const suggestions: RefinementSuggestion[] = s.verfijningen?.length
+    ? s.verfijningen
+    : v.refineDefaults;
+
+  const chips = h(
+    'div',
+    { class: 'refine-chips' },
+    ...suggestions.map((x) => {
+      const existing = done.get(x.instructie.toLowerCase());
+      return h(
+        'button',
+        {
+          class: existing ? 'btn small done' : 'btn small',
+          title: x.instructie,
+          disabled: busy,
+          onClick: () =>
+            existing && handlers.onSelectRefinement
+              ? handlers.onSelectRefinement(existing)
+              : onRefine(x.instructie, x.label),
+        },
+        x.label,
+      );
+    }),
+  );
+
+  const input = h('input', {
+    class: 'refine-input',
+    type: 'text',
+    maxlength: '500',
+    placeholder: v.refinePlaceholder,
+    'aria-label': v.refineTitle,
+    disabled: busy,
+  });
+  const form = h(
+    'form',
+    {
+      class: 'refine-form',
+      onSubmit: (e: Event) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text || busy) return;
+        input.value = '';
+        onRefine(text);
+      },
+    },
+    input,
+    h('button', { class: 'btn primary', type: 'submit', disabled: busy }, v.refineButton),
+  );
+
+  const block = h(
+    'div',
+    { class: 'refine' },
+    h('div', { class: 'section-label' }, v.refineTitle),
+    h('p', { class: 'refine-hint' }, v.refineHint),
+    chips,
+    form,
+  );
+  if (state.refining) {
+    block.append(
+      h(
+        'div',
+        { class: 'refine-status', role: 'status' },
+        h('span', { class: 'spinner' }),
+        v.refining(state.refining.label),
+      ),
+    );
+  } else if (state.refineError) {
+    const e = state.refineError;
+    block.append(
+      h(
+        'div',
+        { class: 'refine-error', role: 'alert' },
+        `${v.refineFailed}: ${errorMessage(e, t)}`,
+      ),
+    );
+    if (e.details)
+      block.append(
+        h('details', {}, h('summary', {}, v.details), h('pre', {}, `${e.code}: ${e.details}`)),
+      );
+  }
+  return block;
 }

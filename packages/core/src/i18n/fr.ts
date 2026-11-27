@@ -21,6 +21,7 @@ export const fr: Messages = {
       samenvoegen: 'Fusion des parties…',
       herstel: 'Réparation de la réponse…',
       video: 'Gemini regarde la vidéo (cela prend plus de temps)…',
+      verfijnen: 'Affinage…',
     },
     summarizingWith: (p) => `Résumé avec ${p}…`,
     zekerheid: { bewering: 'affirmation', mening: 'opinion', gerucht: 'rumeur' },
@@ -86,6 +87,30 @@ export const fr: Messages = {
     copied: 'Copié',
     copyFailed: 'Copie impossible',
     keyPoint: 'Point essentiel',
+    refineTitle: 'Affiner',
+    refineHint:
+      'Choisis une suggestion ou tape ta propre instruction. Tu obtiens les mêmes points avec un complément ; l’original est conservé.',
+    refinePlaceholder: 'Ex. « Donne les étapes du point 4 »',
+    refineButton: 'Affiner',
+    refining: (l) => `Affinage en cours: ${l}…`,
+    refineFailed: 'L’affinage a échoué',
+    original: 'Original',
+    tabsAria: 'Affichage des points',
+    instruction: (x) => `Instruction: ${x}`,
+    newPoint: 'nouveau',
+    newPointTitle: 'Nouveau point : absent de la liste d’origine',
+    refineDefaults: [
+      {
+        label: 'Citer les outils',
+        instructie: 'Pour chaque point, cite les outils, produits ou services mentionnés.',
+      },
+      {
+        label: 'Avis par point',
+        instructie:
+          'Pour chaque point, donne un avis court : quelle importance et quelle solidité ?',
+      },
+      { label: 'Pour débutants', instructie: 'Explique chaque point avec des mots simples.' },
+    ],
   },
 
   errors: {

@@ -101,6 +101,27 @@ ul.takeaways li:hover .speak-btn, .speak-btn:focus-visible, .speak-btn.active { 
 .notice { margin-top: 10px; padding: 8px 10px; border-radius: 8px; background: var(--yt-warn-bg); color: var(--yt-text); font-size: 13px; line-height: 18px; }
 .empty { color: var(--yt-text-2); }
 
+/* Refining: tabs above the list, additions under each point, the form below the list. */
+.refine-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; }
+.refine-tab { height: 26px; padding: 0 10px; border: 1px solid var(--yt-border); border-radius: 13px; background: transparent; color: var(--yt-text); font-size: 12px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.refine-tab:hover { background: var(--yt-card-hover); }
+.refine-tab[aria-selected="true"] { background: var(--yt-accent-bg); color: var(--yt-accent); border-color: transparent; font-weight: 500; }
+.instruction { margin: 6px 0 0; font-size: 12px; line-height: 16px; color: var(--yt-text-2); font-style: italic; overflow-wrap: anywhere; }
+ul.takeaways ul.aanvulling { list-style: disc; margin: 4px 0 0; padding: 0 0 0 18px; display: block; font-size: 13px; line-height: 18px; color: var(--yt-text-2); }
+ul.takeaways ul.aanvulling li { display: list-item; padding: 0; margin: 2px 0 0; border-radius: 0; background: none; box-shadow: none; }
+.label.nieuw { background: var(--yt-accent-bg); color: var(--yt-accent); }
+.refine { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--yt-border); }
+.refine .section-label { margin-top: 0; }
+.refine-hint { margin: 0 0 8px; font-size: 12px; line-height: 16px; color: var(--yt-text-2); }
+.refine-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.refine-chips .btn.done { background: var(--yt-accent-bg); color: var(--yt-accent); }
+.refine-form { display: flex; gap: 6px; }
+.refine-input { flex: 1; min-width: 0; height: 32px; font: inherit; font-size: 13px; color: var(--yt-text); background: var(--yt-bg); border: 1px solid var(--yt-border); border-radius: 16px; padding: 0 12px; }
+.refine-input:focus-visible { outline: 2px solid var(--yt-accent); outline-offset: 1px; }
+.refine button:disabled, .refine-input:disabled { opacity: .5; cursor: default; }
+.refine-status { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; color: var(--yt-text-2); }
+.refine-error { margin-top: 8px; font-size: 13px; line-height: 18px; color: var(--yt-error); }
+
 .loading { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .loading .step { color: var(--yt-text-2); font-size: 13px; display: flex; align-items: center; gap: 8px; }
 .spinner { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--yt-border); border-top-color: var(--yt-accent); animation: spin .8s linear infinite; flex: none; }

@@ -21,6 +21,7 @@ export const it: Messages = {
       samenvoegen: 'Unione delle parti…',
       herstel: 'Riparazione della risposta…',
       video: 'Gemini sta guardando il video (ci vuole più tempo)…',
+      verfijnen: 'Affinamento…',
     },
     summarizingWith: (p) => `Riassunto con ${p}…`,
     zekerheid: { bewering: 'affermazione', mening: 'opinione', gerucht: 'voce' },
@@ -85,6 +86,30 @@ export const it: Messages = {
     copied: 'Copiato',
     copyFailed: 'Copia non riuscita',
     keyPoint: 'Punto principale',
+    refineTitle: 'Affina',
+    refineHint:
+      'Scegli un suggerimento o scrivi una tua istruzione. Ottieni gli stessi punti con un’aggiunta; l’originale resta salvato.',
+    refinePlaceholder: 'Es. "Dai i passaggi del punto 4"',
+    refineButton: 'Affina',
+    refining: (l) => `Affinamento in corso: ${l}…`,
+    refineFailed: 'Affinamento non riuscito',
+    original: 'Originale',
+    tabsAria: 'Vista dei punti',
+    instruction: (x) => `Istruzione: ${x}`,
+    newPoint: 'nuovo',
+    newPointTitle: 'Nuovo punto: non era nell’elenco originale',
+    refineDefaults: [
+      {
+        label: 'Indica gli strumenti',
+        instructie: 'Per ogni punto, indica gli strumenti, prodotti o servizi citati.',
+      },
+      {
+        label: 'Giudizio per punto',
+        instructie:
+          'Per ogni punto, dai un breve giudizio: quanto è importante e quanto è supportato?',
+      },
+      { label: 'Per principianti', instructie: 'Spiega ogni punto con parole semplici.' },
+    ],
   },
 
   errors: {

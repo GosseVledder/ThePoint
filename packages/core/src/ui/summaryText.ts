@@ -42,6 +42,7 @@ export function summaryToText(s: Summary, t: Messages, opts: { format?: TextForm
       const tail = extra.length ? ` (${extra.join(', ')})` : '';
       const stamp = md ? time(item.tijd, item.seconden) : `[${item.tijd}]`;
       lines.push(`- ${stamp} ${text(item.zin)}${tail}`);
+      for (const extra of item.aanvulling ?? []) lines.push(`  - ${text(extra)}`);
     }
   }
 

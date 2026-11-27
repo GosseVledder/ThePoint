@@ -11,6 +11,7 @@ import { SpeechControl } from './speech';
 import { ICONS } from '@the-point/core/ui/styles';
 import { messages, type Messages } from '@the-point/core/i18n/messages';
 import { scrollAfter } from '@the-point/core/settings';
+import { applyRefinement } from '@the-point/core/engine/refinements';
 
 const PANEL_CSS = `
 :host { display: block; }
@@ -54,6 +55,8 @@ export class WatchPanel {
   private speech: SpeechControl;
   private gate: { release: () => void } | null = null;
   private collapsed = true;
+  /** Refinement shown instead of the original takeaways (null = the original). */
+  private activeRefinement: string | null = null;
   private observers: MutationObserver[] = [];
   private cleanups: (() => void)[] = [];
   private destroyed = false;
@@ -68,6 +71,10 @@ export class WatchPanel {
       onState: () => this.render(),
       readPageTranscript: () => readTranscriptPanel(videoId),
       pageMeta: () => readPageMeta(videoId),
+      onRefined: (id) => {
+        this.activeRefinement = id;
+        this.render();
+      },
     });
     // Reading aloud pauses the video (and lifts the autoplay gate).
     this.speech = new SpeechControl(
@@ -189,6 +196,15 @@ export class WatchPanel {
       onOpenOptions: () => void sendRuntime({ type: 'openOptions' }),
       onSetup: () => void sendRuntime({ type: 'openOnboarding' }),
       onCopy: copyText,
+      onRefine: (instructie, label) => {
+        this.speech.stop();
+        this.session.refine(instructie, label);
+      },
+      onSelectRefinement: (id) => {
+        this.speech.stop();
+        this.activeRefinement = id;
+        this.render();
+      },
       onWatchAnyway: () => {
         this.releaseGate();
         this.render();
@@ -220,6 +236,7 @@ export class WatchPanel {
         t: this.t,
         seekMargin: this.settings.springMarge,
         scrollAfter: scrollAfter(this.settings),
+        activeRefinement: this.activeRefinement,
       });
     }
     if (this.overlay) this.renderOverlay();
@@ -242,9 +259,10 @@ export class WatchPanel {
     this.gate = null;
   }
 
+  /** The summary as shown: with the takeaways of the active refinement, if any. */
   private summary(): Summary | null {
     const s = this.session.state;
-    return s.kind === 'done' ? s.summary : null;
+    return s.kind === 'done' ? applyRefinement(s.summary, this.activeRefinement) : null;
   }
 
   // Progress bar markers
@@ -371,6 +389,7 @@ export class WatchPanel {
         t: this.t,
         seekMargin: this.settings.springMarge,
         scrollAfter: scrollAfter(this.settings),
+        activeRefinement: this.activeRefinement,
       },
     );
   }

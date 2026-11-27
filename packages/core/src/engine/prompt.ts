@@ -1,4 +1,4 @@
-import type { Transcript, VideoMeta } from './types';
+import type { Takeaway, Transcript, VideoMeta } from './types';
 
 /** System prompt, taken verbatim from docs/PROMPT-TAKEAWAYS.md, chapter 1. */
 export const SYSTEM_PROMPT_TEMPLATE = `Je bent een analist die YouTube-video's terugbrengt tot hun inhoudelijke kern. De gebruiker wil de video niet hoeven kijken: hij wil alleen weten wat er werkelijk nieuw, belangrijk of bruikbaar in wordt gezegd.
@@ -126,6 +126,15 @@ Werk in deze volgorde, en geef alleen het eindresultaat:
    - Staan er geen inleiding, sponsor, oproepen of herhalingen in de lijst?
    Herstel wat niet klopt.
 
+# Verfijningen voorstellen
+
+Na het lezen kan de gebruiker de takeaways laten verfijnen of verdiepen met één instructie. Stel in "verfijningen" 2 tot 5 instructies voor die bij déze video het meest opleveren:
+- Kies wat het transcript echt bevat. Een tutorial: de stappen of de gebruikte tools. Een review: het oordeel per punt of de voor- en nadelen. Een nieuwsoverzicht: de genoemde bedrijven en producten of de gevolgen. Een uitleg: voorbeelden of de begrippen eenvoudig uitgelegd. Een interview: wie wat zegt.
+- Stel alleen een instructie voor als de video er genoeg informatie voor bevat. Liever 2 goede dan 5 halve.
+- "label": de knoptekst, 2 tot 4 woorden, zonder punt ("Noem de tools", "Oordeel per punt").
+- "instructie": één zin aan het model, gericht op de punten ("Noem bij elk punt de tool of het product dat erbij genoemd wordt.").
+- Schrijf label en instructie in het {taal}.
+
 # Uitvoer
 
 Geef uitsluitend geldige JSON volgens het schema hieronder, zonder tekst ervoor of erna en zonder markdown-codeblok. Zet de takeaways in de volgorde waarin ze in de video voorkomen.
@@ -169,7 +178,7 @@ export function languageName(code: string): string {
 }
 
 export function buildSystemPrompt(taal: string, schema: Record<string, unknown>): string {
-  return SYSTEM_PROMPT_TEMPLATE.replace('{taal}', languageName(taal)).replace(
+  return SYSTEM_PROMPT_TEMPLATE.replaceAll('{taal}', languageName(taal)).replace(
     '{schema}',
     JSON.stringify(schema, null, 2),
   );
@@ -278,6 +287,7 @@ export function buildMergeMessage(meta: VideoMeta, partsJson: string[]): string 
     '- Neem tijd, citaat, zekerheid, afgeleid en moment ongewijzigd over van de takeaway die je houdt. Verzin geen nieuwe citaten of tijden.',
     '- Bepaal het kritieke punt, het videotype en het inhoudsoordeel opnieuw over de hele video.',
     '- Stelt de titel een vraag of belooft die een antwoord, dan is het kritieke punt het antwoord dat de video geeft, ook als dat maar in één deel staat.',
+    '- Kies de verfijningen opnieuw voor de hele video (2 tot 5).',
     '',
     ...partsJson.map((p, i) => `Deel ${i + 1}:\n${p}`),
   ].join('\n');
@@ -301,6 +311,111 @@ export function buildVideoUserMessage(meta: VideoMeta): string {
     `Publicatiedatum: ${meta.publicatiedatum ?? 'onbekend'}`,
     'Transcript: niet beschikbaar; analyseer de bijgevoegde video.',
   ].join('\n');
+}
+
+/** System prompt for a refinement: rework the existing takeaways with one instruction. */
+export const REFINE_PROMPT_TEMPLATE = `Je bent een analist die de inhoud van YouTube-video's precies en betrouwbaar weergeeft. Van een video is al een lijst met takeaways gemaakt: de belangrijkste inhoudelijke punten, elk met een tijdmarkering en een letterlijk citaat. De gebruiker wil die lijst verfijnen of verdiepen met één instructie, bijvoorbeeld "noem bij elk punt de genoemde tool", "geef bij elk punt een oordeel" of "geef bij punt 4 de stappen".
+
+Je krijgt de metadata van de video, het transcript met tijdmarkeringen [mm:ss] of [u:mm:ss], de huidige takeaways (genummerd) en de instructie.
+
+# Je taak
+
+Geef de takeaways opnieuw, verwerkt volgens de instructie:
+- Neem elk oorspronkelijk punt op, in dezelfde volgorde, met zijn nummer in "nr". Laat "zin", "tijd", "citaat", "zekerheid", "afgeleid" en "moment" ongewijzigd, tenzij de instructie vraagt om de zin anders te formuleren (bijvoorbeeld eenvoudiger of korter).
+- Zet wat de instructie toevoegt in "aanvulling": een lijst korte regels (bijvoorbeeld de tool, het oordeel, of de stappen in volgorde, één stap per regel). Begin een regel niet met een opsommingsteken of nummer.
+- Slaat de instructie alleen op bepaalde punten (zoals "bij punt 4"), geef de andere punten dan ongewijzigd met een lege "aanvulling".
+- Zegt de video niets over wat de instructie vraagt bij een punt, schrijf dan in "aanvulling" één regel zoals "Niet genoemd in de video." Verzin niets.
+- Vraagt de instructie om iets wat geen bestaand punt dekt (een vraag over een ander onderwerp uit de video, of "welke punten mis ik nog?"), voeg dan nieuwe punten toe met "nr": null, een eigen zin, tijd en citaat volgens dezelfde regels. Voeg alleen nieuwe punten toe als de instructie daarom vraagt.
+- Vraagt de instructie om alleen bepaalde punten ("alleen de punten over prijzen"), geef dan alleen die punten.
+
+# Trouw aan de video
+
+- Gebruik alleen informatie uit het transcript. Voeg geen eigen kennis toe. Een oordeel of beoordeling geef je alleen als de instructie erom vraagt; baseer het dan op wat in de video gezegd of getoond wordt, en zeg dat het jouw beoordeling is als de spreker zelf geen oordeel geeft.
+- Neem getallen alleen over uit het transcript; verzin, schat of rond niets af.
+- Een nieuw punt krijgt een letterlijk citaat (maximaal 20 woorden, oorspronkelijke taal) en de tijdmarkering van het segment waarin het citaat begint. Gebruik alleen tijdmarkeringen die in het transcript voorkomen.
+- "zekerheid" en "moment" betekenen hetzelfde als in de oorspronkelijke lijst: zekerheid is "feit", "bewering" (claim van een belanghebbende of zonder bron), "mening" of "gerucht"; moment is "gebeurtenis", "uitspraak" of "onderwerp".
+
+# Taal
+
+Schrijf zinnen, aanvullingen en de toelichting in het {taal}. Citaten blijven in de oorspronkelijke taal. Vertaal eigennamen en productnamen niet.
+
+# Toelichting
+
+Geef in "toelichting" hooguit één korte zin, alleen als er iets te melden is (bijvoorbeeld "De video noemt bij de meeste punten geen tool."). Anders een lege tekst.
+
+# Uitvoer
+
+Geef uitsluitend geldige JSON volgens het schema hieronder, zonder tekst ervoor of erna en zonder markdown-codeblok.
+
+{schema}`;
+
+/** Extra instructions when Gemini watches the video itself instead of a transcript. */
+export const REFINE_VIDEO_ADDENDUM = `
+
+# Let op: geen transcript
+
+Voor deze video is geen transcript beschikbaar. Je krijgt de video zelf (beeld en geluid). "Transcript" betekent hier: wat er in de video wordt gezegd en getoond. Gebruik als tijdmarkering het moment in de video (mm:ss of u:mm:ss); het citaat is een letterlijk gesproken fragment of tekst in beeld.`;
+
+export function buildRefineSystemPrompt(taal: string, schema: Record<string, unknown>): string {
+  return REFINE_PROMPT_TEMPLATE.replaceAll('{taal}', languageName(taal)).replace(
+    '{schema}',
+    JSON.stringify(schema, null, 2),
+  );
+}
+
+/** The current takeaways, numbered as the user sees them, with the fields to keep. */
+export function renderTakeawaysForRefine(
+  takeaways: Pick<Takeaway, 'zin' | 'tijd' | 'citaat' | 'zekerheid' | 'afgeleid' | 'moment'>[],
+): string {
+  return JSON.stringify(
+    takeaways.map((t, i) => ({
+      nr: i + 1,
+      zin: t.zin,
+      tijd: t.tijd,
+      citaat: t.citaat,
+      zekerheid: t.zekerheid,
+      afgeleid: t.afgeleid,
+      ...(t.moment ? { moment: t.moment } : {}),
+    })),
+    null,
+    2,
+  );
+}
+
+export function buildRefineUserMessage(
+  meta: VideoMeta,
+  transcript: Pick<Transcript, 'taal' | 'soort'> | null,
+  linesText: string | null,
+  takeawaysJson: string,
+  instructie: string,
+  opts: { truncated?: boolean } = {},
+): string {
+  const parts = [
+    `Titel: ${meta.titel}`,
+    `Kanaal: ${meta.kanaal || 'onbekend'}`,
+    `Duur: ${formatTime(meta.duurSeconden)}`,
+  ];
+  if (transcript)
+    parts.push(
+      `Transcripttaal: ${transcript.taal} (${transcript.soort === 'handmatig' ? 'handmatig' : 'automatisch gegenereerd'})`,
+    );
+  parts.push(
+    '',
+    `Huidige takeaways:\n${takeawaysJson}`,
+    '',
+    `Instructie van de gebruiker: ${instructie.trim()}`,
+  );
+  if (linesText === null) {
+    parts.push('', 'Transcript: niet beschikbaar; gebruik de bijgevoegde video.');
+  } else {
+    if (opts.truncated)
+      parts.push(
+        '',
+        'Let op: het transcript is te lang en is ingekort tot het eerste deel. Zeg in de toelichting dat alleen dat deel is gebruikt als dat het resultaat beïnvloedt.',
+      );
+    parts.push('', `Transcript:\n${linesText}`);
+  }
+  return parts.join('\n');
 }
 
 /** Repair request after an answer that did not validate. */

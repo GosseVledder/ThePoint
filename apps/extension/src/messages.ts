@@ -1,6 +1,6 @@
 // Message contracts between the content script, the options page and the background.
 import type { ProviderId } from '@the-point/core/engine/types';
-import type { ErrorInfo, JobEvent, JobRequest } from '@the-point/core/job';
+import type { ErrorInfo, JobEvent, JobRequest, RefineRequest } from '@the-point/core/job';
 import type { UpdateCheck } from '@the-point/core/update';
 import { isVideoId } from '@the-point/core/youtube/videoId';
 
@@ -15,7 +15,10 @@ export const HISTORY_PAGE = '/history.html';
 export type { ErrorCode, ErrorInfo, SummaryStep } from '@the-point/core/job';
 
 /** Content -> background, over the long-lived port. */
-export type PortRequest = ({ type: 'start' } & JobRequest) | { type: 'ping' };
+export type PortRequest =
+  | ({ type: 'start' } & JobRequest)
+  | ({ type: 'refine' } & RefineRequest)
+  | { type: 'ping' };
 
 /** Background -> content, over the port. */
 export type PortEvent = JobEvent;

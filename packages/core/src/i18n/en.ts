@@ -21,6 +21,7 @@ export const en: Messages = {
       samenvoegen: 'Merging parts…',
       herstel: 'Repairing answer…',
       video: 'Gemini is watching the video (this takes longer)…',
+      verfijnen: 'Refining…',
     },
     summarizingWith: (p) => `Summarizing with ${p}…`,
     zekerheid: { bewering: 'claim', mening: 'opinion', gerucht: 'rumour' },
@@ -84,6 +85,30 @@ export const en: Messages = {
     copied: 'Copied',
     copyFailed: 'Could not copy',
     keyPoint: 'Key point',
+    refineTitle: 'Refine',
+    refineHint:
+      'Pick a suggestion or type your own instruction. You get the same points with an addition; the original is kept.',
+    refinePlaceholder: 'E.g. "Give the steps for point 4"',
+    refineButton: 'Refine',
+    refining: (l) => `Refining: ${l}…`,
+    refineFailed: 'Refining failed',
+    original: 'Original',
+    tabsAria: 'View of the points',
+    instruction: (x) => `Instruction: ${x}`,
+    newPoint: 'new',
+    newPointTitle: 'New point: not in the original list',
+    refineDefaults: [
+      {
+        label: 'Name the tools',
+        instructie: 'For each point, name the tools, products or services mentioned with it.',
+      },
+      {
+        label: 'Verdict per point',
+        instructie:
+          'For each point, give a short verdict: how important and how well supported is it?',
+      },
+      { label: 'Explain for beginners', instructie: 'Explain each point in simple words.' },
+    ],
   },
 
   errors: {

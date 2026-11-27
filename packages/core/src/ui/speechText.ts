@@ -31,7 +31,8 @@ export function buildSpeechItems(summary: Spoken): SpeechItem[] {
   summary.takeaways.forEach((t, i) => {
     const label = t.zekerheid === 'feit' ? null : sp.zekerheid[t.zekerheid];
     const zin = t.zin.trim().replace(/[.!?…]*$/, '');
-    items.push({ id: i, text: `${sp.punt(i + 1)} ${zin}${label ? `. ${label}` : ''}.` });
+    const extra = (t.aanvulling ?? []).map((r) => ` ${endSentence(r)}`).join('');
+    items.push({ id: i, text: `${sp.punt(i + 1)} ${zin}${label ? `. ${label}` : ''}.${extra}` });
   });
   return items;
 }

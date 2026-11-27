@@ -12,7 +12,12 @@ import {
 } from './prompt';
 import { claudeProvider } from './providers/claude';
 import { geminiProvider } from './providers/gemini';
-import { modelOutputJsonSchema, parseModelOutput, type ModelOutput } from './schema';
+import {
+  modelOutputJsonSchema,
+  parseModelOutput,
+  type ModelOutput,
+  type ParseResult,
+} from './schema';
 import {
   EngineError,
   type CallLog,
@@ -32,7 +37,7 @@ export const PROVIDERS: Record<ProviderId, SummaryProvider> = {
   gemini: geminiProvider,
 };
 
-export type Progress = 'samenvatten' | 'deel' | 'samenvoegen' | 'herstel' | 'video';
+export type Progress = 'samenvatten' | 'deel' | 'samenvoegen' | 'herstel' | 'video' | 'verfijnen';
 
 export interface SummarizeOptions extends ProviderOptions {
   provider: ProviderId;
@@ -51,21 +56,24 @@ export interface SummarizeResult {
   stats?: VerifyStats;
 }
 
-function providerFor(opts: SummarizeOptions): SummaryProvider {
+export function providerFor(opts: SummarizeOptions): SummaryProvider {
   const p = opts.providers?.[opts.provider] ?? PROVIDERS[opts.provider];
   if (!p) throw new EngineError('bad_request', `Onbekende provider: ${opts.provider}`);
   return p;
 }
 
 /** Call the model, validate, and make one repair attempt on invalid output. */
-async function callValidated(
+export async function callValidated<T = ModelOutput>(
   call: (req: ChatRequest) => Promise<RawModelOutput>,
   req: ChatRequest,
   stap: CallLog['stap'],
   opts: SummarizeOptions,
-): Promise<{ output: ModelOutput; model: string }> {
+  parse: (text: string) => ParseResult<T> = parseModelOutput as unknown as (
+    text: string,
+  ) => ParseResult<T>,
+): Promise<{ output: T; model: string }> {
   const first = await logged(() => call(req), req, stap, opts);
-  const parsed = parseModelOutput(first.text);
+  const parsed = parse(first.text);
   if (parsed.ok) return { output: parsed.value, model: first.model ?? opts.model };
 
   opts.onProgress?.('herstel');
@@ -74,7 +82,7 @@ async function callValidated(
     user: buildRepairMessage(req.user, first.text, parsed.error),
   };
   const second = await logged(() => call(repairReq), repairReq, 'herstel', opts);
-  const reparsed = parseModelOutput(second.text);
+  const reparsed = parse(second.text);
   if (reparsed.ok) return { output: reparsed.value, model: second.model ?? opts.model };
   throw new EngineError(
     'invalid_json',
@@ -139,7 +147,23 @@ function assemble(
     inhoudsoordeel: output.inhoudsoordeel,
     isInterview: output.isInterview,
     transcriptKwaliteit: output.transcriptKwaliteit,
+    ...suggestions(output.verfijningen),
   };
+}
+
+/** Keep 2–5 usable suggestions; drop empty or duplicate ones. */
+function suggestions(list: ModelOutput['verfijningen']): Pick<Summary, 'verfijningen'> {
+  const seen = new Set<string>();
+  const clean = (list ?? [])
+    .map((x) => ({ label: x.label.trim().replace(/[.:]+$/, ''), instructie: x.instructie.trim() }))
+    .filter((x) => {
+      const key = x.label.toLowerCase();
+      if (!x.label || !x.instructie || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 5);
+  return clean.length ? { verfijningen: clean } : {};
 }
 
 /** Summarize a video from its transcript (the default route). */

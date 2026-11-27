@@ -19,7 +19,7 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 | | Download | Installeren |
 |---|---|---|
 | 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.7.0.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.7.0.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
-| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.8.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.8.0.zip)<br>253 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
+| 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.9.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.9.0.zip)<br>264 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini, gratis) of Anthropic (Claude, betaald); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
 
@@ -38,6 +38,7 @@ Veel video's duren twintig minuten of langer, terwijl de kern in een paar zinnen
 - **Voorlezen** met de gratis stemmen van je browser, Windows of Android.
 - **Zeven talen**: de interface en de samenvatting stel je los van elkaar in (Nederlands, Engels, Duits, Frans, Spaans, Italiaans, Portugees).
 - **Eén keer samenvatten per video**: elke samenvatting wordt bewaard; opnieuw openen kost geen nieuwe AI-aanroep.
+- **Verfijnen** (extensie): kies onder de lijst een voorstel, zoals *Noem de tools* of *Oordeel per punt*, of typ een eigen instructie ("geef bij punt 4 de stappen"). Je krijgt dezelfde punten met een aanvulling eronder, in een eigen tabblad; het origineel blijft bewaard en de verfijning ook.
 - **Kopiëren**: de samenvatting als tekst op het klembord, met de link naar de video.
 - **Geschiedenis**: alle samenvattingen terugzien, zonder limiet (extensie: *Instellingen › Geschiedenis*; app: *Recent* op het startscherm).
 
@@ -98,15 +99,15 @@ Laat in The Point de knop **YouTube-player** (▶ in de titelbalk) uit: de video
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-extension-0.8.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.8.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
-| **Versie** | 0.8.0 |
+| **Bestand** | [`ThePoint-extension-0.9.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.9.0.zip) (ook uitgepakt in de map [`extension/ThePoint/`](extension/ThePoint/)) |
+| **Versie** | 0.9.0 |
 | **Browsers** | Google Chrome en Microsoft Edge (één en dezelfde extensie) |
-| **Grootte** | 253 kB |
-| **SHA-256** | `bb45c0e2c9c351a1f888e87cf44090334ae7c686eac68fd244795eed2783911e` |
+| **Grootte** | 264 kB |
+| **SHA-256** | `d54107a2f60ae8233aafeb916ca81df7380dcddb7a6b778ee19472a25552a20d` |
 
 De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen; je laadt hem als *uitgepakte extensie*. Daarvoor heeft de browser een **map** nodig, geen zip.
 
-1. **Download** [`ThePoint-extension-0.8.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.8.0.zip).
+1. **Download** [`ThePoint-extension-0.9.0.zip`](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.9.0.zip).
 2. **Pak hem uit** naar een vaste plek, bijvoorbeeld `Documenten\ThePoint` (Windows: rechtsklik › *Alles uitpakken…*). In die map staat direct het bestand `manifest.json`. **Laat de map staan**: de browser laadt de extensie elke keer uit deze map.
 3. Open `chrome://extensions` (Chrome) of `edge://extensions` (Edge).
 4. Zet **Ontwikkelaarsmodus** aan (Chrome: rechtsboven; Edge: links).
@@ -121,6 +122,7 @@ De extensie staat niet in de Chrome Web Store of bij de Edge-invoegtoepassingen;
 - **Markeringen op de tijdbalk** van de speler voor elke takeaway (wit = kritiek punt).
 - **Knop in de spelerbalk** (het logo ▶.): in volledig scherm toont die de samenvatting als overlay.
 - **Knop "Samenvat" op thumbnails** (homepagina, zoekresultaten, aanbevelingen): toont de samenvatting zonder de video te openen. Thumbnails met een bewaarde samenvatting krijgen een geel ▶.-icoon.
+- **Verfijnen** onder de lijst: de AI stelt bij elke video 2 tot 5 verfijningen voor die bij de inhoud passen (bijvoorbeeld de tools, de stappen of een oordeel per punt); één klik is genoeg. Of typ een eigen instructie. Het resultaat verschijnt in een eigen tabblad naast *Oorspronkelijk*, met de aanvulling onder elk punt; tijden blijven klikbaar en worden net als de citaten gecontroleerd. Elke verfijning is één extra AI-aanroep en wordt bij de samenvatting bewaard.
 - **Kopiëren** onder de samenvatting zet de tekst, met de link naar de video, op het klembord.
 - **Geschiedenis**: *Instellingen › Geschiedenis* toont alle samenvattingen, de nieuwste bovenaan; klik op een titel om de video te openen, of verwijder er een.
 - **Voorlezen** (🔈) in het paneel; het punt dat wordt voorgelezen licht op en de video pauzeert. Edge heeft de meeste natuurlijke stemmen (bijvoorbeeld "Fenna" en "Maarten"); in Chrome is "Google Nederlands" beschikbaar.

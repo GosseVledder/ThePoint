@@ -21,6 +21,7 @@ export const nl: Messages = {
       samenvoegen: 'Delen samenvoegen…',
       herstel: 'Antwoord herstellen…',
       video: 'Gemini bekijkt de video (dit duurt langer)…',
+      verfijnen: 'Verfijnen…',
     },
     summarizingWith: (p) => `Samenvatten met ${p}…`,
     zekerheid: { bewering: 'bewering', mening: 'mening', gerucht: 'gerucht' },
@@ -86,6 +87,33 @@ export const nl: Messages = {
     copied: 'Gekopieerd',
     copyFailed: 'Kopiëren lukte niet',
     keyPoint: 'Kernpunt',
+    refineTitle: 'Verfijnen',
+    refineHint:
+      'Kies een voorstel of typ een eigen instructie. Je krijgt dezelfde punten met een aanvulling; het origineel blijft bewaard.',
+    refinePlaceholder: 'Bijv. "Geef bij punt 4 de stappen"',
+    refineButton: 'Verfijn',
+    refining: (l) => `Bezig met verfijnen: ${l}…`,
+    refineFailed: 'Verfijnen lukte niet',
+    original: 'Oorspronkelijk',
+    tabsAria: 'Weergave van de punten',
+    instruction: (x) => `Instructie: ${x}`,
+    newPoint: 'nieuw',
+    newPointTitle: 'Nieuw punt: stond niet in de oorspronkelijke lijst',
+    refineDefaults: [
+      {
+        label: 'Noem de tools',
+        instructie: 'Noem bij elk punt de tools, producten of diensten die erbij genoemd worden.',
+      },
+      {
+        label: 'Oordeel per punt',
+        instructie:
+          'Geef bij elk punt een kort oordeel: hoe belangrijk en hoe goed onderbouwd is het?',
+      },
+      {
+        label: 'Uitleg voor beginners',
+        instructie: 'Leg bij elk punt in eenvoudige woorden uit wat het betekent.',
+      },
+    ],
   },
 
   errors: {

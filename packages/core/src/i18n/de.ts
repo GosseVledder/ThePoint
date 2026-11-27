@@ -21,6 +21,7 @@ export const de: Messages = {
       samenvoegen: 'Teile werden zusammengeführt…',
       herstel: 'Antwort wird repariert…',
       video: 'Gemini sieht sich das Video an (das dauert länger)…',
+      verfijnen: 'Verfeinern…',
     },
     summarizingWith: (p) => `Zusammenfassung mit ${p}…`,
     zekerheid: { bewering: 'Behauptung', mening: 'Meinung', gerucht: 'Gerücht' },
@@ -85,6 +86,30 @@ export const de: Messages = {
     copied: 'Kopiert',
     copyFailed: 'Kopieren fehlgeschlagen',
     keyPoint: 'Kernpunkt',
+    refineTitle: 'Verfeinern',
+    refineHint:
+      'Wähle einen Vorschlag oder gib eine eigene Anweisung ein. Du bekommst dieselben Punkte mit einer Ergänzung; das Original bleibt erhalten.',
+    refinePlaceholder: 'Z. B. „Nenne bei Punkt 4 die Schritte“',
+    refineButton: 'Verfeinern',
+    refining: (l) => `Wird verfeinert: ${l}…`,
+    refineFailed: 'Verfeinern fehlgeschlagen',
+    original: 'Original',
+    tabsAria: 'Ansicht der Punkte',
+    instruction: (x) => `Anweisung: ${x}`,
+    newPoint: 'neu',
+    newPointTitle: 'Neuer Punkt: nicht in der ursprünglichen Liste',
+    refineDefaults: [
+      {
+        label: 'Tools nennen',
+        instructie:
+          'Nenne bei jedem Punkt die Tools, Produkte oder Dienste, die dazu genannt werden.',
+      },
+      {
+        label: 'Urteil pro Punkt',
+        instructie: 'Gib zu jedem Punkt ein kurzes Urteil: Wie wichtig und wie gut belegt ist er?',
+      },
+      { label: 'Für Einsteiger erklärt', instructie: 'Erkläre jeden Punkt in einfachen Worten.' },
+    ],
   },
 
   errors: {

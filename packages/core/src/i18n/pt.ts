@@ -21,6 +21,7 @@ export const pt: Messages = {
       samenvoegen: 'A juntar partes…',
       herstel: 'A reparar a resposta…',
       video: 'O Gemini está a ver o vídeo (demora mais)…',
+      verfijnen: 'A refinar…',
     },
     summarizingWith: (p) => `A resumir com ${p}…`,
     zekerheid: { bewering: 'afirmação', mening: 'opinião', gerucht: 'rumor' },
@@ -85,6 +86,30 @@ export const pt: Messages = {
     copied: 'Copiado',
     copyFailed: 'Não foi possível copiar',
     keyPoint: 'Ponto principal',
+    refineTitle: 'Refinar',
+    refineHint:
+      'Escolhe uma sugestão ou escreve a tua própria instrução. Recebes os mesmos pontos com um complemento; o original fica guardado.',
+    refinePlaceholder: 'Ex. «Dá os passos do ponto 4»',
+    refineButton: 'Refinar',
+    refining: (l) => `A refinar: ${l}…`,
+    refineFailed: 'Não foi possível refinar',
+    original: 'Original',
+    tabsAria: 'Vista dos pontos',
+    instruction: (x) => `Instrução: ${x}`,
+    newPoint: 'novo',
+    newPointTitle: 'Ponto novo: não estava na lista original',
+    refineDefaults: [
+      {
+        label: 'Indicar ferramentas',
+        instructie: 'Em cada ponto, indica as ferramentas, produtos ou serviços mencionados.',
+      },
+      {
+        label: 'Opinião por ponto',
+        instructie:
+          'Em cada ponto, dá uma opinião curta: qual a importância e quão fundamentado está?',
+      },
+      { label: 'Para principiantes', instructie: 'Explica cada ponto com palavras simples.' },
+    ],
   },
 
   errors: {

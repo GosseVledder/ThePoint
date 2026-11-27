@@ -1,6 +1,6 @@
 import { PROVIDERS } from '@the-point/core/engine/summarize';
 import type { CallLog, ProviderId } from '@the-point/core/engine/types';
-import { runSummaryJob, toErrorInfo, type JobDeps } from '@the-point/core/job';
+import { runRefineJob, runSummaryJob, toErrorInfo, type JobDeps } from '@the-point/core/job';
 import { checkForUpdate } from '@the-point/core/update';
 import { getTranscriptById } from '@the-point/core/youtube/transcript';
 import { isVideoId } from '@the-point/core/youtube/videoId';
@@ -61,7 +61,7 @@ export default defineBackground(() => {
     if (port.name !== SUMMARIZE_PORT || port.sender?.id !== browser.runtime.id) return;
     let detach: (() => void) | null = null;
     port.onMessage.addListener((msg: PortRequest) => {
-      if (msg.type !== 'start') return; // 'ping' only keeps the worker alive
+      if (msg.type === 'ping') return; // only keeps the worker alive
       if (!isVideoId(msg.videoId)) return;
       detach?.();
       const send: Listener = (e) => {
@@ -71,6 +71,11 @@ export default defineBackground(() => {
           // port closed (tab navigated); the job still finishes and fills the cache
         }
       };
+      if (msg.type === 'refine') {
+        startRefine(msg, send);
+        detach = null;
+        return;
+      }
       detach = startJob(msg, send);
     });
     port.onDisconnect.addListener(() => detach?.());
@@ -224,6 +229,14 @@ function startJob(req: Extract<PortRequest, { type: 'start' }>, listener: Listen
     detached = true;
     detach?.();
   };
+}
+
+/** One refinement; not shared between tabs (each instruction is its own request). */
+function startRefine(req: Extract<PortRequest, { type: 'refine' }>, listener: Listener): void {
+  void (async () => {
+    const [settings, keys] = await Promise.all([getSettings(), getApiKeys()]);
+    await runRefineJob(req, jobDeps(settings, keys, req.videoId), listener);
+  })().catch((e) => listener({ type: 'error', error: toErrorInfo(e) }));
 }
 
 function jobDeps(settings: Settings, keys: JobDeps['keys'], videoId: string): JobDeps {

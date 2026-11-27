@@ -49,6 +49,30 @@ export interface Takeaway {
   onbevestigd: boolean;
   /** Missing in summaries cached before this field existed. */
   moment?: Moment;
+  /** Only in a refinement: what the instruction added to this point (tool, verdict, steps). */
+  aanvulling?: string[];
+  /** Only in a refinement: a point that was not in the original list. */
+  nieuw?: boolean;
+}
+
+/** A refinement the model suggests with the first summary; one tap runs it. */
+export interface RefinementSuggestion {
+  /** Button text, at most a few words. */
+  label: string;
+  /** The full instruction sent when the button is chosen. */
+  instructie: string;
+}
+
+/** The takeaways reworked by one instruction of the user; the original stays as it is. */
+export interface Refinement {
+  id: string;
+  label: string;
+  instructie: string;
+  aangemaaktOp: string;
+  model: string;
+  takeaways: Takeaway[];
+  /** Short note from the model, e.g. when the video does not cover the instruction. */
+  toelichting: string;
 }
 
 export interface Summary {
@@ -65,6 +89,10 @@ export interface Summary {
   inhoudsoordeel: { dichtheid: 'hoog' | 'gemiddeld' | 'laag'; toelichting: string };
   isInterview: boolean;
   transcriptKwaliteit: 'goed' | 'matig' | 'slecht';
+  /** Suggested refinements; missing in summaries cached before this field existed. */
+  verfijningen?: RefinementSuggestion[];
+  /** Refinements made for this summary, oldest first. */
+  verfijnd?: Refinement[];
 }
 
 export interface Usage {
@@ -145,7 +173,7 @@ export class EngineError extends Error {
 export interface CallLog {
   provider: ProviderId;
   model: string;
-  stap: 'samenvatten' | 'deel' | 'samenvoegen' | 'herstel' | 'video';
+  stap: 'samenvatten' | 'deel' | 'samenvoegen' | 'herstel' | 'video' | 'verfijnen';
   invoerTekens: number;
   duurMs: number;
   usage?: Usage;

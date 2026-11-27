@@ -2,7 +2,7 @@
 // language is a setting of its own (`interfaceTaal`), separate from the summary
 // language. Spoken connecting words ("Punt 1.") follow the summary language instead,
 // because the voice reads the summary in that language.
-import type { ProviderId, Summary, Takeaway } from '../engine/types';
+import type { ProviderId, RefinementSuggestion, Summary, Takeaway } from '../engine/types';
 import type { ErrorCode, ErrorInfo, SummaryStep } from '../job';
 import { de } from './de';
 import { en } from './en';
@@ -92,6 +92,21 @@ export interface Messages {
     copyFailed: string;
     /** Label of the key point in copied text. */
     keyPoint: string;
+    /** Refining the takeaways with one instruction (suggestion button or typed text). */
+    refineTitle: string;
+    refineHint: string;
+    refinePlaceholder: string;
+    refineButton: string;
+    refining: (label: string) => string;
+    refineFailed: string;
+    /** Tab with the takeaways as first summarized. */
+    original: string;
+    tabsAria: string;
+    instruction: (text: string) => string;
+    newPoint: string;
+    newPointTitle: string;
+    /** Suggestions for summaries made before the model suggested its own. */
+    refineDefaults: RefinementSuggestion[];
   };
 
   errors: Record<ErrorCode, string> & { noTranscriptGemini: string };
