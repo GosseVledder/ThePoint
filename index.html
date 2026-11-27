@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>The Point – weet waar een video over gaat</title>
+    <meta
+      name="description"
+      content="The Point vat YouTube-video's voor je samen, zodat je weet waar een video over gaat voordat je hem kijkt. Gratis, voor Chrome, Edge en Android."
+    />
+    <link rel="icon" href="favicon.png" />
+    <style>
+      /* Public landing page (GitHub Pages, put on the gh-pages branch by scripts/publish-public.mjs).
+         Same brand blue and card style as the extension's options page. */
+      :root {
+        --bg: #f4f5f7;
+        --card: #ffffff;
+        --text: #15181e;
+        --text-2: #5d6470;
+        --border: #e3e6eb;
+        --accent: #1a56db;
+        --accent-soft: #ebf1fd;
+        --on-accent: #ffffff;
+        --ok: #137a3a;
+        --ok-soft: #e8f6ed;
+        --yellow: #ffcc00;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1114;
+          --card: #181b20;
+          --text: #e9ecf0;
+          --text-2: #9aa2ad;
+          --border: #272b32;
+          --accent: #6d9cff;
+          --accent-soft: #1c2a45;
+          --on-accent: #0b1220;
+          --ok: #4cc77a;
+          --ok-soft: #13291c;
+          color-scheme: dark;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html:not([lang='nl']) [data-lang='nl'],
+      html:not([lang='en']) [data-lang='en'] {
+        display: none !important;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.55 'Segoe UI Variable Text',
+          'Segoe UI',
+          system-ui,
+          -apple-system,
+          Roboto,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--accent);
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+      header.top {
+        border-bottom: 1px solid var(--border);
+      }
+      header.top .wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 60px;
+      }
+      header.top img {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+      }
+      header.top b {
+        flex: 1;
+        font-size: 17px;
+      }
+      .langs {
+        display: flex;
+        gap: 4px;
+      }
+      .langs button {
+        padding: 4px 10px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--text-2);
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .langs button[aria-pressed='true'] {
+        border-color: var(--accent);
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .hero {
+        padding: 56px 0 40px;
+      }
+      .hero h1 {
+        margin: 0 0 12px;
+        font-size: clamp(30px, 5vw, 46px);
+        line-height: 1.12;
+        letter-spacing: -0.01em;
+      }
+      .hero h1 .dot {
+        color: var(--yellow);
+      }
+      .hero p.lead {
+        max-width: 640px;
+        margin: 0 0 28px;
+        color: var(--text-2);
+        font-size: 18px;
+      }
+      .downloads {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .btn {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 52px;
+        padding: 8px 20px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--card);
+        color: var(--text);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .btn small {
+        color: var(--text-2);
+        font-size: 12.5px;
+        font-weight: 400;
+      }
+      .btn.primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: var(--on-accent);
+      }
+      .btn.primary small {
+        color: inherit;
+        opacity: 0.85;
+      }
+      .btn:hover {
+        filter: brightness(1.05);
+      }
+      .note {
+        margin: 14px 0 0;
+        color: var(--text-2);
+        font-size: 14px;
+      }
+
+      section {
+        padding: 28px 0;
+      }
+      h2 {
+        margin: 0 0 16px;
+        font-size: 24px;
+        line-height: 1.25;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .card {
+        padding: 18px 20px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+      }
+      .card h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--text-2);
+        font-size: 15px;
+      }
+      ol.steps {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: s;
+      }
+      ol.steps > li {
+        position: relative;
+        padding: 16px 20px 16px 64px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+        counter-increment: s;
+      }
+      ol.steps > li + li {
+        margin-top: 10px;
+      }
+      ol.steps > li::before {
+        content: counter(s);
+        position: absolute;
+        left: 18px;
+        top: 16px;
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: var(--on-accent);
+        font-weight: 700;
+      }
+      ol.steps h3 {
+        margin: 2px 0 4px;
+        font-size: 17px;
+      }
+      ol.steps p,
+      ol.steps ul {
+        margin: 4px 0 0;
+        color: var(--text-2);
+        font-size: 15px;
+      }
+      ol.steps ul {
+        padding-left: 20px;
+      }
+      ol.steps .btn {
+        margin-top: 10px;
+      }
+      code {
+        padding: 1px 5px;
+        border-radius: 4px;
+        background: var(--accent-soft);
+        font-size: 0.92em;
+      }
+      .reassure {
+        margin-top: 12px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        background: var(--ok-soft);
+        color: var(--text);
+        font-size: 15px;
+      }
+      details {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+      }
+      details + details {
+        margin-top: 10px;
+      }
+      summary {
+        padding: 14px 20px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      details > div {
+        padding: 0 20px 16px;
+        color: var(--text-2);
+      }
+      details > div p {
+        margin: 0 0 8px;
+      }
+      @media (max-width: 600px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      footer {
+        padding: 32px 0 48px;
+        border-top: 1px solid var(--border);
+        color: var(--text-2);
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <img src="logo.png" alt="" />
+        <b>The Point</b>
+        <div class="langs" role="group" aria-label="Taal / Language">
+          <button type="button" data-set-lang="nl" aria-pressed="true">NL</button>
+          <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+        <h1>
+          <span data-lang="nl"
+            >Weet waar een video over gaat voordat je hem kijkt<span class="dot">.</span></span
+          >
+          <span data-lang="en"
+            >Know what a video is about before you watch it<span class="dot">.</span></span
+          >
+        </h1>
+        <p class="lead" data-lang="nl">
+          The Point vat YouTube-video's voor je samen: in een paar zinnen zie je waar de video over
+          gaat en wat de belangrijkste punten zijn. Klik op een punt en de video springt naar dat
+          moment.
+        </p>
+        <p class="lead" data-lang="en">
+          The Point summarizes YouTube videos for you: in a few sentences you see what the video is
+          about and what the main points are. Click a point and the video jumps to that moment.
+        </p>
+        <div class="downloads">
+          <a
+            class="btn primary"
+            id="dl-extension"
+            href="https://github.com/GosseVledder/ThePoint/releases/latest"
+          >
+            <span data-lang="nl">Voor Chrome en Edge (computer)</span>
+            <span data-lang="en">For Chrome and Edge (computer)</span>
+            <small class="dl-meta"></small>
+          </a>
+          <a
+            class="btn"
+            id="dl-app"
+            href="https://github.com/GosseVledder/ThePoint/releases/latest"
+          >
+            <span data-lang="nl">Android-app (telefoon)</span>
+            <span data-lang="en">Android app (phone)</span>
+            <small class="dl-meta"></small>
+          </a>
+        </div>
+        <p class="note" data-lang="nl">
+          Gratis. Je hebt alleen een gratis sleutel van Google nodig; die maak je in ongeveer een
+          minuut (zie hieronder).
+        </p>
+        <p class="note" data-lang="en">
+          Free. You only need a free key from Google; you create it in about a minute (see below).
+        </p>
+      </section>
+
+      <section aria-labelledby="h-why">
+        <h2 id="h-why">
+          <span data-lang="nl">Waarom The Point?</span><span data-lang="en">Why The Point?</span>
+        </h2>
+        <div class="grid">
+          <div class="card">
+            <h3><span data-lang="nl">Het is gratis</span><span data-lang="en">It's free</span></h3>
+            <p data-lang="nl">
+              The Point kost niets en heeft geen advertenties. Je gebruikt een gratis sleutel van
+              Google; zoals The Point hem gebruikt, kost ook dat niets.
+            </p>
+            <p data-lang="en">
+              The Point costs nothing and has no ads. You use a free key from Google; the way The
+              Point uses it, that costs nothing either.
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              <span data-lang="nl">Het geeft je je tijd terug</span
+              ><span data-lang="en">It gives you your time back</span>
+            </h3>
+            <p data-lang="nl">
+              YouTube is gemaakt om je te laten blijven kijken: video's starten vanzelf, er staat
+              altijd een volgende klaar en veel video's beginnen met een lange inleiding. The Point
+              werkt andersom: je ziet eerst wat een video te bieden heeft en kiest dan zelf of je
+              kijkt, en welk stuk.
+            </p>
+            <p data-lang="en">
+              YouTube is made to keep you watching: videos start by themselves, there is always a
+              next one ready and many videos open with a long intro. The Point works the other way
+              round: you first see what a video has to offer, then decide whether to watch, and
+              which part.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="h-what">
+        <h2 id="h-what">
+          <span data-lang="nl">Wat het doet</span><span data-lang="en">What it does</span>
+        </h2>
+        <div class="grid">
+          <div class="card">
+            <h3>
+              <span data-lang="nl">De kern in een paar zinnen</span
+              ><span data-lang="en">The gist in a few sentences</span>
+            </h3>
+            <p data-lang="nl">
+              Waar gaat de video over en wat zijn de belangrijkste punten? Je ziet het voordat je
+              gaat kijken.
+            </p>
+            <p data-lang="en">
+              What is the video about and what are the main points? You see it before you start
+              watching.
+            </p>
+          </div>
+          <div class="card">
+            <h3>
+              <span data-lang="nl">Direct naar het goede stuk</span
+              ><span data-lang="en">Straight to the right part</span>
+            </h3>
+            <p data-lang="nl">
+              Klik op een punt en de video springt naar het moment waar het over gaat.
+            </p>
+            <p data-lang="en">Click a point and the video jumps to the moment it is about.</p>
+          </div>
+          <div class="card">
+            <h3>
+              <span data-lang="nl">Eerlijk over twijfel</span
+              ><span data-lang="en">Honest about doubt</span>
+            </h3>
+            <p data-lang="nl">Is iets een mening of een gerucht, dan staat dat erbij.</p>
+            <p data-lang="en">If something is an opinion or a rumour, it says so.</p>
+          </div>
+          <div class="card">
+            <h3>
+              <span data-lang="nl">Kopiëren en terugzien</span
+              ><span data-lang="en">Copy and look back</span>
+            </h3>
+            <p data-lang="nl">
+              Kopieer een samenvatting met één klik, en zie al je samenvattingen terug in de
+              geschiedenis.
+            </p>
+            <p data-lang="en">
+              Copy a summary with one click, and find all your summaries again in the history.
+            </p>
+          </div>
+          <div class="card">
+            <h3><span data-lang="nl">Voorlezen</span><span data-lang="en">Read aloud</span></h3>
+            <p data-lang="nl">Laat de samenvatting voorlezen, bijvoorbeeld onderweg.</p>
+            <p data-lang="en">Have the summary read aloud, for example on the go.</p>
+          </div>
+          <div class="card">
+            <h3><span data-lang="nl">Privé</span><span data-lang="en">Private</span></h3>
+            <p data-lang="nl">
+              The Point heeft geen eigen server en houdt niets van je bij.
+              <a href="privacy.html">Lees hoe dat zit</a>.
+            </p>
+            <p data-lang="en">
+              The Point has no server of its own and keeps no record of you.
+              <a href="privacy.html">Read how</a>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="h-start" id="aan-de-slag">
+        <h2 id="h-start">
+          <span data-lang="nl">Aan de slag in drie stappen</span
+          ><span data-lang="en">Get started in three steps</span>
+        </h2>
+        <ol class="steps">
+          <li>
+            <h3>
+              <span data-lang="nl">Installeer The Point in je browser</span
+              ><span data-lang="en">Install The Point in your browser</span>
+            </h3>
+            <ul data-lang="nl">
+              <li>Download het bestand voor Chrome en Edge hierboven.</li>
+              <li>
+                Pak het uit: klik er met de rechtermuisknop op en kies <b>Alles uitpakken</b>.
+                Bewaar de map op een vaste plek, bijvoorbeeld in Documenten.
+              </li>
+              <li>
+                Typ in de adresbalk <code>chrome://extensions</code> (Chrome) of
+                <code>edge://extensions</code> (Edge) en zet <b>Ontwikkelaarsmodus</b> aan.
+              </li>
+              <li>
+                Klik op <b>Uitgepakte extensie laden</b> en kies de map die je net hebt uitgepakt.
+              </li>
+            </ul>
+            <ul data-lang="en">
+              <li>Download the file for Chrome and Edge above.</li>
+              <li>
+                Unzip it: right-click it and choose <b>Extract All</b>. Keep the folder in a fixed
+                place, for example in Documents.
+              </li>
+              <li>
+                Type <code>chrome://extensions</code> (Chrome) or
+                <code>edge://extensions</code> (Edge) in the address bar and turn on
+                <b>Developer mode</b>.
+              </li>
+              <li>Click <b>Load unpacked</b> and choose the folder you just unzipped.</li>
+            </ul>
+            <p data-lang="nl">
+              Er opent vanzelf een welkomstpagina die je door de volgende twee stappen helpt.
+            </p>
+            <p data-lang="en">
+              A welcome page opens by itself and helps you with the next two steps.
+            </p>
+          </li>
+          <li id="sleutel">
+            <h3>
+              <span data-lang="nl">Maak je gratis sleutel bij Google</span
+              ><span data-lang="en">Get your free key from Google</span>
+            </h3>
+            <ul data-lang="nl">
+              <li>
+                Open Google AI Studio, log in met je Google-account en accepteer de voorwaarden.
+              </li>
+              <li>
+                Staat er al een sleutel? Dan is dat de jouwe. Zo niet, klik op
+                <b>Create API key</b>.
+              </li>
+              <li>Kopieer de sleutel.</li>
+            </ul>
+            <ul data-lang="en">
+              <li>Open Google AI Studio, sign in with your Google account and accept the terms.</li>
+              <li>
+                Is a key already listed? That one is yours. If not, click <b>Create API key</b>.
+              </li>
+              <li>Copy the key.</li>
+            </ul>
+            <a
+              class="btn primary"
+              href="https://aistudio.google.com/apikey"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span data-lang="nl">Naar Google AI Studio</span
+              ><span data-lang="en">Open Google AI Studio</span>
+            </a>
+            <div class="reassure" data-lang="nl">
+              ✓ Gratis: zoals The Point de sleutel gebruikt, kost het niets · ✓ je sleutel blijft op
+              je eigen computer · ✓ hij gaat alleen naar Google
+            </div>
+            <div class="reassure" data-lang="en">
+              ✓ Free: the way The Point uses the key, it costs nothing · ✓ your key stays on your
+              own computer · ✓ it only goes to Google
+            </div>
+          </li>
+          <li>
+            <h3>
+              <span data-lang="nl">Plak de sleutel en kijk een video</span
+              ><span data-lang="en">Paste the key and watch a video</span>
+            </h3>
+            <p data-lang="nl">
+              Plak de sleutel op de welkomstpagina en klik op <b>Controleren en opslaan</b>. Open
+              daarna een YouTube-video: naast de video verschijnt de samenvatting.
+            </p>
+            <p data-lang="en">
+              Paste the key on the welcome page and click <b>Check and save</b>. Then open a YouTube
+              video: the summary appears next to the video.
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="h-faq" id="faq">
+        <h2 id="h-faq">
+          <span data-lang="nl">Veelgestelde vragen</span
+          ><span data-lang="en">Frequently asked questions</span>
+        </h2>
+        <details>
+          <summary>
+            <span data-lang="nl">Is het gratis?</span><span data-lang="en">Is it free?</span>
+          </summary>
+          <div data-lang="nl">
+            <p>
+              Ja. The Point is gratis, en de sleutel van Google ook: zoals The Point hem gebruikt,
+              kost het niets. Je hoeft bij Google geen betaalgegevens in te vullen.
+            </p>
+          </div>
+          <div data-lang="en">
+            <p>
+              Yes. The Point is free, and so is the Google key: the way The Point uses it, it costs
+              nothing. You don't need to give Google any payment details.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>
+            <span data-lang="nl">Is mijn sleutel veilig?</span
+            ><span data-lang="en">Is my key safe?</span>
+          </summary>
+          <div data-lang="nl">
+            <p>
+              Ja. Je sleutel blijft op je eigen computer of telefoon en gaat alleen naar Google, om
+              de samenvattingen te maken. The Point heeft geen eigen server en krijgt je sleutel
+              nooit te zien.
+            </p>
+          </div>
+          <div data-lang="en">
+            <p>
+              Yes. Your key stays on your own computer or phone and only goes to Google, to make the
+              summaries. The Point has no server of its own and never sees your key.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>
+            <span data-lang="nl">Hoeveel video's kan ik gratis laten samenvatten?</span
+            ><span data-lang="en">How many videos can I summarize for free?</span>
+          </summary>
+          <div data-lang="nl">
+            <p>
+              Ongeveer 200 per dag, en zo'n 10 per minuut. Een video die al eens is samengevat, telt
+              niet opnieuw mee. Kom je aan de grens, dan zegt The Point dat; probeer het dan later
+              nog eens.
+            </p>
+          </div>
+          <div data-lang="en">
+            <p>
+              About 200 a day, and around 10 a minute. A video that was summarized before doesn't
+              count again. If you reach the limit, The Point tells you; just try again later.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>
+            <span data-lang="nl">Mijn sleutel werkt niet meer. Wat nu?</span
+            ><span data-lang="en">My key stopped working. What now?</span>
+          </summary>
+          <div data-lang="nl">
+            <p>
+              Meldt The Point dat je de grens hebt bereikt, wacht dan even en probeer het later
+              opnieuw.
+            </p>
+            <p>
+              Werkt het daarna nog steeds niet, maak dan een nieuwe sleutel in Google AI Studio en
+              plak die in The Point. Dat doe je via het puzzelstukje in je browser ›
+              <b>The Point</b> › <b>Installatiehulp</b>.
+            </p>
+          </div>
+          <div data-lang="en">
+            <p>If The Point says you've reached the limit, wait a while and try again later.</p>
+            <p>
+              Still not working? Create a new key in Google AI Studio and paste it into The Point.
+              You do that via the puzzle piece in your browser › <b>The Point</b> ›
+              <b>Setup guide</b>.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>
+            <span data-lang="nl">Op welke apparaten werkt het?</span
+            ><span data-lang="en">Which devices does it work on?</span>
+          </summary>
+          <div data-lang="nl">
+            <p>
+              Op je computer in Google Chrome en Microsoft Edge, en op Android-telefoons en -tablets
+              met de app. Firefox, Safari en de iPhone en iPad worden nog niet ondersteund.
+            </p>
+          </div>
+          <div data-lang="en">
+            <p>
+              On your computer in Google Chrome and Microsoft Edge, and on Android phones and
+              tablets with the app. Firefox, Safari, iPhone and iPad are not supported yet.
+            </p>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span data-lang="nl">Meer informatie en alle versies:</span>
+        <span data-lang="en">More information and all versions (in Dutch):</span>
+        <a href="https://github.com/GosseVledder/ThePoint">github.com/GosseVledder/ThePoint</a>
+        · <a href="privacy.html">Privacy</a>
+      </div>
+    </footer>
+
+    <script>
+      // Language: saved choice, else the browser language (Dutch or English).
+      const LANGS = ['nl', 'en'];
+      function setLang(lang) {
+        document.documentElement.lang = lang;
+        document
+          .querySelectorAll('[data-set-lang]')
+          .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setLang === lang)));
+        document.title =
+          lang === 'nl'
+            ? 'The Point – weet waar een video over gaat'
+            : 'The Point – know what a video is about';
+      }
+      let saved = null;
+      try {
+        saved = localStorage.getItem('lang');
+      } catch {}
+      setLang(
+        LANGS.includes(saved)
+          ? saved
+          : navigator.language.toLowerCase().startsWith('nl')
+            ? 'nl'
+            : 'en',
+      );
+      document.querySelectorAll('[data-set-lang]').forEach((b) =>
+        b.addEventListener('click', () => {
+          setLang(b.dataset.setLang);
+          try {
+            localStorage.setItem('lang', b.dataset.setLang);
+          } catch {}
+        }),
+      );
+
+      // Download buttons point at the files of the latest release; without an answer they
+      // keep pointing at the releases page.
+      fetch('https://api.github.com/repos/GosseVledder/ThePoint/releases/latest')
+        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then((release) => {
+          const link = (id, pattern) => {
+            const asset = (release.assets || []).find((a) => pattern.test(a.name));
+            if (!asset) return;
+            const a = document.getElementById(id);
+            a.href = asset.browser_download_url;
+            const version = asset.name.match(/(\d+\.\d+\.\d+)/)?.[1] ?? '';
+            const size =
+              asset.size >= 1e6
+                ? `${(asset.size / 1e6).toFixed(1)} MB`
+                : `${Math.round(asset.size / 1e3)} kB`;
+            a.querySelector('.dl-meta').textContent = `${version} · ${size}`;
+          };
+          link('dl-extension', /^ThePoint-extension-[\d.]+\.zip$/);
+          link('dl-app', /^ThePoint-[\d.]+\.apk$/);
+        })
+        .catch(() => {});
+    </script>
+  </body>
+</html>
