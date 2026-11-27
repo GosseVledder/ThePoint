@@ -18,7 +18,7 @@ Kant-en-klaar: downloaden, installeren, klaar. Er is niets te bouwen.
 
 | | Download | Installeren |
 |---|---|---|
-| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.7.0.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.7.0.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
+| 📱 **Android-app**<br>telefoon en tablet, Android 7 of nieuwer | [**ThePoint-0.8.0.apk**](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.8.0.apk)<br>3 MB | [Installeren op Android](#android-app-installeren) |
 | 🧩 **Extensie voor Chrome en Edge**<br>Windows, macOS, Linux | [**ThePoint-extension-0.9.0.zip**](https://github.com/GosseVledder/ThePoint/raw/master/extension/ThePoint-extension-0.9.0.zip)<br>264 kB | [Installeren in Chrome of Edge](#extensie-installeren-in-chrome-of-edge) |
 
 Daarnaast heb je een eigen API-sleutel nodig van Google (Gemini, gratis) of Anthropic (Claude, betaald); zie [API-sleutel instellen](#api-sleutel-instellen). Firefox, Safari en iPhone/iPad worden (nog) niet ondersteund. Alle versies met hun SHA-256 staan bij de [Releases](https://github.com/GosseVledder/ThePoint/releases); app en extensie [zoeken zelf naar updates](#bijwerken) via *Instellingen › Updates*.
@@ -38,7 +38,7 @@ Veel video's duren twintig minuten of langer, terwijl de kern in een paar zinnen
 - **Voorlezen** met de gratis stemmen van je browser, Windows of Android.
 - **Zeven talen**: de interface en de samenvatting stel je los van elkaar in (Nederlands, Engels, Duits, Frans, Spaans, Italiaans, Portugees).
 - **Eén keer samenvatten per video**: elke samenvatting wordt bewaard; opnieuw openen kost geen nieuwe AI-aanroep.
-- **Verfijnen** (extensie): kies onder de lijst een voorstel, zoals *Noem de tools* of *Oordeel per punt*, of typ een eigen instructie ("geef bij punt 4 de stappen"). Je krijgt dezelfde punten met een aanvulling eronder, in een eigen tabblad; het origineel blijft bewaard en de verfijning ook.
+- **Verfijnen**: kies onder de lijst een voorstel, zoals *Noem de tools* of *Oordeel per punt*, of typ een eigen instructie ("geef bij punt 4 de stappen"). Je krijgt dezelfde punten met een aanvulling eronder, in een eigen tabblad; het origineel blijft bewaard en de verfijning ook.
 - **Kopiëren**: de samenvatting als tekst op het klembord, met de link naar de video.
 - **Geschiedenis**: alle samenvattingen terugzien, zonder limiet (extensie: *Instellingen › Geschiedenis*; app: *Recent* op het startscherm).
 
@@ -55,11 +55,11 @@ Er zit geen server van The Point tussen: je apparaat praat rechtstreeks met YouT
 
 | | |
 |---|---|
-| **Bestand** | [`ThePoint-0.7.0.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.7.0.apk) (ook in de map [`apk/`](apk/)) |
-| **Versie** | 0.7.0 (versionCode 13) |
+| **Bestand** | [`ThePoint-0.8.0.apk`](https://github.com/GosseVledder/ThePoint/raw/master/apk/ThePoint-0.8.0.apk) (ook in de map [`apk/`](apk/)) |
+| **Versie** | 0.8.0 (versionCode 14) |
 | **Vereist** | Android 7.0 of nieuwer |
 | **Grootte** | 3 MB |
-| **SHA-256** | `ba26beb5cd73260d29fb5fea0dd85766413ce2075778dab06966ed685a2e1159` |
+| **SHA-256** | `46806bea1855bf9960e7be6fe06c20a2c6ecac7c12dfaea7ce3ac6733a6cfc43` |
 
 De APK is een ondertekende release-build; hij staat niet in de Play Store.
 
@@ -76,6 +76,7 @@ De APK is een ondertekende release-build; hij staat niet in de Play Store.
 - **YouTube-player aan/uit** met de knop ▶ in de titelbalk (standaard uit). Staat de player uit, dan vraagt een tik op een tijdstempel wat je wilt: de player tonen en naar dat moment springen, de video op dat moment openen in de **YouTube-app**, of de onderbouwing **laten voorlezen** (de takeaway met het citaat uit het transcript).
 - **Gesplitst scherm**: staat The Point naast de YouTube-app en is de player uit, dan springt een tik op een tijdstempel direct naar dat moment in de YouTube-app ernaast.
 - **Voorlezen** met de stemmen van Android; de video pauzeert zolang er wordt voorgelezen.
+- **Verfijnen** onder de lijst: tik op een voorstel of typ een eigen instructie; het resultaat komt in een eigen tabblad naast *Oorspronkelijk* en blijft bewaard.
 - **Kopiëren** onder elke samenvatting zet de tekst op het klembord.
 - Licht en donker thema volgen het systeem.
 

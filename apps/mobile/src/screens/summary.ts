@@ -2,7 +2,8 @@
 // summary view below.
 import { Clipboard } from '@capacitor/clipboard';
 import type { Summary } from '@the-point/core/engine/types';
-import { runSummaryJob, toErrorInfo, type JobEvent } from '@the-point/core/job';
+import { applyRefinement, labelFor } from '@the-point/core/engine/refinements';
+import { runRefineJob, runSummaryJob, toErrorInfo, type JobEvent } from '@the-point/core/job';
 import { renderView, h, type ViewState } from '@the-point/core/ui/render';
 import { buildEvidenceSpeech, type SpeechId, type SpeechItem } from '@the-point/core/ui/speechText';
 import { BASE_CSS } from '@the-point/core/ui/styles';
@@ -41,6 +42,12 @@ export function summaryScreen(
   let refreshing = forceRefresh;
   let run = 0;
   let disposed = false;
+  /** Refinement shown instead of the original takeaways (null = the original). */
+  let activeRefinement: string | null = null;
+  let refineRun = 0;
+  /** The summary as shown: with the takeaways of the active refinement, if any. */
+  const shown = (): Summary | null =>
+    state.kind === 'done' ? applyRefinement(state.summary, activeRefinement) : null;
 
   // Player: only while the title-bar toggle is on (also switched on by "Toon player"
   // in the seek dialog). Embedded, or the YouTube app when the video may not be
@@ -99,7 +106,7 @@ export function summaryScreen(
     void showPlayer(sec).then((p) => gen === playerGen && p.seekTo(sec));
   };
   const timeOf = (id: SpeechId) => {
-    const summary = state.kind === 'done' ? state.summary : null;
+    const summary = shown();
     return (id === 'kritiek' ? summary?.kritiekPunt.tijd : summary?.takeaways[id]?.tijd) ?? null;
   };
   // Split screen with the player off: the YouTube app next to The Point jumps to the
@@ -125,7 +132,7 @@ export function summaryScreen(
   };
   function askSeek(sec: number, id: SpeechId) {
     closeDialog();
-    const summary = state.kind === 'done' ? state.summary : null;
+    const summary = shown();
     const tijd = timeOf(id);
     const evidence = summary ? buildEvidenceSpeech(summary, id) : null;
     const backdrop: HTMLElement = h(
@@ -217,7 +224,16 @@ export function summaryScreen(
           app.go(settings?.provider === 'claude' ? '#/instellingen' : welcomeHash(videoId)),
         // Native clipboard: the web Clipboard API is not reliable in the Android WebView.
         onCopy: (text) => Clipboard.write({ string: text }),
-        onSpeak: (from) => state.kind === 'done' && speak(state.summary, from),
+        onSpeak: (from) => {
+          const summary = shown();
+          if (summary) speak(summary, from);
+        },
+        onRefine: (instructie, label) => void refine(instructie, label),
+        onSelectRefinement: (id) => {
+          app.speaker.stop();
+          activeRefinement = id;
+          render();
+        },
         onStopSpeak: () => app.speaker.stop(),
         onVoiceChange: async (voiceUri) => {
           const cur = await app.settings.get();
@@ -228,6 +244,7 @@ export function summaryScreen(
       {
         seekLabel: playerFailed ? t.view.openAt : t.view.seekTo,
         seekMargin: settings?.springMarge,
+        activeRefinement,
         t,
         speech: {
           available: true,
@@ -242,6 +259,7 @@ export function summaryScreen(
 
   async function summarize(forceRefresh: boolean, confirmLong = false) {
     const my = ++run;
+    refineRun++;
     app.speaker.stop();
     const [s, keys] = await Promise.all([app.settings.get(), app.keys.get()]);
     settings = s;
@@ -280,6 +298,52 @@ export function summaryScreen(
     }
   }
 
+  // Refine the takeaways with one instruction; the summary stays visible meanwhile.
+  async function refine(instructie: string, label?: string) {
+    if (state.kind !== 'done' || state.refining || !instructie.trim()) return;
+    const my = ++refineRun;
+    app.speaker.stop();
+    state = {
+      ...state,
+      refining: { label: label?.trim() || labelFor(instructie) },
+      refineError: undefined,
+    };
+    render();
+    const [s, keys] = await Promise.all([app.settings.get(), app.keys.get()]);
+    settings = s;
+    const current = () => (my === refineRun && !disposed && state.kind === 'done' ? state : null);
+    const fail = (error: ReturnType<typeof toErrorInfo>) => {
+      const now = current();
+      if (!now) return;
+      state = { ...now, refining: undefined, refineError: error };
+      render();
+    };
+    try {
+      await runRefineJob(
+        { videoId, instructie, label: state.refining?.label, paginaGeprobeerd: true },
+        {
+          settings: s,
+          keys,
+          getCached: app.cache.get,
+          setCached: app.cache.set,
+          getTranscript: (v) => getTranscriptById(v, { fetch: nativeFetch }),
+          fetch: nativeFetch,
+        },
+        (e) => {
+          const now = current();
+          if (!now) return;
+          if (e.type === 'done') {
+            state = { kind: 'done', summary: e.summary, fromCache: now.fromCache };
+            if (e.refinementId) activeRefinement = e.refinementId;
+            render();
+          } else if (e.type === 'error') fail(e.error);
+        },
+      );
+    } catch (e) {
+      fail(toErrorInfo(e));
+    }
+  }
+
   render();
   void summarize(refreshing);
 
@@ -301,6 +365,7 @@ export function summaryScreen(
       closeDialog();
       darkQuery?.removeEventListener('change', applyTheme);
       run++;
+      refineRun++;
       app.speaker.stop();
     },
   };

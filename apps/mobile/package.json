@@ -2,7 +2,7 @@
   "name": "@the-point/mobile",
   "description": "Android and iPad app: share a YouTube video, get the summary",
   "private": true,
-  "version": "0.7.0",
+  "version": "0.8.0",
   "license": "MIT",
   "type": "module",
   "scripts": {
